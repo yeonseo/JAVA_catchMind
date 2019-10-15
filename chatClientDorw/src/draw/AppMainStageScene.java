@@ -1,4 +1,4 @@
-package application.draw;
+package draw;
 
 import java.awt.Color;
 import java.awt.Graphics;

@@ -63,8 +63,6 @@ public class Main extends Application {
 		threadPool.submit(thread);
 	}//end of startServer
 	
-	
-	
 	public void stopServer() {
 		try {
 			Iterator<Client> itr = clients.iterator();
@@ -84,8 +82,6 @@ public class Main extends Application {
 		}
 	}
 	
-	
-	
 	//server UI
 	@Override
 	public void start(Stage primaryStage) {
@@ -104,6 +100,7 @@ public class Main extends Application {
 		
 		String IP = "localhost";
 		int port = 9876;
+//		int port = 3333;
 		
 		toggleButton.setOnAction(event ->{
 			if(toggleButton.getText().equals("start")) {
@@ -129,9 +126,6 @@ public class Main extends Application {
 		primaryStage.show();
 		
 	}//end of start
-	
-	
-	
 	
 	public static void main(String[] args) {
 		launch(args);

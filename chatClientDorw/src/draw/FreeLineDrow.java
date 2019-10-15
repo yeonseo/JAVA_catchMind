@@ -1,4 +1,4 @@
-package application.draw;
+package draw;
 import java.awt.*;
 
 import java.awt.event.*;

@@ -1,4 +1,4 @@
-package application.draw;
+package draw;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,19 +32,19 @@ public class DrowController implements Initializable {
 		if(event.getEventType()==MouseEvent.MOUSE_CLICKED) {
 			System.out.println("Hey!");
 			System.out.println("X : "+ event.getX() + ", Y : "+event.getY()+" No Dorw");
-			arPt.add(new VertexClass(event.getX(),event.getY(),false));
+			arPt.add(new VertexClass(event.getX(),event.getY(),false, null));
 		}
 		if(event.getEventType()==MouseEvent.MOUSE_DRAGGED ) {
 			System.out.println("Hey!");
 			System.out.println("X : "+ event.getX() + ", Y : "+event.getY()+" Dorw");
-			arPt.add(new VertexClass(event.getX(),event.getY(),true));
+			arPt.add(new VertexClass(event.getX(),event.getY(),true, null));
 			
 		}
 		drow.paint(g);
 		if(event.getEventType()==MouseEvent.MOUSE_RELEASED ) {
 			System.out.println("Hey!");
 			System.out.println("X : "+ event.getX() + ", Y : "+event.getY()+" No Dorw");
-			arPt.add(new VertexClass(event.getX(),event.getY(),false));
+			arPt.add(new VertexClass(event.getX(),event.getY(),false, null));
 			
 		}
 		drow.paint(g);
