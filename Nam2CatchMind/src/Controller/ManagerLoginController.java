@@ -63,6 +63,8 @@ public class ManagerLoginController implements Initializable {
 			Stage mainStage = null;
 			try {
 				
+				
+				
 				//mainView = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
 				mainTabView = FXMLLoader.load(getClass().getResource("/View/ManagerMainTap.fxml"));
 				Scene scene = new Scene(mainTabView);

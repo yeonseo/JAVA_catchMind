@@ -16,7 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
-public class ManagerManagmentController implements Initializable {
+public class ServerMainController implements Initializable {
 	@FXML private TextArea txtAreaServerLog;
 	@FXML private Button btnServerAction;
 
@@ -105,5 +105,7 @@ public class ManagerManagmentController implements Initializable {
 
 		}
 	}
+
+	
 
 }
