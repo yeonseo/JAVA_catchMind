@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="300.0" prefWidth="400.0" spacing="10.0" style="-fx-background-color: #F2F2F2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.GamerLoginController">
+   <children>
+      <Label text="캐치마인드!" />
+      <Label text="로그인" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="350.0" spacing="10.0">
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="63.0" spacing="10.0">
+               <children>
+                  <Label text="아이디" />
+                  <Label text="패스워드" />
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="158.0" spacing="10.0">
+               <children>
+                  <TextField fx:id="gamerId" prefHeight="29.0" prefWidth="177.0" />
+                  <PasswordField fx:id="gamerPwd" />
+               </children>
+            </VBox>
+            <Button fx:id="btnLogin" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="로그인" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="340.0" spacing="10.0">
+         <children>
+            <Button fx:id="btnMemberShip" mnemonicParsing="false" text="회원가입" />
+            <Button fx:id="btnExit" mnemonicParsing="false" text="나가기" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+</VBox>

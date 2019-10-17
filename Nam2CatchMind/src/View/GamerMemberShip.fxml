@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox alignment="CENTER_LEFT" prefHeight="400.0" prefWidth="750.0" spacing="35.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.GamerMemberShipController">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="360.0" prefWidth="202.0" spacing="15.0">
+         <children>
+            <Label style="-fx-font-size: 20;" text="회원가입">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></Label>
+            <ImageView fx:id="gamerImg" fitHeight="278.0" fitWidth="241.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/gamerBasicImg.jpg" />
+               </image>
+            </ImageView>
+            <Button fx:id="btnImg" mnemonicParsing="false" text="이미지 가져오기" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="360.0" prefWidth="414.0" spacing="5.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="319.0" spacing="10.0">
+               <children>
+                  <Label text="아     이    디" />
+                  <TextField fx:id="membershipId" />
+                  <Button fx:id="btnIdCheck" mnemonicParsing="false" prefHeight="29.0" prefWidth="115.0" text="아이디 확인" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="319.0" spacing="10.0">
+               <children>
+                  <Label text="비  밀  번  호" />
+                  <PasswordField fx:id="memberShipPwd" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="319.0" spacing="9.0">
+               <children>
+                  <Label text="비밀번호확인" />
+                  <PasswordField fx:id="memberShipCheckPwd" />
+                  <Button fx:id="btnCheckPwd" mnemonicParsing="false" text="비밀번호 확인">
+                     <HBox.margin>
+                        <Insets left="1.0" />
+                     </HBox.margin></Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="319.0" spacing="30.0">
+               <children>
+                  <Label text="성            별" />
+                  <RadioButton fx:id="radioMan" mnemonicParsing="false" text="남">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="genderGrup" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="radioWoman" mnemonicParsing="false" text="여" toggleGroup="$genderGrup" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="42.0" prefWidth="414.0" spacing="20.0">
+               <children>
+                  <Button fx:id="btnRegister" mnemonicParsing="false" text="등록" />
+                  <Button fx:id="btnExit" mnemonicParsing="false" text="취소" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+</HBox>
