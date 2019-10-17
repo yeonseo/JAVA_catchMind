@@ -6,6 +6,10 @@ import java.util.Arrays;
 import Application.sqlDB;
 
 public class UserGameState {
+	
+	/* 여기서 유저들의 접속상태를 다룰 예정
+	 * 
+	 * */
 	public static String managerEnter = "managerMainTab";
 	public static String managerMemberShip = "managerMemberShip";
 

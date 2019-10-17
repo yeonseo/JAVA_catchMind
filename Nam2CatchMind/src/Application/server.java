@@ -10,6 +10,12 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class server {
+	
+	/* serverMian 에서의케이스문을 떼어옴
+	 * 실행할때 필요해!!!!!
+	 * 
+	 * */
+	
 	private ServerSocket serverSocket;
 
 	// constructor
