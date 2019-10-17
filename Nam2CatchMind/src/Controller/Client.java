@@ -6,10 +6,10 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class Client {
-	public Socket socket;
+	private Socket socket;
 	
 	public Client(Socket socket) {
-		this.socket = socket;
+		this.setSocket(socket);
 		receive();
 	}
 
@@ -22,12 +22,12 @@ public class Client {
 			public void run() {
 				try {
 					while(true) {
-						InputStream in = socket.getInputStream();
+						InputStream in = getSocket().getInputStream();
 						byte[] buffer = new byte[512];
 						int length = in.read(buffer);
 						while(length == -1) throw new IOException();
 						System.out.println("[succese in message] "
-								 + socket.getRemoteSocketAddress()
+								 + getSocket().getRemoteSocketAddress()
 								 + " : " + Thread.currentThread().getName());
 						String message = new String(buffer, 0, length, "UTF-8");
 						for(Client client : ServerMainController.clients) {
@@ -37,10 +37,10 @@ public class Client {
 				}catch(Exception e) {
 					try {
 						 System.out.println("[fail in message] "
-								 + socket.getRemoteSocketAddress()
+								 + getSocket().getRemoteSocketAddress()
 								 + " : " + Thread.currentThread().getName());
 						 ServerMainController.clients.remove(Client.this);
-						 socket.close();
+						 getSocket().close();
 					 } catch (Exception e2) {
 						 e2.printStackTrace(); 
 					 }
@@ -58,14 +58,14 @@ public class Client {
 			@Override
 			public void run() {
 				try {
-					OutputStream out = socket.getOutputStream();
+					OutputStream out = getSocket().getOutputStream();
 					byte[] buffer = message.getBytes("UTF-8");
 					out.write(buffer);
 					out.flush();
 					
 				} catch (Exception e) {
 					System.out.println("messge out fail"
-							+ socket.getRemoteSocketAddress()
+							+ getSocket().getRemoteSocketAddress()
 							+ " : " + Thread.currentThread().getName());
 					ServerMainController.clients.remove(Client.this);
 					e.printStackTrace();
@@ -74,4 +74,12 @@ public class Client {
 		};//end of thread
 		ServerMainController.threadPool.submit(thread);
 	}//end of send()
+
+	public Socket getSocket() {
+		return socket;
+	}
+
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
 }

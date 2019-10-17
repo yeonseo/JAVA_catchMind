@@ -92,7 +92,7 @@ public class ServerMainController implements Initializable {
 			Iterator<Client> itr = clients.iterator();
 			while (itr.hasNext()) {
 				Client client = itr.next();
-				client.socket.close();
+				client.getSocket().close();
 				itr.remove();
 			}
 			if (serverSocket != null && !serverSocket.isClosed()) {

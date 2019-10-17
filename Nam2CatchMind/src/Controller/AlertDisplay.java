@@ -20,4 +20,9 @@ public class AlertDisplay {
 		alert.showAndWait();
 		
 	}
+	
+	// for logging to server console
+	public static void log(String message) {
+		System.out.println(message);
+	}
 }
