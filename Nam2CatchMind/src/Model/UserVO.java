@@ -7,11 +7,7 @@ public class UserVO {
 	private String Image;
 	/* 
 	 * 
-<<<<<<< HEAD:Nam2CatchMind/src/Model/UserVO.java
-	 * gameUser�� ����ϱ����Ѱ�
-=======
 	 * gameUser를 등록하기위한것
->>>>>>> pr/3:Nam2CatchMind/src/Model/GamerVO.java
 	 * 
 	 * 
 	 */

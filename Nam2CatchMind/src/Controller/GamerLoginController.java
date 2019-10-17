@@ -30,21 +30,13 @@ public class GamerLoginController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-<<<<<<< HEAD
-		//ȸ������ ��ư
-=======
+
 		//회원가입 버튼
->>>>>>> pr/3
 		btnMemberShip.setOnAction(e->{  handlerBtnMemberShipAction(e); });
 	}
 	/*
 	 * btnMemberShip by JM 19.10.16
-<<<<<<< HEAD
-	 * ->ȸ������ ��ư�� ������ ȸ������â�� ����!
-=======
 	 * ->회원가입 버튼을 누르면 회원가입창을 연다!
->>>>>>> pr/3
 	 *   
 	 */
 
@@ -55,11 +47,7 @@ public class GamerLoginController implements Initializable {
 			memberShip=FXMLLoader.load(getClass().getResource("/View/GamerMemberShip.fxml"));
 			stage=new Stage();
 			Scene scene=new Scene(memberShip);
-<<<<<<< HEAD
-			stage.setTitle("ȸ������");
-=======
 			stage.setTitle("회원가입");
->>>>>>> pr/3
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(btnMemberShip.getScene().getWindow());
 			stage.setResizable(false);
@@ -67,11 +55,7 @@ public class GamerLoginController implements Initializable {
 			stage.show();
 				
 		} catch (IOException e1) {
-<<<<<<< HEAD
-			AlertDisplay.alertDisplay(1, "����", "ȸ������â�� �������µ� �����߽��ϴ�.", e1.toString());
-=======
-				DBUtil.alertDisplay(1, "오류", "회원가입창을 가져오는데 실패했습니다.", e1.toString());
->>>>>>> pr/3
+			AlertDisplay.alertDisplay(1, "오류", "회원가입창을 가져오는데 실패했습니다.", e1.toString());
 		}
 		
 		
