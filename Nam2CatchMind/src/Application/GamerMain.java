@@ -19,7 +19,7 @@ public class GamerMain extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		Parent gameMainRoot=FXMLLoader.load(getClass().getResource("/View/GamerLogin.fxml"));
 		Scene scene=new Scene(gameMainRoot);
-		primaryStage.setTitle("∑Œ±◊¿Œ");
+		primaryStage.setTitle("Î°úÍ∑∏Ïù∏");
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
 		primaryStage.show();
