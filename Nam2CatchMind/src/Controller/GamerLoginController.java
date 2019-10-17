@@ -31,12 +31,12 @@ public class GamerLoginController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		//È¸¿ø°¡ÀÔ ¹öÆ°
+		//È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
 		btnMemberShip.setOnAction(e->{  handlerBtnMemberShipAction(e); });
 	}
 	/*
 	 * btnMemberShip by JM 19.10.16
-	 * ->È¸¿ø°¡ÀÔ ¹öÆ°À» ´©¸£¸é È¸¿ø°¡ÀÔÃ¢À» ¿¬´Ù!
+	 * ->È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¢ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!
 	 *   
 	 */
 
@@ -47,7 +47,7 @@ public class GamerLoginController implements Initializable {
 			memberShip=FXMLLoader.load(getClass().getResource("/View/GamerMemberShip.fxml"));
 			stage=new Stage();
 			Scene scene=new Scene(memberShip);
-			stage.setTitle("È¸¿ø°¡ÀÔ");
+			stage.setTitle("È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(btnMemberShip.getScene().getWindow());
 			stage.setResizable(false);
@@ -55,7 +55,7 @@ public class GamerLoginController implements Initializable {
 			stage.show();
 				
 		} catch (IOException e1) {
-				DBUtil.alertDisplay(1, "¿À·ù", "È¸¿ø°¡ÀÔÃ¢À» °¡Á®¿À´Âµ¥ ½ÇÆÐÇß½À´Ï´Ù.", e1.toString());
+			AlertDisplay.alertDisplay(1, "ï¿½ï¿½ï¿½ï¿½", "È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¢ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.", e1.toString());
 		}
 		
 		
