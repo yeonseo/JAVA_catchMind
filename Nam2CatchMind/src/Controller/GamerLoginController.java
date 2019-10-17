@@ -31,6 +31,8 @@ public class GamerLoginController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
+		
+		
 		//회원가입 버튼
 		btnMemberShip.setOnAction(e->{  handlerBtnMemberShipAction(e); });
 	}
