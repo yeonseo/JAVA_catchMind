@@ -43,12 +43,12 @@ public class ManagerLoginController implements Initializable {
 		
 	}
 
-	
-	
 
 	/* 1. btnLogin by Yan 2019.10.16
 	 * 
-	 * 10.17 
+	 * 10.17
+	 * 로그인 성공 - main tab 창 열고 서버 start exit가능하게 함.
+	 * 
 	 * 
 	 * */
 	public void handlerBtnLoginAction(ActionEvent event) {
@@ -62,10 +62,9 @@ public class ManagerLoginController implements Initializable {
 			Parent mainTabView = null;
 			Stage mainStage = null;
 			try {
-				
-				
-				
 				//mainView = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+				
+				System.out.println("ID : "+managerId.getText()+"  state : "+UserGameState.managerEnter);
 				mainTabView = FXMLLoader.load(getClass().getResource("/View/ManagerMainTap.fxml"));
 				Scene scene = new Scene(mainTabView);
 				mainStage = new Stage();
@@ -138,6 +137,7 @@ public class ManagerLoginController implements Initializable {
 	 * 
 	 * */
 	private void handlerBtnMemberShipAction(ActionEvent event) {
+		System.out.println("ID : "+managerId.getText()+"  state : "+UserGameState.managerEnter);
 		/* 회원가입 화면을 보여주는 이벤트처리
 		 * 학생관리MVC 에서 수정버튼 이벤트 참고해서 창 새로 열
 

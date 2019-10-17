@@ -29,59 +29,25 @@
                               </VBox>
                               <VBox alignment="CENTER_RIGHT" prefHeight="177.0" prefWidth="83.0" spacing="10.0">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                          <Label text="ID" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                          <Label text="권한" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                          <Label text="성별" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                          <Label text="상태" />
-                                       </children>
-                                    </HBox>
+                                    <Label text="ID" />
+                                    <Label text="권한" />
+                                    <Label text="상태" />
                                  </children>
                                  <padding>
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                  </padding>
                               </VBox>
-                              <VBox prefHeight="177.0" prefWidth="123.0" spacing="10.0">
+                              <VBox alignment="CENTER_LEFT" prefHeight="177.0" prefWidth="180.0" spacing="10.0">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                          <Label text="Label" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                          <Label text="Label" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                          <Label text="Label" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                          <Label text="Label" />
-                                       </children>
-                                    </HBox>
+                                    <Label text="Label" />
+                                    <Label text="Label" />
+                                    <Label text="Label" />
                                  </children>
                                  <padding>
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                  </padding>
                               </VBox>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="20.0">
+                              <VBox alignment="CENTER" prefHeight="177.0" prefWidth="126.0" spacing="20.0">
                                  <children>
                                     <Button mnemonicParsing="false" text="Button" />
                                     <Button mnemonicParsing="false" text="Button" />
@@ -98,7 +64,7 @@
                            </padding>
                            <children>
                               <TextArea fx:id="txtAreaServerLog" prefHeight="130.0" prefWidth="474.0" />
-                              <Button fx:id="btnServerAction" mnemonicParsing="false" text="Button" />
+                              <Button fx:id="btnServerAction" mnemonicParsing="false" text="Enter" />
                            </children>
                         </HBox>
                      </children>

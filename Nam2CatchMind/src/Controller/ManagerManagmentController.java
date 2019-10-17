@@ -30,6 +30,7 @@ public class ManagerManagmentController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		btnServerAction.setText("start");
 		btnServerAction.setOnAction(event ->{
 			if(btnServerAction.getText().equals("start")) {
 				startServer(IP, port);
