@@ -1,18 +1,18 @@
 package Model;
 
-public class GamerVO {
+public class UserVO {
 	private String UserID;
 	private String UserPassword;
 	private String UserGender;
 	private String Image;
 	/* 
 	 * 
-	 * gameUser¸¦ µî·ÏÇÏ±âÀ§ÇÑ°Í
+	 * gameUserï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½
 	 * 
 	 * 
 	 */
 	
-	public GamerVO(String userID, String userPassword, String userGender, String image) {
+	public UserVO(String userID, String userPassword, String userGender, String image) {
 		super();
 		UserID = userID;
 		UserPassword = userPassword;
@@ -20,7 +20,7 @@ public class GamerVO {
 		Image = image;
 	}
 
-	public GamerVO() {
+	public UserVO() {
 		super();
 	}
 	public String getUserID() {

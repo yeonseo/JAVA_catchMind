@@ -10,7 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Model.GamerVO;
+import Model.UserVO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,47 +39,47 @@ public class GamerMemberShipController implements Initializable {
 	@FXML RadioButton radioWoman;
 	@FXML RadioButton radioMan;
 	
-	private String selectFileName = ""; // ÀÌ¹ÌÁö ÆÄÀÏ¸í
-	private String localUrl = ""; // ÀÌ¹ÌÁö ÆÄÀÏ °æ·Î
+	private String selectFileName = ""; // ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½
+	private String localUrl = ""; // ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     private Image localImage;
 	private File selectedFile = null;
-	private File dirSave = new File("C://³²Ã¤Çö/java/java_img"); //ÀÌ¹ÌÁö ÀúÀåÇÒ Æú´õ¸¦ ¸Å°³º¯¼ö·Î ÆÄÀÏ °´Ã¼ »ý¼º
-	GamerVO gvo;
+	private File dirSave = new File("C://ï¿½ï¿½Ã¤ï¿½ï¿½/java/java_img"); //ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
+	UserVO gvo;
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		
 		btnRegister.setOnAction(e->{      handlerBtnRegisterAction(e);          });
-		btnImg.setOnAction(e->{  handlerBtnImgFileAction(e);    }); // ÀÌ¹ÌÁö ¼±ÅÃ
+		btnImg.setOnAction(e->{  handlerBtnImgFileAction(e);    }); // ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	}
 	public void handlerBtnRegisterAction(ActionEvent e) {
 		
 		
-		// ÀÌ¹ÌÁö ÀúÀå Æú´õ »ý¼º
+		// ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		File dirMake = new File(dirSave.getAbsolutePath());
 		if (!dirMake.exists()) {
 			dirMake.mkdir();
 		}
-		// ÀÌ¹ÌÁö ÆÄÀÏ ÀúÀå
+		// ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		String fileName = imageSave(selectedFile);
 		System.out.println("fileName:"+selectedFile);
-		gvo=new GamerVO(memberShipId.getText(), memberShipPwd.getText(),
-		          genderGrup.getSelectedToggle().getUserData().toString(),fileName); // DB¿¡ ¾ÆÀÌµð¿Í ÆÐ½º¿öµå ¼ºº° ÀÌ¹ÌÁö¸¦ º¸³¿!
+		gvo=new UserVO(memberShipId.getText(), memberShipPwd.getText(),
+		          genderGrup.getSelectedToggle().getUserData().toString(),fileName); // DBï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!
 		
 	}
 	/*
-	 *  >>>> ÀÌ¹ÌÁö ¼±ÅÃ
-	 *  ÀÌ¹ÌÁöÃòÁ®Å¬·¡½º·Î ÀÎÇØ selectedFile ÁÖ¼Ò°ªÀ» ¹Þ¾Æ¿À°í ±× ÁÖ¼Ò°ªÀ» localUrl·Î ÀúÀåÇÔ.
-	 *  localUrlÀ» ImageÀÇ ¸Å°³º¯¼ö¿¡ ³Ö¾îÁÖ°í ÀÌ¹ÌÁö°´Ã¼¸¦ ¸¸µë.
-	 *  imageView.setImage() ÇÔ¼ö¿¡ ±× ÀÌ¹ÌÁö °´Ã¼¸¦ ³Ö¾îÁÜ!
+	 *  >>>> ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	 *  ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ selectedFile ï¿½Ö¼Ò°ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö¼Ò°ï¿½ï¿½ï¿½ localUrlï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+	 *  localUrlï¿½ï¿½ Imageï¿½ï¿½ ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½Ö°ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+	 *  imageView.setImage() ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½!
 	 * public void handlerBtnImageFileAction(ActionEvent e) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image File", "*.png", "*.jpg", "*.gif"));
 			try {
 				selectedFile = fileChooser.showOpenDialog(btnOk.getScene().getWindow());
 				if (selectedFile != null) {
-					// ÀÌ¹ÌÁö ÆÄÀÏ °æ·Î
+					// ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 					localUrl = selectedFile.toURI().toURL().toString();
 				}
 			} catch (MalformedURLException e1) {
@@ -98,9 +98,9 @@ public class GamerMemberShipController implements Initializable {
 	}
 	
 	
-	>>> ÀÌ¹ÌÁö ÀúÀå
-	¼±ÅÃÇÑ ÀÌ¹ÌÁö ÆÄÀÏ(selecteFile) ·Î ¸Å°Ôº¯¼ö·Î  º¸³» ÀÌ¹ÌÁö¸¦ ÀúÀåÇÑ´Ù.
-	ÀÎÇ²½ºÆ®¸² ¾Æ¿ôÇ² ½ºÆ®¸²À¸·Î!!!
+	>>> ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(selecteFile) ï¿½ï¿½ ï¿½Å°Ôºï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+	ï¿½ï¿½Ç²ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Æ¿ï¿½Ç² ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!!!
 	public String imageSave(File file1) {
 		BufferedInputStream bis = null;
 		BufferedOutputStream bos = null;
@@ -108,12 +108,12 @@ public class GamerMemberShipController implements Initializable {
 		int data = -1;
 		String fileName = null;
 		try {
-			// ÀÌ¹ÌÁö ÆÄÀÏ¸í »ý¼º
+			// ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 			fileName = "student" + System.currentTimeMillis() + "_" + file1.getName();
 			bis = new BufferedInputStream(new FileInputStream(file1));
 			bos = new BufferedOutputStream(new FileOutputStream(dirSave.getAbsolutePath() + "\\" + fileName));
 
-			// ¼±ÅÃÇÑ ÀÌ¹ÌÁö ÆÄÀÏ InputStreamÀÇ ¸¶Áö¸·¿¡ ÀÌ¸£·¶À» °æ¿ì´Â -1
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ InputStreamï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -1
 			while ((data = bis.read()) != -1) {
 				bos.write(data);
 				bos.flush();
@@ -132,43 +132,43 @@ public class GamerMemberShipController implements Initializable {
 				e.getMessage();
 			}
 		}
-		return fileName; //<< String À¸·Î ¸®ÅÏ°ª  
+		return fileName; //<< String ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½  
 	}
 	 *
-	 *>> selctedFileÀ»  String fileName = imgeSave(selctedFile)·Î ³Ö¾îÁÖ°í file NameÀ»  GamerDAO ¸Å°³º¯¼ö·Î !!
+	 *>> selctedFileï¿½ï¿½  String fileName = imgeSave(selctedFile)ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½Ö°ï¿½ file Nameï¿½ï¿½  GamerDAO ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ !!
 	 * 
 	 */
-	//ÀÌ¹ÌÁö ÃÊ±âÈ­ ±âº»ÀÌ¹ÌÁö
+	//ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½âº»ï¿½Ì¹ï¿½ï¿½ï¿½
 	public void imageViewInit() {
 		localUrl = "/images/gamerBasicImg.jpg";
 		localImage = new Image(localUrl, false);
-		System.out.println("±âº»ÀÌ¹ÌÁö ¼ÂÆÃ : "+localImage);
+		System.out.println("ï¿½âº»ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : "+localImage);
 		gamerImg.setImage(localImage);
 		
 	}
-	//ÀÌ¹ÌÁö ¼±ÅÃ!
+	//ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!
 	 public void handlerBtnImgFileAction(ActionEvent e) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image File", "*.png", "*.jpg", "*.gif"));
 				try {
 					selectedFile = fileChooser.showOpenDialog(btnRegister.getScene().getWindow());
 					if (selectedFile != null) {
-						// ÀÌ¹ÌÁö ÆÄÀÏ °æ·Î
-						localUrl = selectedFile.toURI().toURL().toString(); //¼±ÅÃµÈ ÀÌ¹ÌÁö ÆÄÀÏ °æ·Î¸¦ ÀúÀå
+						// ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+						localUrl = selectedFile.toURI().toURL().toString(); //ï¿½ï¿½ï¿½Ãµï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 					}
 					if (selectedFile != null) {
-						selectFileName = selectedFile.getName();//¼±ÅÃµÈ ÀÌ¹ÌÁö ÀÌ¸§!! µµ ÀúÀåÇÔ.
+						selectFileName = selectedFile.getName();//ï¿½ï¿½ï¿½Ãµï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½!! ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 					}
 				} catch (MalformedURLException e1) {
-					DBUtil.alertDisplay(1, "»çÁø¿À·ù", "»çÁøÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù.", "¼±ÅÃµÈ ÀÌ¹ÌÁö ÆÄÀÏ°æ·Î ¿À·ù, ¼±ÅÃµÈ ÀÌ¹ÌÁö ÀÌ¸§ ÀúÀå ¿À·ù"+e1.toString());
+					AlertDisplay.alertDisplay(1, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.", "ï¿½ï¿½ï¿½Ãµï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½Ãµï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"+e1.toString());
 				}
-				localImage = new Image(localUrl, false); //ÀÌ¹ÌÁö °´Ã¼
+				localImage = new Image(localUrl, false); //ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
 				gamerImg.setImage(localImage);
 				gamerImg.setFitHeight(250);
 				gamerImg.setFitWidth(230);				
 		}
 		
-	 //ÀÌ¹ÌÁö ÀúÀå  
+	 //ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½  
 	 public String imageSave(File file) {
 			BufferedInputStream bis = null;
 			BufferedOutputStream bos = null;
@@ -176,12 +176,12 @@ public class GamerMemberShipController implements Initializable {
 			int data = -1;
 			String fileName = null;
 			try {
-				// ÀÌ¹ÌÁö ÆÄÀÏ¸í »ý¼º
+				// ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 				fileName = "gamerUser" + System.currentTimeMillis() + "_" + file.getName();
-				bis = new BufferedInputStream(new FileInputStream(file)); //¼±ÅÃÇÑ ÆÄÀÏ ÀÌ¹ÌÁö¸¦ ÀÐ¾î¿È.
-				bos = new BufferedOutputStream(new FileOutputStream(dirSave.getAbsolutePath() + "\\" + fileName)); //ÀÌ¹ÌÁö¸¦ º¸³¿!
+				bis = new BufferedInputStream(new FileInputStream(file)); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½.
+				bos = new BufferedOutputStream(new FileOutputStream(dirSave.getAbsolutePath() + "\\" + fileName)); //ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!
 
-				// ¼±ÅÃÇÑ ÀÌ¹ÌÁö ÆÄÀÏ InputStreamÀÇ ¸¶Áö¸·¿¡ ÀÌ¸£·¶À» °æ¿ì´Â -1
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ InputStreamï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -1
 				while ((data = bis.read()) != -1) {
 					bos.write(data);
 					bos.flush();
@@ -200,7 +200,7 @@ public class GamerMemberShipController implements Initializable {
 					e.getMessage();
 				}
 			}
-			return fileName; //<< String À¸·Î ¸®ÅÏ°ª  
+			return fileName; //<< String ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½  
 		}
 	
 
