@@ -7,7 +7,7 @@ public class GamerVO {
 	private String Image;
 	/* 
 	 * 
-	 * gameUser¸¦ µî·ÏÇÏ±âÀ§ÇÑ°Í
+	 * gameUserë¥¼ ë“±ë¡í•˜ê¸°ìœ„í•œê²ƒ
 	 * 
 	 * 
 	 */

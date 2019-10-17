@@ -7,15 +7,15 @@ import java.sql.SQLException;
 import Model.GamerVO;
 
 /*
- * È¸¿ø°¡ÀÔ¿¡ ´ëÇÑ ³»¿ë by JM 191016
+ * íšŒì›ê°€ì…ì— ëŒ€í•œ ë‚´ìš© by JM 191016
 	 * 
-	 * ¾ÆÀÌµğ,ºñ¹Ğ¹øÈ£,¼ºº°, ÀÌ¹ÌÁö °ªÀÌ µé¾î°¡¾ßÇÔ.
-	 * ´Ù StringÀ¸·Î
+	 * ì•„ì´ë””,ë¹„ë°€ë²ˆí˜¸,ì„±ë³„, ì´ë¯¸ì§€ ê°’ì´ ë“¤ì–´ê°€ì•¼í•¨.
+	 * ë‹¤ Stringìœ¼ë¡œ
 	 * 
-	 * 1.¾ÆÀÌµğ Áßº¹°Ë»ç
+	 * 1.ì•„ì´ë”” ì¤‘ë³µê²€ì‚¬
 	 * boolean checkUserID(String UserID )
 	 * sql=select * from UserInfo where UserId like ?
-	 * String userID=UserID; /// Ã£´Â ¾ÆÀÌµğ
+	 * String userID=UserID; /// ì°¾ëŠ” ì•„ì´ë””
 	 * con=DBUtil.getConnection();
 	pstmt=con.prepareStatement(sql);
 	pstmt.setString(1,UserID);
@@ -39,48 +39,45 @@ import Model.GamerVO;
 
 public class GamerDAO {
 		
-	//È¸¿ø µî·Ï
-	
+	//íšŒì› ë“±ë¡
 	  public int getGamerRegistration(GamerVO gamerVO) {
 		 String sql = "insert into UserInfo "+"(UserID,UserPassword,UserGender,UserImage)" + " values " + "(?,?,?,?)";
 		Connection con = null;
 		PreparedStatement pstmt = null; 
 		int count=0;
 		try {
-		// ¨é DBUtil Å¬·¡½ºÀÇ getConnection( )¸Ş¼­µå·Î µ¥ÀÌÅÍº£ÀÌ½º¿Í ¿¬°á
+		// â‘¢ DBUtil í´ë˜ìŠ¤ì˜ getConnection( )ë©”ì„œë“œë¡œ ë°ì´í„°ë² ì´ìŠ¤ì™€ ì—°ê²°
 		con = DBUtil.getConnection();
-		// ¨ê ÀÔ·Â¹ŞÀº È¸¿ø Á¤º¸¸¦ Ã³¸®ÇÏ±â À§ÇÏ¿© SQL¹®ÀåÀ» »ı¼º
+		// â‘£ ì…ë ¥ë°›ì€ íšŒì› ì •ë³´ë¥¼ ì²˜ë¦¬í•˜ê¸° ìœ„í•˜ì—¬ SQLë¬¸ì¥ì„ ìƒì„±
 		pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, gamerVO.getUserID());
 		pstmt.setString(2, gamerVO.getUserPassword());
 		pstmt.setString(3, gamerVO.getUserGender());
 		pstmt.setString(4, gamerVO.getImage());	
-		// ¨ë SQL¹®À» ¼öÇàÈÄ Ã³¸® °á°ú¸¦ ¾ò¾î¿È
-		count= pstmt.executeUpdate(); //Äõ¸®¹® ÁøÂ¥ ½ÇÇà!
+		// â‘¤ SQLë¬¸ì„ ìˆ˜í–‰í›„ ì²˜ë¦¬ ê²°ê³¼ë¥¼ ì–»ì–´ì˜´
+		count= pstmt.executeUpdate(); //ì¿¼ë¦¬ë¬¸ ì§„ì§œ ì‹¤í–‰! // ì•„ì´ë””,íŒ¨ìŠ¤ì›Œë“œ,ì´ë¯¸ì§€,ì„±ë³„ DBì €ì¥!
 		} catch (SQLException e) {
 			System.out.println("e=[" + e + "]");
-			DBUtil.alertDisplay(1, "Äõ¸®¹®(DB) ¿À·ù", "Äõ¸®¹®À» °¡Á®¿À´Âµ¥ ½ÇÆĞÇÔ",e.toString());
+			DBUtil.alertDisplay(1, "ì¿¼ë¦¬ë¬¸(DB) ì˜¤ë¥˜", "ì¿¼ë¦¬ë¬¸ì„ ê°€ì ¸ì˜¤ëŠ”ë° ì‹¤íŒ¨í•¨",e.toString());
 		} catch (Exception e) {
 			System.out.println("e=[" + e + "]");
-			DBUtil.alertDisplay(1, "DBµî·Ï ¿À·ù", "DBµî·ÏÇÏ´Âµ¥ ½ÇÆĞÇÔ",e.toString());
+			DBUtil.alertDisplay(1, "DBë“±ë¡ ì˜¤ë¥˜", "DBë“±ë¡í•˜ëŠ”ë° ì‹¤íŒ¨í•¨",e.toString());
 		} finally {
 			try {
-			// ¨ì µ¥ÀÌÅÍº£ÀÌ½º¿ÍÀÇ ¿¬°á¿¡ »ç¿ëµÇ¾ú´ø ¿ÀºêÁ§Æ®¸¦ ÇØÁ¦
+			// â‘¥ ë°ì´í„°ë² ì´ìŠ¤ì™€ì˜ ì—°ê²°ì— ì‚¬ìš©ë˜ì—ˆë˜ ì˜¤ë¸Œì íŠ¸ë¥¼ í•´ì œ
 			if (pstmt != null)
 			pstmt.close();
 			if (con != null)
 			con.close();
 			} catch (SQLException e) {
-				DBUtil.alertDisplay(1, "DB¿¬°áÇØÁ¦¿À·ù", "DB¿¬°áÇØÁ¦ ¿À·ù",e.toString());
+				DBUtil.alertDisplay(1, "DBì—°ê²°í•´ì œì˜¤ë¥˜", "DBì—°ê²°í•´ì œ ì˜¤ë¥˜",e.toString());
 			}
 		}
 		return count;
 	  }	
 
 	
-	
-	
-	
+
 	
 	
 }
