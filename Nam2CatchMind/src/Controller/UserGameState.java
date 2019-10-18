@@ -12,6 +12,8 @@ public class UserGameState {
 	 * */
 	public static String managerEnter = "managerMainTab";
 	public static String managerMemberShip = "managerMemberShip";
+	
+	public static String gamerEnter = "gamerWaitRoom";
 
 
 	// method for parsing opcode and passing parameters to correct handler

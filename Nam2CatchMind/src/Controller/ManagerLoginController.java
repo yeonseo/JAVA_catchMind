@@ -86,13 +86,13 @@ public class ManagerLoginController implements Initializable {
 				startClient(host, port);
 				AlertDisplay.alertDisplay(1, "서버에 접속합니다아아아", "데이터베이스 테스트도 통과하길!!!!", "plzzzzzz");
 				//아이디랑 상태 불러오는지 확인하기
-				AlertDisplay.alertDisplay(1, "값을 불러옴미까???", managerId.getText(), UserGameState.managerEnter);
+				AlertDisplay.alertDisplay(1, "값을 불러옴미까???", managerId.getText(), UserGameState.gamerEnter);
 				/***********상태 등록 테스트으으으으으*************/
-				usvo = new UserStateVO(managerId.getText(), UserGameState.managerEnter); // DB에 아이디와 상태를 DAO에게!
+				usvo = new UserStateVO(managerId.getText(), UserGameState.gamerEnter); // DB에 아이디와 상태를 DAO에게!
 				usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
 				int count = usdao.getUserStateRegistration(usvo); // DAO에 UserStateVO객체를 넣어줌!
 				if (count != 0) {
-					AlertDisplay.alertDisplay(3, "상태등록", "등록성공!", "상태 : "+UserGameState.managerEnter);
+					AlertDisplay.alertDisplay(3, "상태등록", "등록성공!", "상태 : "+UserGameState.gamerEnter);
 					Stage stage = (Stage) btnExit.getScene().getWindow();
 					stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
 				} else {
@@ -103,7 +103,7 @@ public class ManagerLoginController implements Initializable {
 				/***********상태 등록 테스트으으으으으*************/
 				
 				
-				System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.managerEnter);
+				System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.gamerEnter);
 				mainTabView = FXMLLoader.load(getClass().getResource("/View/ManagerMainTap.fxml"));
 				Scene scene = new Scene(mainTabView);
 				mainStage = new Stage();
