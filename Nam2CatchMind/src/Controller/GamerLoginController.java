@@ -38,7 +38,7 @@ public class GamerLoginController implements Initializable {
 
 	GamerDAO gdao;
 	UserVO uvo;
-	ArrayList<UserVO> list;
+	public static ArrayList<UserVO> list;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -64,35 +64,33 @@ public class GamerLoginController implements Initializable {
 			return;
 		}
 		if (list.size() != 0) {
-			
-			/***여기까지이이 추가해요!***/
-			Parent mainTabView = null;
-			Stage mainStage = null;
-
-			AlertDisplay.alertDisplay(5, "로그인 성공", "로그인 성공!", "로그인이 되었습니다.");
-
+			// 로그인 성공부분
+			String UserId = list.get(0).getUserID();
+			System.out.println(UserId);
+			// 유저 GameRoom FXML 로드
+			Parent gameRoomRoot = null;
+			Stage gameRoomStage = null;
+			AlertDisplay.alertDisplay(5, "로그인 성공", "로그인 성공!", "로그인 합니다.");
 			try {
 				int port = 9876;
-				String host = "localhost";
-				startClient(host, port);
-				AlertDisplay.alertDisplay(1, "서버에 접속합니다아아아", "데이터베이스 테스트도 통과하길!!!!", "plzzzzzz");
-
-				System.out.println("ID : " + gamerId.getText() + "  state : " + UserGameState.managerEnter);
-				mainTabView = FXMLLoader.load(getClass().getResource("/View/ManagerMainTap.fxml"));
-				Scene scene = new Scene(mainTabView);
-				mainStage = new Stage();
-				mainStage.setTitle("ManagerMaintain");
-				mainStage.setScene(scene);
-				mainStage.setResizable(true);
-
+	            String host = "localhost";
+	            startClient(host, port);
+	            AlertDisplay.alertDisplay(1, "서버에 접속합니다아아아", "데이터베이스 테스트도 통과하길!!!!", "plzzzzzz");
+	            System.out.println("ID : " + gamerId.getText() + "  state : " + UserGameState.managerEnter);
+	            
+				gameRoomRoot = FXMLLoader.load(getClass().getResource("/View/GameRoom.fxml"));
+				Scene scene = new Scene(gameRoomRoot);
+				gameRoomStage = new Stage();
+				gameRoomStage.setTitle("게임대기방");
+				gameRoomStage.setScene(scene);
+				gameRoomStage.setResizable(false);
 				((Stage) btnExit.getScene().getWindow()).close();
-
-				mainStage.show();
-
-			} catch (IOException e1) {
-				AlertDisplay.alertDisplay(1, "Main Window Error", "Main Window Load False", e1.toString());
+				gameRoomStage.show();
+				AlertDisplay.alertDisplay(5, "로그인 성공", "로그인 성공!", "로그인이 되었습니다.");
+			} catch (IOException e2) {
+				AlertDisplay.alertDisplay(1, "로그인 실패", "게임방을 불러오는데 실패했습니다.", e2.toString());
 			}
-			/***여기까지이이 추가해요!***/
+
 		} else {
 			AlertDisplay.alertDisplay(1, "로그인 실패", "아이디 및 패스워드 찾을 수 없음.", "아이디와 패스워드를 다시 확인해주세요!");
 		}
@@ -124,21 +122,7 @@ public class GamerLoginController implements Initializable {
 
 	}
 
-	private void handlerBtnExitAction(ActionEvent event) {
-		System.out.println("out");
-		Platform.exit();
-		/*
-		 * 
-		 * 데이터 베이스에서 삭제 -> 메세지 나가면 스레드 종료 -> 서버에서 확인 FXML 종료가 이루어져야 함
-		 * 
-		 */
-
-	}
-
-	
-	
-	
-	/***여길추가해요!***/
+	// 소켓
 	Socket socket;
 
 	public void startClient(String IP, int port) {
@@ -174,7 +158,6 @@ public class GamerLoginController implements Initializable {
 				if (length == -1)
 					throw new IOException();
 				String message = new String(buffer, 0, length, "UTF-8");
-
 			} catch (Exception e) {
 				stopClient();
 				break;
@@ -210,6 +193,5 @@ public class GamerLoginController implements Initializable {
 		}
 
 	}
-	
-	/***여기까지이이 추가해요!***/
+
 }
