@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Application.ServerMain;
+import Model.UserStateVO;
 import Model.UserVO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -42,12 +43,14 @@ public class ManagerLoginController implements Initializable {
 
 	ServerClient serverClient;
 	ServerMain serverMain;
-	
+
 	GamerDAO gdao;
 	UserVO uvo;
+	
+	UserStateVO usvo;
+	UserStateDAO usdao;
 	ArrayList<UserVO> list;
-	
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnLogin.setOnAction((event) -> {
@@ -61,6 +64,7 @@ public class ManagerLoginController implements Initializable {
 		});
 
 	}
+
 	// 로그인확인
 	public void handlerBtnLoginAction(ActionEvent e) {
 		gdao = new GamerDAO();
@@ -71,8 +75,6 @@ public class ManagerLoginController implements Initializable {
 			return;
 		}
 		if (list.size() != 0) {
-			
-			/***여기까지이이 추가해요!***/
 			Parent mainTabView = null;
 			Stage mainStage = null;
 
@@ -83,7 +85,24 @@ public class ManagerLoginController implements Initializable {
 				String host = "localhost";
 				startClient(host, port);
 				AlertDisplay.alertDisplay(1, "서버에 접속합니다아아아", "데이터베이스 테스트도 통과하길!!!!", "plzzzzzz");
-
+				//아이디랑 상태 불러오는지 확인하기
+				AlertDisplay.alertDisplay(1, "값을 불러옴미까???", managerId.getText(), UserGameState.managerEnter);
+				/***********상태 등록 테스트으으으으으*************/
+				usvo = new UserStateVO(managerId.getText(), UserGameState.managerEnter); // DB에 아이디와 상태를 DAO에게!
+				usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
+				int count = usdao.getUserStateRegistration(usvo); // DAO에 UserStateVO객체를 넣어줌!
+				if (count != 0) {
+					AlertDisplay.alertDisplay(3, "상태등록", "등록성공!", "상태 : "+UserGameState.managerEnter);
+					Stage stage = (Stage) btnExit.getScene().getWindow();
+					stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
+				} else {
+					throw new Exception("데이터베이스 등록실패!");
+				}
+//				getUserStateRegistration();
+				
+				/***********상태 등록 테스트으으으으으*************/
+				
+				
 				System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.managerEnter);
 				mainTabView = FXMLLoader.load(getClass().getResource("/View/ManagerMainTap.fxml"));
 				Scene scene = new Scene(mainTabView);
@@ -98,11 +117,14 @@ public class ManagerLoginController implements Initializable {
 
 			} catch (IOException e1) {
 				AlertDisplay.alertDisplay(1, "Main Window Error", "Main Window Load False", e1.toString());
+			} catch (Exception e1) {
+				AlertDisplay.alertDisplay(1, "DB연결해제오류", "DB연결해제 오류", e1.toString());
 			}
-			/***여기까지이이 추가해요!***/
-		} else {
-			AlertDisplay.alertDisplay(1, "로그인 실패", "아이디 및 패스워드 찾을 수 없음.", "아이디와 패스워드를 다시 확인해주세요!");
-		}
+		}else
+
+	{
+		AlertDisplay.alertDisplay(1, "로그인 실패", "아이디 및 패스워드 찾을 수 없음.", "아이디와 패스워드를 다시 확인해주세요!");
+	}
 
 	}
 
@@ -141,7 +163,6 @@ public class ManagerLoginController implements Initializable {
 		 */
 
 	}
-
 
 //		/* 
 //		 * DB UserInfo 데이터와 확인하기
@@ -350,7 +371,7 @@ public class ManagerLoginController implements Initializable {
 //		 */
 //
 //	}
-	
+
 	Socket socket;
 
 	public void startClient(String IP, int port) {
@@ -386,7 +407,7 @@ public class ManagerLoginController implements Initializable {
 				if (length == -1)
 					throw new IOException();
 				String message = new String(buffer, 0, length, "UTF-8");
-				
+
 			} catch (Exception e) {
 				stopClient();
 				break;

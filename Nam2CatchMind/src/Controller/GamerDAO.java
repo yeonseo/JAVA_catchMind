@@ -12,7 +12,7 @@ public class GamerDAO {
 
 	
 	/*
-	 * 메니저 등
+	 * 메니저 등록하기
 	 * 
 	 * */
 	public int getManagerRegistration(UserVO userVO) {
@@ -53,7 +53,6 @@ public class GamerDAO {
 	}
 	
 	/*
-	 * 
 	 * 게임 회원 등록
 	 * */
 
@@ -167,6 +166,5 @@ public class GamerDAO {
 
 		return list;
 	}
-
 
 }
