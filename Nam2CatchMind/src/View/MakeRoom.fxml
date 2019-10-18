@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: #F2F2EB;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Controller.MakeRoomController">
+   <children>
+      <Label layoutX="144.0" layoutY="33.0" text="게임 방 만들기" />
+      <Label layoutX="43.0" layoutY="84.0" text="방이름" />
+      <TextField fx:id="txtMakeRoomName" layoutX="99.0" layoutY="79.0" prefHeight="29.0" prefWidth="246.0" />
+      <Button fx:id="btnMakeRoom" layoutX="129.0" layoutY="138.0" mnemonicParsing="false" text="만들기" />
+      <Button fx:id="btnCancel" layoutX="210.0" layoutY="138.0" mnemonicParsing="false" text="취소" />
+   </children>
+</AnchorPane>

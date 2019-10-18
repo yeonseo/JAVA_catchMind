@@ -12,8 +12,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagerManagmentController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagerMainTabController">
   <tabs>
     <Tab text="관리 메인">
          <content>
@@ -40,9 +41,9 @@
                               </VBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="149.0" spacing="10.0">
                                  <children>
-                                    <Label text="Label" />
-                                    <Label text="Label" />
-                                    <Label text="Label" />
+                                    <Label fx:id="lblMainUserId" text="Label" />
+                                    <Label fx:id="lblMainAccess" text="Label" />
+                                    <Label fx:id="lblMainState" text="Label" />
                                  </children>
                                  <padding>
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -50,8 +51,8 @@
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="177.0" prefWidth="126.0" spacing="10.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="75.0" text="접속시간" />
-                                    <Button mnemonicParsing="false" prefWidth="75.0" text="수정" />
+                                    <Button fx:id="btnMainLoginTimeChart" mnemonicParsing="false" prefHeight="27.0" prefWidth="75.0" text="접속시간" />
+                                    <Button fx:id="btnMainTabUserEdit" mnemonicParsing="false" prefWidth="75.0" text="수정" />
                                  </children>
                               </VBox>
                            </children>
@@ -64,21 +65,25 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                            <children>
-                              <TableView prefHeight="130.0" prefWidth="364.0">
+                              <TableView fx:id="tableView" prefHeight="130.0" prefWidth="364.0">
                                 <columns>
                                   <TableColumn prefWidth="79.0" text="방이름" />
                                   <TableColumn prefWidth="93.0" text="방장" />
                                     <TableColumn minWidth="0.0" prefWidth="97.0" text="참여자" />
-                                    <TableColumn minWidth="0.0" prefWidth="72.5" text="상태" />
+                                    <TableColumn minWidth="0.0" prefWidth="82.0" text="상태" />
                                 </columns>
                               </TableView>
-                              <TextArea fx:id="txtAreaServerLog" prefHeight="131.0" prefWidth="81.0" />
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                                  <children>
-                                    <Label fx:id="lblManagerTabServerState" text="서버 상태" />
-                                    <Button fx:id="btnServerOpen" mnemonicParsing="false" prefHeight="27.0" prefWidth="75.0" text="서버열기" />
-                                    <Button fx:id="btnServerClose" mnemonicParsing="false" prefWidth="75.0" text="서버 닫기" />
-                                    <Button fx:id="btnManagerMainTabExit" mnemonicParsing="false" onAction="#handlerBtnManagerMainTabExitAction" prefWidth="75.0" text="나가기" />
+                                    <Label text="서버 상태">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lblMainTabServerState" text="서버 상태" />
+                                    <Button fx:id="btnMainServerOpen" mnemonicParsing="false" prefHeight="27.0" prefWidth="75.0" text="서버열기" />
+                                    <Button fx:id="btnMainServerClose" mnemonicParsing="false" prefWidth="75.0" text="서버 닫기" />
+                                    <Button fx:id="btnManagerMainTabExit" mnemonicParsing="false" prefWidth="75.0" text="나가기" />
                                  </children>
                                  <HBox.margin>
                                     <Insets />
@@ -87,6 +92,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </VBox>
+                              <TextArea fx:id="txtMainAreaServerLog" prefHeight="178.0" prefWidth="112.0" />
                            </children>
                         </HBox>
                      </children>

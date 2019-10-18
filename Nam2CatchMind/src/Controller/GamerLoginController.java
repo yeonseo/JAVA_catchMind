@@ -45,8 +45,9 @@ public class GamerLoginController implements Initializable {
 	UserStateDAO usdao;
 	/******추가******/
 	
-	public static ArrayList<UserVO> list;
-
+	public  ArrayList<UserVO> list;
+	public static String UserId;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -72,7 +73,7 @@ public class GamerLoginController implements Initializable {
 		}
 		if (list.size() != 0) {
 			// 로그인 성공부분
-			String UserId = list.get(0).getUserID();
+			UserId = list.get(0).getUserID();
 			System.out.println(UserId);
 			// 유저 GameRoom FXML 로드
 			Parent gameRoomRoot = null;
@@ -132,8 +133,6 @@ public class GamerLoginController implements Initializable {
 	 * btnMemberShip by JM 19.10.16 ->회원가입 버튼을 누르면 회원가입창을 연다!
 	 * 
 	 */
-	
-	
 	// 회원가입창
 	public void handlerBtnMemberShipAction(ActionEvent e) {
 		Parent memberShip;
@@ -157,6 +156,7 @@ public class GamerLoginController implements Initializable {
 
 	// 소켓
 	Socket socket;
+
 	public void startClient(String IP, int port) {
 		Thread thread = new Thread() {
 			public void run() {
@@ -227,3 +227,5 @@ public class GamerLoginController implements Initializable {
 	}
 
 }
+
+
