@@ -115,7 +115,7 @@ public class ManagerLoginController implements Initializable {
 		Parent memberShip;
 		Stage stage;
 		try {
-			memberShip = FXMLLoader.load(getClass().getResource("/View/GamerMemberShip.fxml"));
+			memberShip = FXMLLoader.load(getClass().getResource("/View/ManagerMemberShip.fxml"));
 			stage = new Stage();
 			Scene scene = new Scene(memberShip);
 			stage.setTitle("회원가입");
