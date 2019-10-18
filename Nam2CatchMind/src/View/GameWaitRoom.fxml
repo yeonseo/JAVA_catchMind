@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="800.0" prefWidth="950.0" style="-fx-background-color: #F2F2EB;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.GameRoomController">
+<AnchorPane prefHeight="800.0" prefWidth="950.0" style="-fx-background-color: #F2F2EB;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.GameWaitRoomController">
    <children>
       <Label layoutX="423.0" layoutY="33.0" style="-fx-font-size: 30;" text="대기방" textFill="#736270" />
       <HBox alignment="CENTER_LEFT" layoutX="36.0" layoutY="26.0" prefHeight="49.0" prefWidth="317.0" spacing="10.0">

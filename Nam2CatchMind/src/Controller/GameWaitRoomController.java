@@ -21,7 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class GameRoomController implements Initializable {
+public class GameWaitRoomController implements Initializable {
      
    @FXML Label gameStartTime;
    @FXML Label gameUserId;
