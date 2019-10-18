@@ -154,8 +154,8 @@ public class GamerLoginController implements Initializable {
 	}
 
 	// 소켓
+	
 	Socket socket;
-
 	public void startClient(String IP, int port) {
 		Thread thread = new Thread() {
 			public void run() {
