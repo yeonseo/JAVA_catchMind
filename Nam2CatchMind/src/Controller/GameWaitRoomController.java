@@ -53,11 +53,12 @@ public class GameWaitRoomController implements Initializable {
 	@FXML
 	TextField txtInputMessage;
 
-	GamerLoginController gamerLoginController;
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-/**********추가***********/
+		
+		
+		
+		/**********추가시작***********/
 		btnUserSend.setText("Send");
 		btnUserSend.setDisable(false);
 
@@ -71,7 +72,11 @@ public class GameWaitRoomController implements Initializable {
 			txtChatArea.appendText("[Chat Start] \n");
 		});
 
-		/**********추가***********/
+		/**********추가끝***********/
+		
+		
+		
+		
 		
 		// 나의 전적
 		btnMyRecord.setOnAction(e -> {
@@ -87,19 +92,26 @@ public class GameWaitRoomController implements Initializable {
 		
 		
 		
-		/**********추가***********/
+		/**********추가시작***********/
 		btnGameRoomExit.setOnAction(e -> {
 			
 			Platform.runLater(() -> {
 				txtChatArea.appendText("[Chat Out] \n");
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				txtInputMessage.setDisable(true);
+				btnUserSend.setDisable(true);
+				stopClient();
+				Platform.exit();
 			});
-			txtInputMessage.setDisable(true);
-			btnUserSend.setDisable(true);
-			stopClient();
-			Platform.exit();
+			
 		});
 		
-		/**********추가***********/
+		/**********추가끝***********/
 		
 
 	}
@@ -124,6 +136,8 @@ public class GameWaitRoomController implements Initializable {
 
 	}
 
+	
+	/**********추가시작***********/
 	Socket socket;
 
 	public void startClient(String IP, int port) {
@@ -205,4 +219,5 @@ public class GameWaitRoomController implements Initializable {
 
 	}
 
+	/**********추가끝***********/
 }

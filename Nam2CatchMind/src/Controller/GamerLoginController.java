@@ -132,6 +132,8 @@ public class GamerLoginController implements Initializable {
 	 * btnMemberShip by JM 19.10.16 ->회원가입 버튼을 누르면 회원가입창을 연다!
 	 * 
 	 */
+	
+	
 	// 회원가입창
 	public void handlerBtnMemberShipAction(ActionEvent e) {
 		Parent memberShip;
@@ -154,7 +156,6 @@ public class GamerLoginController implements Initializable {
 	}
 
 	// 소켓
-	
 	Socket socket;
 	public void startClient(String IP, int port) {
 		Thread thread = new Thread() {

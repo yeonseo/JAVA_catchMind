@@ -128,7 +128,6 @@ public class ServerMain extends Application {
 
 		String IP = "localhost";
 		int port = 9876;
-//		int port = 3333;
 
 		toggleButton.setOnAction(event -> {
 			if (toggleButton.getText().equals("start")) {
@@ -159,92 +158,6 @@ public class ServerMain extends Application {
 		launch(args);
 	}
 
-//
-//	/*
-//	 * 이것을 실행시켜야 서버가 시작 됨. 메니저 모드는 없에고 관리자 모드만 실행하기..
-//	 * 
-//	 */
-//	private ServerSocket serverSocket;
-//	private static UserGameState userGameState;
-//
-//	// constructor
-//	public ServerMain(int port) throws IOException {
-//		serverSocket = new ServerSocket(port);
-//	}
-//
-//	// thread manager
-//	public void acceptClients() throws IOException {
-//		// for keeping track of client number
-//		int clientNumber = 0;
-//
-//		// create an open-ended thread pool
-//		ExecutorService threadPool = Executors.newCachedThreadPool();
-//		try {
-//			while (!Thread.currentThread().isInterrupted()) {
-//				// wait for client to connect
-//				AlertDisplay.log("Up and listening on port " + serverSocket.getLocalPort() + "...");
-//				Socket clientSocket = serverSocket.accept();
-//				AlertDisplay.log("Just connected to " + clientSocket.getRemoteSocketAddress());
-//
-//				// create new client handler and fork to background thread
-//				threadPool.submit(new ClientHandler(clientSocket, clientNumber++));
-//			}
-//		} finally {
-//			// shut down thread pool when done
-//			threadPool.shutdown();
-//		}
-//	}
-//
-//	// method for killing the server
-//	public void stop() throws IOException {
-//		serverSocket.close();
-//	}
-//
-//	// this class handles each client connection
-//	private static class ClientHandler implements Runnable {
-//		private final Socket clientSocket;
-//		private int clientNumber;
-//
-//		// constructor
-//		public ClientHandler(Socket clientSocket, int clientNumber) {
-//			this.clientSocket = clientSocket;
-//			this.clientNumber = clientNumber;
-//			AlertDisplay.log("New connection with client #" + clientNumber + " at " + clientSocket);
-//		}
-//
-//		// main brains
-//		public void run() {
-//			String clientResponse;
-//
-//			try {
-//				// initialize input and output streams
-//				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-//
-//				// send greeting to client
-//				out.println("Welcome, you are client #" + clientNumber + ".");
-//
-//				while (true) {
-//					// read and parse client response
-//					clientResponse = in.readLine();
-//					userGameState.parseOpcode(clientResponse, out);
-//				}
-//			} catch (IOException e) {
-//				AlertDisplay.log("Error handling client #" + clientNumber + ": " + e);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			} finally {
-//				try {
-//					clientSocket.close();
-//				} catch (IOException e) {
-//					AlertDisplay.log("Error closing client connection");
-//				}
-//			}
-//			AlertDisplay.log("Connection with client #" + clientNumber + " has been terminated.");
-//		}
-//
-//	}
-//
 ////		// method for authenticating client
 ////		public static Boolean authenticate(String username, String pass1) throws Exception {
 ////			if (MD5(pass1).equals(sqlDB.getPassDB(username))) {
@@ -286,16 +199,5 @@ public class ServerMain extends Application {
 ////			}
 ////			return null;
 ////		}
-//
-//	// parse command line port number and start server
-//	public static void main(String[] args) {
-//		int port = 9876;
-//		try {
-//			new server(port).acceptClients();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
 
 }
