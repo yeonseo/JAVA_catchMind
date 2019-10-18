@@ -3,6 +3,7 @@ package Model;
 public class UserVO {
    private String UserID;
    private String UserPassword;
+   private int UserAccess;
    private String UserGender;
    private String Image;
    
@@ -46,6 +47,23 @@ public class UserVO {
       UserGender = userGender;
       Image = image;
    }
+   
+   
+   /* 
+    * 
+    * managerUser를 등록하기위한것
+    * 
+    * 
+    */
+   
+   public UserVO(String userID, String userPassword, int userAccess, String userGender, String image) {
+	   super();
+	   UserID = userID;
+	   UserPassword = userPassword;
+	   UserAccess = userAccess;
+	   UserGender = userGender;
+	   Image = image;
+   }
 
 
 
@@ -83,5 +101,15 @@ public class UserVO {
    public void setImage(String image) {
       Image = image;
    }
+
+	public int getUserAccess() {
+		return UserAccess;
+	}
+	
+	public void setUserAccess(int userAccess) {
+		UserAccess = userAccess;
+	}
+   
+   
 
 }

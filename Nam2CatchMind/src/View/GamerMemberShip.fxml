@@ -51,11 +51,12 @@
             <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="319.0" spacing="30.0">
                <children>
                   <Label text="성            별" />
-                  <RadioButton fx:id="radioMan" mnemonicParsing="false" text="남">
+                  <RadioButton fx:id="radioMan" mnemonicParsing="false" selected="true" text="남">
                      <toggleGroup>
-                        <ToggleGroup fx:id="genderGrup" />
-                     </toggleGroup></RadioButton>
-                  <RadioButton fx:id="radioWoman" mnemonicParsing="false" text="여" toggleGroup="$genderGrup" />
+                        <ToggleGroup fx:id="toggleGrup" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="radioWoman" mnemonicParsing="false" text="여" toggleGroup="$toggleGrup" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="42.0" prefWidth="414.0" spacing="20.0">

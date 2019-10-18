@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="800.0" prefWidth="950.0" style="-fx-background-color: #F2F2EB;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.GameRoomController">
+   <children>
+      <Label layoutX="423.0" layoutY="33.0" style="-fx-font-size: 30;" text="대기방" textFill="#736270" />
+      <HBox alignment="CENTER_LEFT" layoutX="36.0" layoutY="26.0" prefHeight="49.0" prefWidth="317.0" spacing="10.0">
+         <children>
+            <Label text="게임시작:" textFill="#736270" />
+            <Label fx:id="gameStartTime" text="시간" textFill="#736270" />
+            <Label text="총 게임시간:" textFill="#736270" />
+            <Label fx:id="AllPlayTime" text="시간" textFill="#736270" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutX="36.0" layoutY="90.0" prefHeight="29.0" prefWidth="121.0">
+         <children>
+            <Button fx:id="btnMakeRoom" mnemonicParsing="false" text="방 만들기" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" layoutX="675.0" layoutY="36.0" prefHeight="29.0" prefWidth="228.0" spacing="15.0">
+         <children>
+            <Button fx:id="btnMyRecord" mnemonicParsing="false" text="나의 전적" />
+            <Button fx:id="btnMyInfoChange" mnemonicParsing="false" text="내정보 수정" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="602.0" layoutY="87.0" prefHeight="36.0" prefWidth="310.0">
+         <children>
+            <Label style="-fx-font-size: 18;" text="랭킹순위" textFill="#736270" />
+         </children>
+      </HBox>
+      <AnchorPane layoutX="37.0" layoutY="132.0" prefHeight="600.0" prefWidth="876.0">
+         <children>
+            <TableView fx:id="roomInfo" layoutY="-1.0" prefHeight="304.0" prefWidth="540.0" />
+            <TextArea fx:id="txtChatArea" layoutY="324.0" prefHeight="264.0" prefWidth="540.0" />
+            <TableView fx:id="userRanking" layoutX="566.0" layoutY="-1.0" prefHeight="636.0" prefWidth="310.0" />
+            <HBox alignment="BOTTOM_CENTER" layoutY="606.0" prefHeight="29.0" prefWidth="540.0" spacing="10.0">
+               <children>
+                  <TextField fx:id="txtInputMessage" prefHeight="29.0" prefWidth="416.0" />
+                  <Button fx:id="btnUserSend" mnemonicParsing="false" prefHeight="29.0" prefWidth="127.0" text="보 내 기" />
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
