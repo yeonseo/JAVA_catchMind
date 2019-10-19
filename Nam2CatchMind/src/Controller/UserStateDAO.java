@@ -2,7 +2,10 @@ package Controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import Model.ManagerManagmentVO;
 
 public class UserStateDAO {
 	
@@ -86,6 +89,38 @@ public class UserStateDAO {
 			}
 		}
 		return count;
+	}
+
+	public boolean checkRoomName(ManagerManagmentVO mmVO) {
+		boolean check = false;
+		String sql="select * from UserGameRoom where RoomName like ?";
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		
+		ResultSet rs=null; 
+		String roomName=mmVO.getRoomName();	
+		try {
+			con=DBUtil.getConnection();
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1,roomName);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				check=true;
+				String txtRoomName=rs.getString(1).toString();
+				System.out.println(txtRoomName);
+			}
+		} catch (Exception e) {
+			AlertDisplay.alertDisplay(1, "아이디중복검사 오류", "아이디 중복 오류입니다.", e.toString());
+		}finally {
+			try {
+				if(rs !=null) rs.close();
+				if(pstmt !=null)  pstmt.close(); 
+				if(con != null) con.close();  		
+			}catch(Exception e) {
+				AlertDisplay.alertDisplay(1, "아이디중복검사 오류", "아이디 중복창 닫기 실패", e.toString());
+			}		
+		}	
+		return check;
 	}
 	
 	

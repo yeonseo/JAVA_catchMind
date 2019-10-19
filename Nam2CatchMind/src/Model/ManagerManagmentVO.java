@@ -52,6 +52,15 @@ public class ManagerManagmentVO {
 		GameRunOrWaitState = gameRunOrWaitState;
 	}
 
+	/*
+	 * 방만들기 관련된 함수 YS 191019
+	 * 
+	 * 방 만들기 시도시, 비교하기 위함
+	 * */
+	public ManagerManagmentVO(String roomName) {
+		RoomName = roomName;
+	}
+
 	public String getUserID() {
 		return UserID;
 	}
