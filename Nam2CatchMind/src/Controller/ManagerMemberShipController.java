@@ -83,9 +83,9 @@ public class ManagerMemberShipController implements Initializable {
 	// 회원가입
 	public void handlerBtnRegisterAction(ActionEvent e) {
 		try {
-			// 등록 누르는 순간 다시 체크!
+			// 등록 누르는 순간 다시 체크!  || localUrl.equals("") 이거 생략함!!
 			if (memberShipPwd.getText().equals("") || memberShipPwd.getText().equals("")
-					|| memberShipCheckPwd.getText().equals("") || localUrl.equals("")) {
+					|| memberShipCheckPwd.getText().equals("")) {
 				AlertDisplay.alertDisplay(1, "미입력 확인", "미입력된 부분이있습니다!", "아이디 와 패스워드 이미지 다시 확인해주세요!");
 				return;
 			}
@@ -103,13 +103,13 @@ public class ManagerMemberShipController implements Initializable {
 				System.out.println("fileName:" + selectedFile);
 				System.out.println(membershipId.getText().toString() + memberShipPwd.getText().toString());
 				System.out.println(fileName);
-				uvo = new UserVO(membershipId.getText(), memberShipPwd.getText(), null, fileName); // DB에 아이디와 패스워드 성별
+				uvo = new UserVO(membershipId.getText(), memberShipPwd.getText(), 1, null, fileName); // DB에 아이디와 패스워드 성별
 																									// 이미지를 DAO에게!
 
 				gdao = new GamerDAO(); // DAO의 객체를 부름
-				int count = gdao.getGamerRegistration(uvo); // DAO에 gvo객체를 넣어줌!
+				int count = gdao.getManagerRegistration(uvo); // DAO에 gvo객체를 넣어줌!
 				if (count != 0) {
-					AlertDisplay.alertDisplay(3, "등록", "등록성공!", "회원가입이 되었습니다!^^즐거운 플레이되세요!^^");
+					AlertDisplay.alertDisplay(3, "등록", "등록성공!", "관리자로 등록 신청 되었습니다.^^ 결과를 기다려주세요!");
 					Stage stage = (Stage) btnExit.getScene().getWindow();
 					stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
 				} else {
