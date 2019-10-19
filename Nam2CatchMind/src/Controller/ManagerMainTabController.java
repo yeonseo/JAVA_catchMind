@@ -26,11 +26,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 
 public class ManagerMainTabController implements Initializable {
 	/*
 	 * 관리 메인텝
 	 * */
+	
+	@FXML
+	private ImageView imgMainUser;
 	@FXML
 	private Label lblMainUserId;
 	@FXML
@@ -57,14 +61,15 @@ public class ManagerMainTabController implements Initializable {
 	private Tab tabManager;
 	
 //	
-//	ObservableList<UserVO> userData;
+//	ObservableList<GameRoomVO> userData;
 //
-//	private ObservableList<UserVO> selectUser;
+//	private ObservableList<GameRoomVO> selectUser;
 //	private int selectUserIndex;
 	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		handlerUserInfoShow();
 //		tableViewSetting();
 		
 	}
@@ -102,6 +107,13 @@ public class ManagerMainTabController implements Initializable {
 //
 //	}// end of tableViewSetting
 
+
+	private void handlerUserInfoShow() {
+//		imgMainUser
+		lblMainUserId.setText(ManagerLoginController.UserId);
+//		lblMainAccess
+//		lblMainState
+	}
 
 	private void handlerBtnManagerMainTabExitAction() {
 		Platform.exit();

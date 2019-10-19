@@ -13,6 +13,7 @@ import Model.UserStateVO;
 import Model.UserVO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,6 +26,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -56,7 +59,7 @@ public class ManagerLoginController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnLogin.setOnAction((event) -> {
-			handlerBtnLoginAction(event);
+			handlerBtnLoginAction();
 		});
 		btnMemberShip.setOnAction((event) -> {
 			handlerBtnMemberShipAction(event);
@@ -64,11 +67,25 @@ public class ManagerLoginController implements Initializable {
 		btnExit.setOnAction((event) -> {
 			handlerBtnExitAction(event);
 		});
+		
+		managerPwd.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent ke) {
+				
+				KeyCode keyCode = ke.getCode();
+
+				if (keyCode.equals(KeyCode.ENTER)) {
+					handlerBtnLoginAction();
+				}
+			}
+
+		}); // end of btnLogin
 
 	}
 
 	// 로그인확인
-	public void handlerBtnLoginAction(ActionEvent e) {
+	public void handlerBtnLoginAction() {
 		gdao = new GamerDAO();
 		list = gdao.getLoginCheck(managerId.getText(), managerPwd.getText());
 		System.out.println("로그인 리스트 사이즈 : " + list.size());
@@ -89,9 +106,7 @@ public class ManagerLoginController implements Initializable {
 	            String host = "localhost";
 	            startClient(host, port);
 	            
-	            /*******수정시작*******/
-	            
-	            usvo = new UserStateVO(managerId.getText(), UserGameState.gamerEnter); // DB에 아이디와 상태를 DAO에게!
+	            usvo = new UserStateVO(managerId.getText(), UserGameState.managerOnline); // DB에 아이디와 상태를 DAO에게!
 				usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
 				int count = usdao.getUserStateRegistration(usvo.getUserID(), usvo.getThreadState()); // DAO에 UserStateVO객체를 넣어줌!
 				if (count != 0) {
@@ -100,8 +115,6 @@ public class ManagerLoginController implements Initializable {
 				} else {
 					throw new Exception("데이터베이스 등록실패!");
 				}
-				
-				/*******수정끝*******/
 	            System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.gamerEnter);
 	            
 	            
@@ -113,7 +126,9 @@ public class ManagerLoginController implements Initializable {
 				gameRoomStage.setResizable(false);
 				((Stage) btnExit.getScene().getWindow()).close();
 				gameRoomStage.show();
-				AlertDisplay.alertDisplay(5, "로그인 성공", "로그인 성공!", "로그인이 되었습니다.");
+				AlertDisplay.alertDisplay(5, "로그인 성공"
+						, usvo.getUserID()+" 관리자님, 안녕하세요."
+						, "접속시간은 "+"입니다.");
 			} catch (IOException e2) {
 				AlertDisplay.alertDisplay(1, "로그인 실패", "메니저 메인을 불러오는데 실패했습니다.", e2.toString());
 			} 
