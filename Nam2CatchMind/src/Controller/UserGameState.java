@@ -20,7 +20,6 @@ public class UserGameState {
 	public static String gamerGameStart = "gamerGameStartRoom";
 	public static String gamerOffline= "gamerOffline";
 	
-
 	
 	
 	

@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import Model.MakeRoomVO;
 import Model.UserRankingVO;
 import Model.UserVO;
 import javafx.application.Platform;
@@ -40,7 +39,7 @@ public class GameWaitRoomController implements Initializable {
 	@FXML Button btnMyInfoChange;
 	@FXML Button btnUserSend;
 	@FXML Button btnGameRoomExit;
-	@FXML TableView<MakeRoomVO> roomInfo;
+//	@FXML TableView<UserGameRoomVO> roomInfo;
 	@FXML TableView<UserRankingVO> userRanking;
 	@FXML TextArea txtChatArea;
 	@FXML TextField txtInputMessage;
