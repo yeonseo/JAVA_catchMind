@@ -52,6 +52,7 @@ public class ManagerLoginController implements Initializable {
 	
 	UserStateVO usvo;
 	UserStateDAO usdao;
+	ManagerManagmentDAO mmdao;
 	
 	public  ArrayList<UserVO> list;
 	public static String UserId;
@@ -113,7 +114,14 @@ public class ManagerLoginController implements Initializable {
 					Stage stage = (Stage) btnExit.getScene().getWindow();
 					stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
 				} else {
-					throw new Exception("데이터베이스 등록실패!");
+					throw new Exception("상태 데이터베이스 등록실패!");
+				}
+				count = mmdao.setEnterTime(usvo.getUserID());
+				if (count != 0) {
+					Stage stage = (Stage) btnExit.getScene().getWindow();
+					stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
+				} else {
+					throw new Exception("로그인시간 데이터베이스 등록실패!");
 				}
 	            System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.gamerEnter);
 	            

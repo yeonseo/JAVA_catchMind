@@ -1,19 +1,11 @@
 package Controller;
 
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.text.ParsePosition;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Vector;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import Model.ManagerManagmentVO;
-import Model.UserVO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,15 +17,15 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class ManagerMainTabController implements Initializable {
 	/*
 	 * 관리 메인텝
-	 * */
-	
+	 */
+
 	@FXML
 	private ImageView imgMainUser;
 	@FXML
@@ -60,21 +52,25 @@ public class ManagerMainTabController implements Initializable {
 	private Button btnManagerMainTabExit;
 	@FXML
 	private Tab tabManager;
-	
-	
+
 	ObservableList<ManagerManagmentVO> userData;
+
+	ManagerManagmentVO mmVO;
+	ManagerManagmentDAO mmdao;
+
+	String selectedUserID;
+	String selectedUserAccess;
+	String selectedUserState;
 
 	private ObservableList<ManagerManagmentVO> selectUser;
 	private int selectUserIndex;
-	
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		handlerUserInfoShow();
 		tableViewSetting();
-		
-		
-		btnManagerMainTabExit.setOnAction(e ->{
+
+		btnManagerMainTabExit.setOnAction(e -> {
 			handlerBtnManagerMainTabExitAction();
 		});
 	}
@@ -86,7 +82,7 @@ public class ManagerMainTabController implements Initializable {
 		tableView.setEditable(false); // tableView 수정 x
 
 		DecimalFormat format = new DecimalFormat("###");
-		
+
 		TableColumn RoomName = new TableColumn("RoomName");
 		RoomName.setMaxWidth(30);
 		RoomName.setStyle("-fx-alignment: CENTER;");
@@ -112,17 +108,36 @@ public class ManagerMainTabController implements Initializable {
 
 	}// end of tableViewSetting
 
+	/*
+	 * 모든 유저들의 정보를 가지고 옴 total list 참고함
+	 */
+	private void handlerUserInfoGet() {
+
+		ArrayList<ManagerManagmentVO> list = null;
+		ManagerManagmentVO mmVO = null;
+		ManagerManagmentDAO mmdao = new ManagerManagmentDAO();
+		list = mmdao.getUserTotalData();
+
+		if (list == null) {
+			AlertDisplay.alertDisplay(1, "DB List Null Point", "Null Point", "Error");
+			return;
+		}
+
+		for (int i = 0; i < list.size(); i++) {
+			mmVO = list.get(i);
+			userData.add(mmVO);
+		}
+	}
 
 	private void handlerUserInfoShow() {
 //		imgMainUser
-		lblMainUserId.setText(ManagerLoginController.UserId);
-//		lblMainAccess
-//		lblMainState
+		lblMainUserId.setText(selectedUserID);
+		lblMainAccess.setText(selectedUserAccess);
+		lblMainState.setText(selectedUserState);
 	}
 
 	private void handlerBtnManagerMainTabExitAction() {
 		Platform.exit();
 	}
-	
 
 }

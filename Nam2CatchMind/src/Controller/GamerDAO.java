@@ -196,45 +196,4 @@ public class GamerDAO {
 		return userImg;
 	}
 	
-////
-////public static Boolean changePass(String username, String pass) throws ClassNotFoundException, SQLException {
-////	return sqlDB.changePassDB(username, pass);
-////}
-//	public static Boolean changePassDB(String user, String pass) {
-//	Connection con = null;
-//	
-//	try {
-//		// connect to sql database
-//		Class.forName(JDBC_DRIVER);
-//		con = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-//	
-//		// prepare query
-//		String query = "UPDATE USERS SET PASS = MD5(?) WHERE USERNAME = ?";
-//		PreparedStatement statement = con.prepareStatement(query);
-//		statement.setString(1, pass);
-//		statement.setString(2, user);
-//	
-//		// execute query
-//		statement.executeUpdate();
-//	
-//		// close resources
-//		statement.close();
-//		con.close();
-//		return true;
-//	} catch(SQLException se) {
-//		se.printStackTrace();
-//		return false;
-//	} catch(Exception e) {
-//		e.printStackTrace();
-//		return false;
-//	} finally {
-//		// close resources
-//		try {
-//			if (con != null) con.close();
-//		} catch(SQLException se) {
-//			se.printStackTrace();
-//		}
-//	}
-//}
-	
 }

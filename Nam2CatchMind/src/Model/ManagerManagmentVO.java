@@ -12,6 +12,9 @@ public class ManagerManagmentVO {
 	private String UserGender;
 	private String Image;
 	private String ThreadState; //게임방을 구분하기위한 상태
+	private String EnterTime; //로그인시 체크
+	private String OutTime; //로그아웃시 체크
+	private String ConnetedTime; //시간계산 음... 안쓸수도
 	
 	
 	/*
@@ -61,9 +64,26 @@ public class ManagerManagmentVO {
 		RoomName = roomName;
 	}
 
+	/*
+	 * 메니저 메인텝에서 관리자의 프로필을 나타낼때 사용함
+	 * id, 패스워드, 권한, 이미지, 상태, 접속시간
+	 * */
+	public ManagerManagmentVO(String userID, String userPassword, int userAccess, String image, String threadState,
+			String enterTime, String outTime) {
+		UserID = userID;
+		UserPassword = userPassword;
+		UserAccess = userAccess;
+		Image = image;
+		ThreadState = threadState;
+		EnterTime = enterTime;
+		OutTime = outTime;
+	}
+
 	public String getUserID() {
 		return UserID;
 	}
+
+	
 
 	public void setUserID(String userID) {
 		UserID = userID;
