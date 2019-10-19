@@ -12,6 +12,7 @@ import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import Model.ManagerManagmentVO;
 import Model.UserVO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -46,7 +47,7 @@ public class ManagerMainTabController implements Initializable {
 	@FXML
 	private Button btnMainTabUserEdit;
 	@FXML
-	private TableView<UserVO> tableView;
+	private TableView<ManagerManagmentVO> tableView;
 	@FXML
 	private Label lblMainTabServerState;
 	@FXML
@@ -60,52 +61,56 @@ public class ManagerMainTabController implements Initializable {
 	@FXML
 	private Tab tabManager;
 	
-//	
-//	ObservableList<GameRoomVO> userData;
-//
-//	private ObservableList<GameRoomVO> selectUser;
-//	private int selectUserIndex;
+	
+	ObservableList<ManagerManagmentVO> userData;
+
+	private ObservableList<ManagerManagmentVO> selectUser;
+	private int selectUserIndex;
 	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		handlerUserInfoShow();
-//		tableViewSetting();
+		tableViewSetting();
 		
+		
+		btnManagerMainTabExit.setOnAction(e ->{
+			handlerBtnManagerMainTabExitAction();
+		});
 	}
 
-//	private void tableViewSetting() {
-//
-//		userData = FXCollections.observableArrayList();
-//
-//		tableView.setEditable(false); // tableView 수정 x
-//
-//		DecimalFormat format = new DecimalFormat("###");
-//		
-//		TableColumn RoomName = new TableColumn("RoomName");
-//		RoomName.setMaxWidth(30);
-//		RoomName.setStyle("-fx-alignment: CENTER;");
-//		RoomName.setCellValueFactory(new PropertyValueFactory("RoomName"));
-//
-//		TableColumn Gamer1 = new TableColumn("Gamer1");
-//		Gamer1.setMaxWidth(43);
-//		Gamer1.setStyle("-fx-alignment: CENTER;");
-//		Gamer1.setCellValueFactory(new PropertyValueFactory("Gamer1"));
-//
-//		TableColumn Gamer2 = new TableColumn("Gamer2");
-//		Gamer2.setMaxWidth(43);
-//		Gamer2.setStyle("-fx-alignment: CENTER;");
-//		Gamer2.setCellValueFactory(new PropertyValueFactory("Gamer2"));
-//
-//		TableColumn ThreadState = new TableColumn("ThreadState");
-//		ThreadState.setMaxWidth(43);
-//		ThreadState.setStyle("-fx-alignment: CENTER;");
-//		ThreadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
-//
-//		tableView.setItems(userData);
-//		tableView.getColumns().addAll(RoomName, Gamer1, Gamer2, ThreadState);
-//
-//	}// end of tableViewSetting
+	private void tableViewSetting() {
+
+		userData = FXCollections.observableArrayList();
+
+		tableView.setEditable(false); // tableView 수정 x
+
+		DecimalFormat format = new DecimalFormat("###");
+		
+		TableColumn RoomName = new TableColumn("RoomName");
+		RoomName.setMaxWidth(30);
+		RoomName.setStyle("-fx-alignment: CENTER;");
+		RoomName.setCellValueFactory(new PropertyValueFactory("RoomName"));
+
+		TableColumn Gamer1 = new TableColumn("Gamer1");
+		Gamer1.setMaxWidth(43);
+		Gamer1.setStyle("-fx-alignment: CENTER;");
+		Gamer1.setCellValueFactory(new PropertyValueFactory("Gamer1"));
+
+		TableColumn Gamer2 = new TableColumn("Gamer2");
+		Gamer2.setMaxWidth(43);
+		Gamer2.setStyle("-fx-alignment: CENTER;");
+		Gamer2.setCellValueFactory(new PropertyValueFactory("Gamer2"));
+
+		TableColumn ThreadState = new TableColumn("게임상태State");
+		ThreadState.setMaxWidth(43);
+		ThreadState.setStyle("-fx-alignment: CENTER;");
+		ThreadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
+
+		tableView.setItems(userData);
+		tableView.getColumns().addAll(RoomName, Gamer1, Gamer2, ThreadState);
+
+	}// end of tableViewSetting
 
 
 	private void handlerUserInfoShow() {
