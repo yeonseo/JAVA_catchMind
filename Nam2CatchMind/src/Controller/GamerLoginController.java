@@ -83,14 +83,14 @@ public class GamerLoginController implements Initializable {
 				int port = 9876;
 	            String host = "localhost";
 	            startClient(host, port);
-	            AlertDisplay.alertDisplay(1, "서버에 접속합니다아아아", "데이터베이스 테스트도 통과하길!!!!", "plzzzzzz");
+//	            AlertDisplay.alertDisplay(1, "서버에 접속합니다아아아", "데이터베이스 테스트도 통과하길!!!!", "plzzzzzz");
 	            
-	            
-	            /***********상태 등록 테스트으으으으으*************/
-	            AlertDisplay.alertDisplay(1, "값을 불러옴미까???", gamerId.getText(), UserGameState.gamerEnter);
+	            /***********상태 등록 테스트으으으으으************/
 	            usvo = new UserStateVO(gamerId.getText(), UserGameState.gamerEnter); // DB에 아이디와 상태를 DAO에게!
 				usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
-				int count = usdao.getUserStateRegistration(usvo); // DAO에 UserStateVO객체를 넣어줌!
+				int count = usdao.getUserStateRegistration
+						(usvo.getUserID()
+						,usvo.getThreadState()); // DAO에 UserID, UserThreadState를 넣어줌!
 				if (count != 0) {
 					AlertDisplay.alertDisplay(3, "상태등록", "등록성공!", "상태 : "+UserGameState.gamerEnter);
 					Stage stage = (Stage) btnExit.getScene().getWindow();
@@ -100,8 +100,6 @@ public class GamerLoginController implements Initializable {
 				}
 	            
 	            System.out.println("ID : " + gamerId.getText() + "  state : " + UserGameState.gamerEnter);
-	            
-	            
 	            /***********상태 등록 테스트으으으으으*************/
 	            
 	            gameRoomRoot = FXMLLoader.load(getClass().getResource("/View/GameWaitRoom.fxml"));

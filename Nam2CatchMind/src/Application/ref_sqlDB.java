@@ -3,7 +3,7 @@ package Application;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class sqlDB {
+public class ref_sqlDB {
 	
 	/*
 	 * 

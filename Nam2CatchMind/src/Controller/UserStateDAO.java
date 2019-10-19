@@ -15,7 +15,7 @@ public class UserStateDAO {
 	 * 유저들의 상태 등록
 	 * 
 	 * */
-	public int getUserStateRegistration(UserStateVO usVO) {
+	public int getUserStateRegistration(String userID, String userThreadState) {
 		System.out.println("상태 등록");
 		String sql = "insert into UserGameState (UserID,ThreadState) values (?,?) ON DUPLICATE KEY UPDATE UserID=?, ThreadState=?";
 		Connection con = null;
@@ -26,10 +26,10 @@ public class UserStateDAO {
 			con = DBUtil.getConnection();
 			// ④ 입력받은 회원 정보를 처리하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, usVO.getUserID());
-			pstmt.setString(2, usVO.getThreadState());
-			pstmt.setString(3, usVO.getUserID());
-			pstmt.setString(4, usVO.getThreadState());
+			pstmt.setString(1, userID);
+			pstmt.setString(2, userThreadState);
+			pstmt.setString(3, userID);
+			pstmt.setString(4, userThreadState);
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			count = pstmt.executeUpdate(); // 쿼리문 진짜 실행! // 아이디,패스워드,이미지,성별 DB저장!
 		} catch (SQLException e) {

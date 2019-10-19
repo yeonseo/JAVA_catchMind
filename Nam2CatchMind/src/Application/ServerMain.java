@@ -158,46 +158,4 @@ public class ServerMain extends Application {
 		launch(args);
 	}
 
-////		// method for authenticating client
-////		public static Boolean authenticate(String username, String pass1) throws Exception {
-////			if (MD5(pass1).equals(sqlDB.getPassDB(username))) {
-////				return true;
-////			}
-////			return false;
-////		}
-////
-////		// method for setting online field of authenticated user to 1
-////		public static void setOnline(String username) throws Exception {
-////			sqlDB.setOnline(username, true);
-////		}
-////
-////		// method for setting online field of authenticated user to offline
-////		public static void setOffline(String username) throws Exception {
-////			sqlDB.setOnline(username, false);
-////		}
-////
-////		// method for signing up a new user
-////		public static Boolean addNewUser(String name, String surname, String username, String password) throws ClassNotFoundException, SQLException {
-////			return sqlDB.addUserDB(username, name, surname, password);
-////		}
-////
-////		public static Boolean changePass(String username, String pass) throws ClassNotFoundException, SQLException {
-////			return sqlDB.changePassDB(username, pass);
-////		}
-////
-////		// Create MD5 hash for password authentication
-////		public static String MD5(String md5) {
-////			try {
-////				java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-////				byte[] array = md.digest(md5.getBytes());
-////				StringBuffer sb = new StringBuffer();
-////				for (int i = 0; i < array.length; ++i) {
-////					sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
-////				}
-////				return sb.toString();
-////			} catch (java.security.NoSuchAlgorithmException e) {
-////			}
-////			return null;
-////		}
-
 }
