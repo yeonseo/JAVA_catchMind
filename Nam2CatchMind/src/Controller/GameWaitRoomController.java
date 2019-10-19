@@ -53,12 +53,7 @@ public class GameWaitRoomController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		
-		
-			
-		
 		/**********추가시작***********/
-//		btnUserSend.setText("Send");
 		btnUserSend.setDisable(false);
 
 		btnUserSend.setOnAction(event -> {
