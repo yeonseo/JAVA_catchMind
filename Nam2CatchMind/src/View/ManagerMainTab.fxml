@@ -14,16 +14,34 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagerMainTabController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="721.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagerMainTabController">
   <tabs>
     <Tab text="관리 메인">
          <content>
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="366.0" prefWidth="600.0">
+                  <VBox alignment="CENTER" prefHeight="517.0" prefWidth="721.0">
                      <children>
-                        <HBox prefHeight="150.0" prefWidth="200.0">
+                        <HBox prefHeight="250.0" prefWidth="721.0">
                            <children>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                                 <children>
+                                    <Label text="서버 상태">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lblMainTabServerState" text="서버 상태" />
+                                    <Button fx:id="btnMainServerOpen" mnemonicParsing="false" prefHeight="27.0" prefWidth="75.0" text="서버열기" />
+                                    <Button fx:id="btnMainServerClose" mnemonicParsing="false" prefWidth="75.0" text="서버 닫기" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
                               <VBox alignment="CENTER" prefHeight="150.0" prefWidth="39.0">
                                  <children>
                                     <ImageView fx:id="imgMainUser" fitHeight="150.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true" />
@@ -53,6 +71,7 @@
                                  <children>
                                     <Button fx:id="btnMainLoginTimeChart" mnemonicParsing="false" prefHeight="27.0" prefWidth="75.0" text="접속시간" />
                                     <Button fx:id="btnMainTabUserEdit" mnemonicParsing="false" prefWidth="75.0" text="수정" />
+                                    <Button fx:id="btnManagerMainTabExit" mnemonicParsing="false" prefWidth="75.0" text="나가기" />
                                  </children>
                               </VBox>
                            </children>
@@ -60,39 +79,13 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="150.0" prefWidth="200.0" spacing="20.0">
+                        <HBox alignment="CENTER" prefHeight="373.0" prefWidth="721.0" spacing="20.0">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                            <children>
-                              <TableView fx:id="tableView" prefHeight="130.0" prefWidth="364.0">
-                                <columns>
-                                  <TableColumn prefWidth="79.0" text="방이름" />
-                                  <TableColumn prefWidth="93.0" text="방장" />
-                                    <TableColumn minWidth="0.0" prefWidth="97.0" text="참여자" />
-                                    <TableColumn minWidth="0.0" prefWidth="82.0" text="상태" />
-                                </columns>
-                              </TableView>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
-                                 <children>
-                                    <Label text="서버 상태">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="lblMainTabServerState" text="서버 상태" />
-                                    <Button fx:id="btnMainServerOpen" mnemonicParsing="false" prefHeight="27.0" prefWidth="75.0" text="서버열기" />
-                                    <Button fx:id="btnMainServerClose" mnemonicParsing="false" prefWidth="75.0" text="서버 닫기" />
-                                    <Button fx:id="btnManagerMainTabExit" mnemonicParsing="false" prefWidth="75.0" text="나가기" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </VBox>
-                              <TextArea fx:id="txtMainAreaServerLog" prefHeight="178.0" prefWidth="112.0" />
+                              <TableView fx:id="tableView" prefHeight="226.0" prefWidth="474.0" />
+                              <TextArea fx:id="txtMainAreaServerLog" prefHeight="226.0" prefWidth="265.0" />
                            </children>
                         </HBox>
                      </children>

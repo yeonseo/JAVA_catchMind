@@ -79,68 +79,64 @@ public class ManagerManagmentVO {
 		OutTime = outTime;
 	}
 
+	
+	/*
+	 * 관리 메인 텝에서 방이름 테이블 뷰를 위한 생성자
+	 * */
+	public ManagerManagmentVO(String roomName, String threadState, String makeRoomUserID, String enterRoomUserID,
+			String gameRunOrWaitState) {
+		RoomName = roomName;
+		ThreadState = threadState;
+		MakeRoomUserID = makeRoomUserID;
+		EnterRoomUserID = enterRoomUserID;
+		GameRunOrWaitState = gameRunOrWaitState;
+	}
+
 	public String getUserID() {
 		return UserID;
 	}
-
-	
-
 	public void setUserID(String userID) {
 		UserID = userID;
 	}
-
 	public String getUserPassword() {
 		return UserPassword;
 	}
-
 	public void setUserPassword(String userPassword) {
 		UserPassword = userPassword;
 	}
-
 	public int getUserAccess() {
 		return UserAccess;
 	}
-
 	public void setUserAccess(int userAccess) {
 		UserAccess = userAccess;
 	}
-
 	public String getUserGender() {
 		return UserGender;
 	}
-
 	public void setUserGender(String userGender) {
 		UserGender = userGender;
 	}
-
 	public String getImage() {
 		return Image;
 	}
-
 	public void setImage(String image) {
 		Image = image;
 	}
-
 	public String getThreadState() {
 		return ThreadState;
 	}
-
 	public void setThreadState(String threadState) {
 		ThreadState = threadState;
 	}
-
 	public String getRoomName() {
 		return RoomName;
 	}
-
 	public void setRoomName(String roomName) {
 		RoomName = roomName;
 	}
-
 	public String getManagerID() {
 		return ManagerID;
 	}
-
 	public void setManagerID(String managerID) {
 		ManagerID = managerID;
 	}

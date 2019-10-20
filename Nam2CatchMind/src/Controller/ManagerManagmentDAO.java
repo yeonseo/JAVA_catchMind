@@ -95,6 +95,56 @@ public class ManagerManagmentDAO {
 	
 	
 	/*
+	 * 관리자의 정보를 가지고 오기위한 함수
+	 * 
+	 * String userID, String userPassword, int userAccess, 
+	 * String image, String threadState,String enterTime, String outTime
+	 * 
+	 * */
+	public ArrayList<ManagerManagmentVO> getUserTotalData() {
+		ArrayList<ManagerManagmentVO> list = new ArrayList<ManagerManagmentVO>();
+		String dml = "SELECT ui.UserID, ui.UserPassword, ui.UserAccess, "
+				+ "ui.UserImage, ugs.ThreadState, ut.EnterTime, ut.OutTime " + 
+				"FROM UserInfo AS ui " + 
+				"left join UserGameState as ugs on ugs.UserID = ui.UserID " + 
+				"left join UserTime as ut on ugs.UserID = ut.UserID;";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		// 디비에서 가져온 데이터를 임시로 저장하고 있는 공간
+		ManagerManagmentVO mmVO = null;
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				//String userID, String userPassword, int userAccess, 
+				//String image, String threadState,String enterTime, String outTime
+				mmVO = new ManagerManagmentVO(rs.getString(1), rs.getString(2), rs.getInt(3),
+						rs.getString(4), rs.getString(5), rs.getString(6),rs.getString(7));
+				list.add(mmVO);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return list;
+	}
+	
+	/*
 	 * 관리자 관리탭에서 유저들만 조회하기 위한 명령어
 	 * */
 	public ArrayList<ManagerManagmentVO> getGameUserView(String userID) {
@@ -135,51 +185,48 @@ public class ManagerManagmentDAO {
 		return list;
 	}
 
-	
 	/*
-	 * 관리자의 정보를 가지고 오기위한 함수
-	 * 
-	 * String userID, String userPassword, int userAccess, 
-	 * String image, String threadState,String enterTime, String outTime
-	 * 
+	 * 관리자 메인텝에서 테이블뷰에 쓰일 함
 	 * */
-	public ArrayList<ManagerManagmentVO> getUserTotalData() {
-		ArrayList<ManagerManagmentVO> list = new ArrayList<ManagerManagmentVO>();
-		String dml = "select * from schoolchild";
+		public ArrayList<ManagerManagmentVO> getTableViewRoomInfoTotal() {
+			ArrayList<ManagerManagmentVO> list = new ArrayList<ManagerManagmentVO>();
+			String dml = "select RoomName, ThreadState, Gamer1, Gamer2, GameRunOrWaitState from Nam2CatchMind.UserGameRoom";
 
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		// 디비에서 가져온 데이터를 임시로 저장하고 있는 공간
-		ManagerManagmentVO mmVO = null;
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			// 디비에서 가져온 데이터를 임시로 저장하고 있는 공간
+			ManagerManagmentVO mmVO = null;
 
-		try {
-			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement(dml);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				//String userID, String userPassword, int userAccess, 
-				//String image, String threadState,String enterTime, String outTime
-				mmVO = new ManagerManagmentVO(rs.getString(1), rs.getString(2), rs.getInt(3),
-						rs.getString(4), rs.getString(5), rs.getString(6),rs.getString(7));
-				list.add(mmVO);
-			}
-		} catch (SQLException se) {
-			System.out.println(se);
-		} catch (Exception e) {
-			System.out.println(e);
-		} finally {
 			try {
-				if (rs != null)
-					rs.close();
-				if (pstmt != null)
-					pstmt.close();
-				if (con != null)
-					con.close();
+				con = DBUtil.getConnection();
+				pstmt = con.prepareStatement(dml);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					mmVO = new ManagerManagmentVO(
+							rs.getString(1), rs.getString(2), rs.getString(3),
+							rs.getString(4), rs.getString(5));
+					list.add(mmVO);
+				}
 			} catch (SQLException se) {
+				System.out.println(se);
+			} catch (Exception e) {
+				System.out.println(e);
+			} finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (pstmt != null)
+						pstmt.close();
+					if (con != null)
+						con.close();
+				} catch (SQLException se) {
+				}
 			}
+			return list;
 		}
-		return list;
-	}
+
+	
+	
 	
 }

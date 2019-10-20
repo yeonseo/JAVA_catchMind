@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -29,6 +30,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -68,6 +70,7 @@ public class ManagerMainTabController implements Initializable {
 	private Tab tabManager;
 
 	ObservableList<ManagerManagmentVO> userData;
+	ObservableList<ManagerManagmentVO> userRoomData;
 
 	ManagerManagmentVO mmVO;
 	ManagerManagmentDAO mmdao;
@@ -106,6 +109,8 @@ public class ManagerMainTabController implements Initializable {
 			txtMainAreaServerLog.appendText("관리자님, 어서오세요. *^ㅁ^* \n");
 		});
 
+		tableViewSetting();
+		totalList();
 		
 		/*
 		 * 관리자 메인 텝
@@ -154,38 +159,176 @@ public class ManagerMainTabController implements Initializable {
 		});
 	}
 
+	/*
+	 * 메인 방이름 테이블뷰
+	 * 방이름, 방장, 참여자, 상태
+	 * */
 	private void tableViewSetting() {
+		userRoomData = FXCollections.observableArrayList();
 
-		userData = FXCollections.observableArrayList();
+		tableView.setEditable(true); // tableView 수정 x
+//
+//		DecimalFormat format = new DecimalFormat("###");
+//		// 점수 입력시 길이 제한 이벤트 처리
+//		txtKo.setTextFormatter(new TextFormatter<>(event -> {
+//
+//			if (event.getControlNewText().isEmpty()) {
+//				return event;
+//			}
+//
+//			ParsePosition parsePosition = new ParsePosition(0);
+//			Object object = format.parse(event.getControlNewText(), parsePosition);
+//
+//			if (object == null || parsePosition.getIndex() < event.getControlNewText().length()
+//					|| event.getControlNewText().length() == 4) {
+//
+//				return null;
+//
+//			} else {
+//
+//				return event;
+//
+//			}
+//		}));
+//
+//		txtEng.setTextFormatter(new TextFormatter<>(event -> {
+//			if (event.getControlNewText().isEmpty()) {
+//				return event;
+//			}
+//			ParsePosition parsePosition = new ParsePosition(0);
+//			Object object = format.parse(event.getControlNewText(), parsePosition);
+//			if (object == null || parsePosition.getIndex() < event.getControlNewText().length()
+//					|| event.getControlNewText().length() == 4) {
+//				return null;
+//			} else {
+//				return event;
+//
+//			}
+//		}));
+//
+//		txtMath.setTextFormatter(new TextFormatter<>(event -> {
+//			if (event.getControlNewText().isEmpty()) {
+//				return event;
+//			}
+//			ParsePosition parsePosition = new ParsePosition(0);
+//			Object object = format.parse(event.getControlNewText(), parsePosition);
+//			if (object == null || parsePosition.getIndex() < event.getControlNewText().length()
+//					|| event.getControlNewText().length() == 4) {
+//				return null;
+//			} else {
+//				return event;
+//			}
+//		}));
+//
+//		txtSic.setTextFormatter(new TextFormatter<>(event -> {
+//			if (event.getControlNewText().isEmpty()) {
+//				return event;
+//			}
+//			ParsePosition parsePosition = new ParsePosition(0);
+//			Object object = format.parse(event.getControlNewText(), parsePosition);
+//			if (object == null || parsePosition.getIndex() < event.getControlNewText().length()
+//					|| event.getControlNewText().length() == 4) {
+//				return null;
+//			} else {
+//				return event;
+//			}
+//		}));
+//
+//		txtSoc.setTextFormatter(new TextFormatter<>(event -> {
+//			if (event.getControlNewText().isEmpty()) {
+//				return event;
+//			}
+//			ParsePosition parsePosition = new ParsePosition(0);
+//			Object object = format.parse(event.getControlNewText(), parsePosition);
+//
+//			if (object == null || parsePosition.getIndex() < event.getControlNewText().length()
+//					|| event.getControlNewText().length() == 4) {
+//				return null;
+//			} else {
+//				return event;
+//			}
+//		}));
+//
+//		txtMusic.setTextFormatter(new TextFormatter<>(event -> {
+//			if (event.getControlNewText().isEmpty()) {
+//				return event;
+//			}
+//			ParsePosition parsePosition = new ParsePosition(0);
+//			Object object = format.parse(event.getControlNewText(), parsePosition);
+//			if (object == null || parsePosition.getIndex() < event.getControlNewText().length()
+//					|| event.getControlNewText().length() == 4) {
+//				return null;
+//			} else {
+//				return event;
+//			}
+//		}));
 
-		tableView.setEditable(false); // tableView 수정 x
+		TableColumn roomName = new TableColumn("RoomName");
+		roomName.setMaxWidth(60);
+		roomName.setStyle("-fx-alignment: CENTER;");
+		roomName.setCellValueFactory(new PropertyValueFactory("RoomName"));
 
-		DecimalFormat format = new DecimalFormat("###");
+		TableColumn threadState = new TableColumn("ThreadState");
+		threadState.setMaxWidth(60);
+		threadState.setStyle("-fx-alignment: CENTER;");
+		threadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
+		
+		TableColumn makeRoomUserID = new TableColumn("MakeRoomUserID");
+		makeRoomUserID.setMaxWidth(60);
+		makeRoomUserID.setStyle("-fx-alignment: CENTER;");
+		makeRoomUserID.setCellValueFactory(new PropertyValueFactory("MakeRoomUserID"));
 
-		TableColumn RoomName = new TableColumn("RoomName");
-		RoomName.setMaxWidth(30);
-		RoomName.setStyle("-fx-alignment: CENTER;");
-		RoomName.setCellValueFactory(new PropertyValueFactory("RoomName"));
+		TableColumn enterRoomUserID = new TableColumn("EnterRoomUserID");
+		enterRoomUserID.setMaxWidth(60);
+		enterRoomUserID.setStyle("-fx-alignment: CENTER;");
+		enterRoomUserID.setCellValueFactory(new PropertyValueFactory("EnterRoomUserID"));
 
-		TableColumn Gamer1 = new TableColumn("Gamer1");
-		Gamer1.setMaxWidth(43);
-		Gamer1.setStyle("-fx-alignment: CENTER;");
-		Gamer1.setCellValueFactory(new PropertyValueFactory("Gamer1"));
-
-		TableColumn Gamer2 = new TableColumn("Gamer2");
-		Gamer2.setMaxWidth(43);
-		Gamer2.setStyle("-fx-alignment: CENTER;");
-		Gamer2.setCellValueFactory(new PropertyValueFactory("Gamer2"));
-
-		TableColumn ThreadState = new TableColumn("게임상태State");
-		ThreadState.setMaxWidth(43);
-		ThreadState.setStyle("-fx-alignment: CENTER;");
-		ThreadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
-
-		tableView.setItems(userData);
-		tableView.getColumns().addAll(RoomName, Gamer1, Gamer2, ThreadState);
+		TableColumn gameRunOrWaitState = new TableColumn("GameRunOrWaitState");
+		gameRunOrWaitState.setMaxWidth(60);
+		gameRunOrWaitState.setStyle("-fx-alignment: CENTER;");
+		gameRunOrWaitState.setCellValueFactory(new PropertyValueFactory("gameRunOrWaitState"));
+		
+		for (int i = 0; i < userRoomData.size(); i++) {
+			mmVO = userRoomData.get(i);
+			System.out.println(mmVO.getRoomName()+" "+mmVO.getThreadState()
+			+" "+mmVO.getMakeRoomUserID()+" "+mmVO.getEnterRoomUserID()+" "+mmVO.getGameRunOrWaitState()+" "+mmVO.getImage());
+		}
+		
+		tableView.setItems(userRoomData);
+		tableView.getColumns().addAll(roomName, threadState, makeRoomUserID, enterRoomUserID, gameRunOrWaitState);
 
 	}// end of tableViewSetting
+	
+	//테이블 뷰를 새로고침하기 위한 함수
+	private void handlerButtonTotalListAction(ActionEvent e9) {
+		try {
+			userRoomData.removeAll(userRoomData);
+			totalList();
+		} catch (Exception e) {
+			AlertDisplay.alertDisplay(1, "error", "error", e.toString());
+			e.printStackTrace();
+		}
+	} // end of handlerButtonTotalListAction
+	
+	public void totalList() {
+		ArrayList<ManagerManagmentVO> list = null;
+		ManagerManagmentVO mmVO = null;
+		ManagerManagmentDAO mmDAO = new ManagerManagmentDAO();
+		list = mmDAO.getTableViewRoomInfoTotal();
+
+		if (list == null) {
+			AlertDisplay.alertDisplay(1, "DB List Null Point", "Null Point", "Error");
+			return;
+		}
+
+		for (int i = 0; i < list.size(); i++) {
+			mmVO = list.get(i);
+			userRoomData.add(mmVO);
+			System.out.println(mmVO.getRoomName()+" "+mmVO.getThreadState()
+			+" "+mmVO.getMakeRoomUserID()+" "+mmVO.getEnterRoomUserID()+" "+mmVO.getGameRunOrWaitState()+" "+mmVO.getImage());
+		}
+	} // end of totalList
+
 
 	/*
 	 * 모든 유저들의 정보를 가지고 옴 total list 참고함
@@ -204,7 +347,7 @@ public class ManagerMainTabController implements Initializable {
 
 		for (int i = 0; i < list.size(); i++) {
 			mmVO = list.get(i);
-			userData.add(mmVO);
+			userRoomData.add(mmVO);
 		}
 	}
 
