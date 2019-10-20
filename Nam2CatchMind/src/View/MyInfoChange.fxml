@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="800.0" prefWidth="850.0" style="-fx-background-color: F2F2EB;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MyInfoChangeController">
+   <children>
+      <ImageView fx:id="userChangeImage" fitHeight="375.0" fitWidth="400.0" layoutX="232.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/gamerBasicImg.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="361.0" layoutY="48.0" style="-fx-font-size: 18;" text="내 정보 수정" />
+      <Button fx:id="btnChangeImage" layoutX="359.0" layoutY="488.0" mnemonicParsing="false" text="이미지 수정" />
+      <Label layoutX="235.0" layoutY="590.0" text="기존 비밀번호" />
+      <Label layoutX="234.0" layoutY="676.0" text="비밀번호 확인" />
+      <Button fx:id="btnUserPreviousCheckPwd" layoutX="503.0" layoutY="585.0" mnemonicParsing="false" text="비밀번호 확인" />
+      <Button fx:id="btnCorrection" layoutX="341.0" layoutY="723.0" mnemonicParsing="false" text="수정하기" />
+      <Button fx:id="btnExit" layoutX="438.0" layoutY="723.0" mnemonicParsing="false" text="취 소" />
+      <Label layoutX="359.0" layoutY="545.0" text="아이디 : " />
+      <Label fx:id="userId" layoutX="426.0" layoutY="545.0" text="name" />
+      <PasswordField fx:id="userPreviousPwd" layoutX="339.0" layoutY="585.0" prefHeight="29.0" prefWidth="146.0" />
+      <PasswordField fx:id="userChangeCheckPwd" layoutX="339.0" layoutY="671.0" prefHeight="29.0" prefWidth="146.0" />
+      <Label layoutX="236.0" layoutY="633.0" text="변경 비밀번호" />
+      <PasswordField fx:id="userChangePwd" layoutX="339.0" layoutY="628.0" prefHeight="29.0" prefWidth="146.0" />
+      <Button fx:id="btnUserCheckPwd" layoutX="502.0" layoutY="671.0" mnemonicParsing="false" text="비밀번호 확인" />
+   </children>
+</AnchorPane>

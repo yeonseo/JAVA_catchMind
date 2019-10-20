@@ -44,7 +44,6 @@ public class ManagerLoginController implements Initializable {
 	@FXML
 	private Button btnExit;
 
-	ServerClient serverClient;
 	ServerMain serverMain;
 
 	GamerDAO gdao;
@@ -56,6 +55,7 @@ public class ManagerLoginController implements Initializable {
 	
 	public  ArrayList<UserVO> list;
 	public static String UserId;
+	public static int loginTime;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -107,36 +107,40 @@ public class ManagerLoginController implements Initializable {
 	            String host = "localhost";
 	            startClient(host, port);
 	            
-	            usvo = new UserStateVO(managerId.getText(), UserGameState.managerOnline); // DB에 아이디와 상태를 DAO에게!
+	            usvo = new UserStateVO(managerId.getText(), UserGameState.MANAGER_ONLINE); // DB에 아이디와 상태를 DAO에게!
 				usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
 				int count = usdao.getUserStateRegistration(usvo.getUserID(), usvo.getThreadState()); // DAO에 UserStateVO객체를 넣어줌!
 				if (count != 0) {
+					System.out.println("test1");
 					Stage stage = (Stage) btnExit.getScene().getWindow();
 					stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
 				} else {
 					throw new Exception("상태 데이터베이스 등록실패!");
 				}
-				count = mmdao.setEnterTime(usvo.getUserID());
-				if (count != 0) {
-					Stage stage = (Stage) btnExit.getScene().getWindow();
-					stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
-				} else {
-					throw new Exception("로그인시간 데이터베이스 등록실패!");
-				}
-	            System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.gamerEnter);
+				//현재시간 등록	
+				gdao=new GamerDAO();
+				loginTime=gdao.setCurrentTime(UserId);
+				
+	            System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.GAMER_WAITROOM);
 	            
+	            try {
+	            	System.out.println("test4");
+	            	gameRoomRoot = FXMLLoader.load(getClass().getResource("/View/ManagerMainTab.fxml"));
+					Scene scene = new Scene(gameRoomRoot);
+					System.out.println("test5");
+					gameRoomStage = new Stage();
+					gameRoomStage.setTitle("관리자");
+					gameRoomStage.setScene(scene);
+					gameRoomStage.setResizable(false);
+					((Stage) btnExit.getScene().getWindow()).close();
+					gameRoomStage.show();
+					AlertDisplay.alertDisplay(5, "로그인 성공"
+							, usvo.getUserID()+" 관리자님, 안녕하세요."
+							, "접속시간은 "+"입니다.");
+	            }catch(Exception fxml) {
+	            	AlertDisplay.alertDisplay(1, "fmxl 실패", "메니저 메인을 불러오는데 실패했습니다.", fxml.toString());
+	            }
 	            
-	            gameRoomRoot = FXMLLoader.load(getClass().getResource("/View/ManagerMainTab.fxml"));
-				Scene scene = new Scene(gameRoomRoot);
-				gameRoomStage = new Stage();
-				gameRoomStage.setTitle("게임대기방");
-				gameRoomStage.setScene(scene);
-				gameRoomStage.setResizable(false);
-				((Stage) btnExit.getScene().getWindow()).close();
-				gameRoomStage.show();
-				AlertDisplay.alertDisplay(5, "로그인 성공"
-						, usvo.getUserID()+" 관리자님, 안녕하세요."
-						, "접속시간은 "+"입니다.");
 			} catch (IOException e2) {
 				AlertDisplay.alertDisplay(1, "로그인 실패", "메니저 메인을 불러오는데 실패했습니다.", e2.toString());
 			} 

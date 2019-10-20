@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 import Model.UserVO;
@@ -56,7 +58,8 @@ public class GamerMemberShipController implements Initializable {
 	private Image localImage;
 	private File selectedFile = null;
 //	private File dirSave = new File("C://남채현/java/java_img"); //이미지 저장할 폴더를 매개변수로 파일 객체 생성
-	private File dirSave = new File("/Users/nambbo/Documents/Backup_CatchMind/membership_image"); // 이미지 저장할 폴더를 매개변수로
+	String path = System.getProperty("user.dir")+"/images/";
+	private File dirSave = new File(path); // 이미지 저장할 폴더를 매개변수로
 	UserVO uvo;
 	GamerDAO gdao;
 	boolean idcheck = false;

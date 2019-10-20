@@ -39,14 +39,12 @@ public class GamerLoginController implements Initializable {
 
 	GamerDAO gdao;
 	UserVO uvo;
-	
-	/******추가******/
 	UserStateVO usvo;
 	UserStateDAO usdao;
-	/******추가******/
 	
 	public  ArrayList<UserVO> list;
 	public static String UserId;
+	public static int loginTime;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -79,29 +77,32 @@ public class GamerLoginController implements Initializable {
 			Parent gameRoomRoot = null;
 			Stage gameRoomStage = null;
 			AlertDisplay.alertDisplay(5, "로그인 성공", "로그인 성공!", "로그인 합니다.");
+			
+			//현재시간 등록	
+			gdao=new GamerDAO();
+			loginTime=gdao.setCurrentTime(UserId);
+			
+			// 통신시작
 			try {
 				int port = 9876;
 	            String host = "localhost";
 	            startClient(host, port);
-//	            AlertDisplay.alertDisplay(1, "서버에 접속합니다아아아", "데이터베이스 테스트도 통과하길!!!!", "plzzzzzz");
-	            
-	            /***********상태 등록 테스트으으으으으************/
-	            usvo = new UserStateVO(gamerId.getText(), UserGameState.gamerEnter); // DB에 아이디와 상태를 DAO에게!
+	            usvo = new UserStateVO(gamerId.getText(), UserGameState.GAMER_WAITROOM); // DB에 아이디와 상태를 DAO에게!
 				usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
 				int count = usdao.getUserStateRegistration
 						(usvo.getUserID()
 						,usvo.getThreadState()); // DAO에 UserID, UserThreadState를 넣어줌!
 				if (count != 0) {
-					AlertDisplay.alertDisplay(3, "상태등록", "등록성공!", "상태 : "+UserGameState.gamerEnter);
+					AlertDisplay.alertDisplay(5, "상태등록", "등록성공!", "상태 : "+UserGameState.GAMER_WAITROOM);
 					Stage stage = (Stage) btnExit.getScene().getWindow();
 					stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
 				} else {
 					throw new Exception("데이터베이스 등록실패!");
 				}
 	            
-	            System.out.println("ID : " + gamerId.getText() + "  state : " + UserGameState.gamerEnter);
-	            /***********상태 등록 테스트으으으으으*************/
+	            System.out.println("ID : " + gamerId.getText() + "  state : " + UserGameState.GAMER_WAITROOM);
 	            
+	            //게임대기방 진입
 	            gameRoomRoot = FXMLLoader.load(getClass().getResource("/View/GameWaitRoom.fxml"));
 				Scene scene = new Scene(gameRoomRoot);
 				gameRoomStage = new Stage();
@@ -110,16 +111,12 @@ public class GamerLoginController implements Initializable {
 				gameRoomStage.setResizable(false);
 				((Stage) btnExit.getScene().getWindow()).close();
 				gameRoomStage.show();
-				AlertDisplay.alertDisplay(5, "로그인 성공", "로그인 성공!", "로그인이 되었습니다.");
 			} catch (IOException e2) {
 				AlertDisplay.alertDisplay(1, "로그인 실패", "게임방을 불러오는데 실패했습니다.", e2.toString());
-			} 
-			/***********상태 등록 테스트으으으으으*************/
+			}
 			catch (Exception e1) {
 				AlertDisplay.alertDisplay(1, "상태 등록", "상태등록 실패했습니다.", e1.toString());
 			}
-			
-			/***********상태 등록 테스트으으으으으*************/
 
 		} else {
 			AlertDisplay.alertDisplay(1, "로그인 실패", "아이디 및 패스워드 찾을 수 없음.", "아이디와 패스워드를 다시 확인해주세요!");
@@ -161,6 +158,7 @@ public class GamerLoginController implements Initializable {
 				try {
 					socket = new Socket(IP, port);
 					recive();
+					//send한꺼번에 수정하자!
 				} catch (Exception e) {
 					e.printStackTrace();
 					if (!socket.isClosed()) {

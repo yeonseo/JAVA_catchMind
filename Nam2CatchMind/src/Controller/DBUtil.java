@@ -14,8 +14,7 @@ public class DBUtil {
 	public static Connection getConnection() throws Exception {
 
 		Class.forName(driver);
-//		Connection connection = DriverManager.getConnection(url, "root", "123456");
-		Connection connection = DriverManager.getConnection(url, "root", "ysnam007");
+		Connection connection = DriverManager.getConnection(url, "root", "123456");
 		return connection;
 	}
 }

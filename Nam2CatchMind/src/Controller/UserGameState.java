@@ -6,22 +6,23 @@ import java.util.Arrays;
 import Application.ref_sqlDB;
 
 public class UserGameState {
+	/*
+	 * 관리자의 상태
+	 * */
 	
-	/* 여기서 유저들의 접속상태를 다룰 예정
+	public static final String MANAGER_ONLINE = "MANAGER_ONLINE";
+	public static final String MANAGER_OFFLINE= "MANAGER_OFFLINE";
+	public static String MANAGER_EnterUserGame;
+	
+	
+	/* 유저들의 접속상태
 	 * 
 	 * */
-	public static String managerOnline = "managerOnline";
-	public static String managerEnterUserGame;
-	public static String managerOffline= "managerOffline";
-	
-	
-	public static String gamerEnter = "gamerWaitRoom";
-	public static String gamerGameWait = "gamerGameWaitRoom";
-	public static String gamerGameStart = "gamerGameStartRoom";
-	public static String gamerOffline= "gamerOffline";
-	
-	
-	
-	
+	public static final String GAMER_WAITROOM = "GAMER_WAITROOM";
+	public static final String GAMER_GAMEROOM_ENTER_AND_WAIT = "GAMER_GAMEROOM_ENTER_AND_WAIT";
+	public static final String GAMER_GAMEROOM_ENTER_AND_START = "AMER_GAMEROOM_ENTER_AND_START";
+	public static final String GAMER_GAMEROOM_OUT_AND_WAITROOM = "GAMER_GAMEROOM_OUT_AND_WAITROOM";
+	public static final String GAMER_OFFLINE = "GAMER_OFFLINE";
+
 
 }
