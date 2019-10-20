@@ -56,7 +56,8 @@ public class ManagerMemberShipController implements Initializable {
 	private Image localImage;
 	private File selectedFile = null;
 //	private File dirSave = new File("C://남채현/java/java_img"); //이미지 저장할 폴더를 매개변수로 파일 객체 생성
-	private File dirSave = new File("/Users/nambbo/Documents/Backup_CatchMind/membership_image"); // 이미지 저장할 폴더를 매개변수로
+	String path = System.getProperty("user.dir")+"/images/";
+	private File dirSave = new File(path); // 이미지 저장할 폴더를 매개변수로
 	UserVO uvo;
 	GamerDAO gdao;
 	boolean idcheck = false;
@@ -194,7 +195,7 @@ public class ManagerMemberShipController implements Initializable {
 		String fileName = null;
 		try {
 			// 이미지 파일명 생성
-			fileName = "gamerUser" + System.currentTimeMillis() + "_" + file1.getName();
+			fileName = "managerUser" + System.currentTimeMillis() + "_" + file1.getName();
 			bis = new BufferedInputStream(new FileInputStream(file1)); // 선택한 파일 이미지를 읽어옴.
 			bos = new BufferedOutputStream(new FileOutputStream(dirSave.getAbsolutePath() + "\\" + fileName)); // 이미지를
 																												// 보냄!

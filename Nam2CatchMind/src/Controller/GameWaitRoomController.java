@@ -76,11 +76,12 @@ public class GameWaitRoomController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnUserSend.setDisable(false);
-		// 없애보기
+		
 		startClient("localhost", 9876);
 		Platform.runLater(() -> {
 			txtChatArea.appendText("[Chat Start] \n");
 		});
+		
 		btnUserSend.setOnAction(event -> {
 			// 메세지 전송시자신의 상태외 아이디, 메세지를 함께 보냄
 			send(userState + "," + GamerLoginController.UserId + "," + txtInputMessage.getText() + "\n");
@@ -121,17 +122,13 @@ public class GameWaitRoomController implements Initializable {
 		btnGameRoomExit.setOnAction(e -> {
 
 			Platform.runLater(() -> {
-
-				/**** 이부분지워보기 ****/
+				send(UserGameState.GAMER_OFFLINE);
 				txtChatArea.appendText("[Chat Out] \n");
 				try {
 					Thread.sleep(10000);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
-				/**** 이부분지워보기 ****/
-				txtInputMessage.setDisable(true);
-				btnUserSend.setDisable(true);
 				stopClient();
 				Platform.exit();
 			});
@@ -265,7 +262,7 @@ public class GameWaitRoomController implements Initializable {
 						int count = usdao.getUserGameRoomRegistration(mmVO.getRoomName(), mmVO.getThreadState(),
 								mmVO.getManagerID(), mmVO.getMakeRoomUserID(), mmVO.getEnterRoomUserID(),
 								mmVO.getGameRunOrWaitState()); // DAO에 UserID, UserThreadState를 넣어줌!
-						AlertDisplay.alertDisplay(3, "DB 방등록", "등록성공!", "상태 : " + mmVO.getThreadState());
+						AlertDisplay.alertDisplay(5, "DB 방등록", "등록성공!", "상태 : " + mmVO.getThreadState());
 
 						if (count != 0) {
 							/*
@@ -279,7 +276,7 @@ public class GameWaitRoomController implements Initializable {
 																													// UserThreadState를
 																													// 넣어줌!
 							if (count2 != 0) {
-								AlertDisplay.alertDisplay(3, "상태변동", "변동성공!", "상태 : " + mmVO.getThreadState());
+								AlertDisplay.alertDisplay(5, "상태변동", "변동성공!", "상태 : " + mmVO.getThreadState());
 								userState = mmVO.getThreadState();
 							} else {
 								throw new Exception("데이터베이스 등록실패!");

@@ -29,7 +29,7 @@ public class ManagerMain extends Application {
 		public void start(Stage primaryStage) throws Exception {
 			Parent managerMainRoot=FXMLLoader.load(getClass().getResource("/View/ManagerLogin.fxml"));
 			Scene scene=new Scene(managerMainRoot);
-			primaryStage.setTitle("로그인");
+			primaryStage.setTitle("메니저 로그인");
 			primaryStage.setResizable(false);
 			primaryStage.setScene(scene);
 			primaryStage.show();

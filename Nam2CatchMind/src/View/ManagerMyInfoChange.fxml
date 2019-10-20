@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="801.0" prefWidth="532.0" style="-fx-background-color: F2F2EB;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagerMyInfoChangeController">
+   <children>
+      <ImageView id="userChangeImage" fx:id="userChangeImage" fitHeight="375.0" fitWidth="400.0" layoutX="88.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/gamerBasicImg.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="225.0" layoutY="49.0" style="-fx-font-size: 18;" text="정보 수정" />
+      <Button id="btnChangeImage" fx:id="btnChangeImage" layoutX="223.0" layoutY="489.0" mnemonicParsing="false" text="이미지 수정" />
+      <Label layoutX="99.0" layoutY="591.0" text="기존 비밀번호" />
+      <Label layoutX="98.0" layoutY="677.0" text="비밀번호 확인" />
+      <Button id="btnUserPreviousCheckPwd" fx:id="btnUserPreviousCheckPwd" layoutX="367.0" layoutY="586.0" mnemonicParsing="false" text="비밀번호 확인" />
+      <Button id="btnCorrection" fx:id="btnCorrection" layoutX="205.0" layoutY="724.0" mnemonicParsing="false" text="수정하기" />
+      <Button id="btnExit" fx:id="btnExit" layoutX="302.0" layoutY="724.0" mnemonicParsing="false" text="취 소" />
+      <Label layoutX="223.0" layoutY="546.0" text="아이디 : " />
+      <Label id="userId" fx:id="userId" layoutX="290.0" layoutY="546.0" text="name" />
+      <PasswordField id="userPreviousPwd" fx:id="userPreviousPwd" layoutX="203.0" layoutY="586.0" prefHeight="29.0" prefWidth="146.0" />
+      <PasswordField id="userChangeCheckPwd" fx:id="userChangeCheckPwd" layoutX="203.0" layoutY="672.0" prefHeight="29.0" prefWidth="146.0" />
+      <Label layoutX="100.0" layoutY="634.0" text="변경 비밀번호" />
+      <PasswordField id="userChangePwd" fx:id="userChangePwd" layoutX="203.0" layoutY="629.0" prefHeight="29.0" prefWidth="146.0" />
+      <Button id="btnUserCheckPwd" fx:id="btnUserCheckPwd" layoutX="366.0" layoutY="672.0" mnemonicParsing="false" text="비밀번호 확인" />
+   </children>
+</AnchorPane>

@@ -66,7 +66,7 @@ public class ManagerLoginController implements Initializable {
 			handlerBtnMemberShipAction(event);
 		});
 		btnExit.setOnAction((event) -> {
-			handlerBtnExitAction(event);
+			Platform.exit();
 		});
 		
 		managerPwd.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -121,7 +121,7 @@ public class ManagerLoginController implements Initializable {
 				gdao=new GamerDAO();
 				loginTime=gdao.setCurrentTime(UserId);
 				
-	            System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.GAMER_WAITROOM);
+	            System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.MANAGER_ONLINE);
 	            
 	            try {
 	            	System.out.println("test4");
@@ -134,9 +134,7 @@ public class ManagerLoginController implements Initializable {
 					gameRoomStage.setResizable(false);
 					((Stage) btnExit.getScene().getWindow()).close();
 					gameRoomStage.show();
-					AlertDisplay.alertDisplay(5, "로그인 성공"
-							, usvo.getUserID()+" 관리자님, 안녕하세요."
-							, "접속시간은 "+"입니다.");
+					AlertDisplay.alertDisplay(5, "로그인 성공", usvo.getUserID() + " 관리자님, 안녕하세요.", "접속시간은 " + loginTime + " 입니다.");
 	            }catch(Exception fxml) {
 	            	AlertDisplay.alertDisplay(1, "fmxl 실패", "메니저 메인을 불러오는데 실패했습니다.", fxml.toString());
 	            }
@@ -176,17 +174,6 @@ public class ManagerLoginController implements Initializable {
 		} catch (IOException e1) {
 			AlertDisplay.alertDisplay(1, "오류", "회원가입창을 가져오는데 실패했습니다.", e1.toString());
 		}
-
-	}
-
-	private void handlerBtnExitAction(ActionEvent event) {
-		System.out.println("out");
-		Platform.exit();
-		/*
-		 * 
-		 * 데이터 베이스에서 삭제 -> 메세지 나가면 스레드 종료 -> 서버에서 확인 FXML 종료가 이루어져야 함
-		 * 
-		 */
 
 	}
 
