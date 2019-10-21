@@ -26,21 +26,15 @@ public class ManagerManagmentVO {
 	private String MakeRoomUserID;
 	private String EnterRoomUserID;
 	private String GameRunOrWaitState; //게임 진행중인지를 구분하기 위한 상태
-	
-	
-	
-	
-	
+
 	/*
-	 * 관리 메인창에서 관리자 프로필에 아이디, 권한, 상태를 나타내기 위한 생성자
+	 * 방만들기 관련된 함수 YS 191019
+	 * 
+	 * 방 만들기 시도시, 비교하기 위함
 	 * */
-	public ManagerManagmentVO(String userID, int userAccess, String threadState) {
-		super();
-		UserID = userID;
-		UserAccess = userAccess;
-		ThreadState = threadState;
+	public ManagerManagmentVO(String roomName) {
+		RoomName = roomName;
 	}
-	
 	/*
 	 * 방만들기 관련된 함수 YS 191019
 	 * 
@@ -55,30 +49,17 @@ public class ManagerManagmentVO {
 		GameRunOrWaitState = gameRunOrWaitState;
 	}
 
+	
+	
 	/*
-	 * 방만들기 관련된 함수 YS 191019
-	 * 
-	 * 방 만들기 시도시, 비교하기 위함
+	 * 관리 메인창에서 관리자 프로필에 아이디, 권한, 상태를 나타내기 위한 생성자
 	 * */
-	public ManagerManagmentVO(String roomName) {
-		RoomName = roomName;
-	}
-
-	/*
-	 * 메니저 메인텝에서 관리자의 프로필을 나타낼때 사용함
-	 * id, 패스워드, 권한, 이미지, 상태, 접속시간
-	 * */
-	public ManagerManagmentVO(String userID, String userPassword, int userAccess, String image, String threadState,
-			String enterTime, String outTime) {
+	public ManagerManagmentVO(String userID, int userAccess, String threadState) {
+		super();
 		UserID = userID;
-		UserPassword = userPassword;
 		UserAccess = userAccess;
-		Image = image;
 		ThreadState = threadState;
-		EnterTime = enterTime;
-		OutTime = outTime;
 	}
-
 	
 	/*
 	 * 관리 메인 텝에서 방이름 테이블 뷰를 위한 생성자
@@ -91,10 +72,25 @@ public class ManagerManagmentVO {
 		EnterRoomUserID = enterRoomUserID;
 		GameRunOrWaitState = gameRunOrWaitState;
 	}
+	
+	/*
+	 * 관리 관리자 탭에서 관리자 테이블 뷰를 위한 생성자
+	 * ui.UserID, ui.UserPassword, ui.UserAccess, ui.UserImage, ugs.ThreadState
+	 * */
+	public ManagerManagmentVO(String userID, String userPassword, int userAccess, String image, String threadState) {
+		super();
+		UserID = userID;
+		UserPassword = userPassword;
+		UserAccess = userAccess;
+		Image = image;
+		ThreadState = threadState;
+	}
+
 
 	public String getUserID() {
 		return UserID;
 	}
+	
 	public void setUserID(String userID) {
 		UserID = userID;
 	}

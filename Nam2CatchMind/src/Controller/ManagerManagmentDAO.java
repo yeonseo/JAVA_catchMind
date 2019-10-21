@@ -221,9 +221,43 @@ public class ManagerManagmentDAO {
 		return list;
 	}
 
-	public ArrayList<ManagerManagmentVO> getUsersTotalForUserTabData() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<ManagerManagmentVO> getTableViewManagerInfoTotal() {
+		ArrayList<ManagerManagmentVO> list = new ArrayList<ManagerManagmentVO>();
+		String dml = "SELECT ui.UserID, ui.UserPassword, ui.UserAccess, ui.UserImage, ugs.ThreadState " + 
+				"FROM UserInfo AS ui  left join UserGameState as ugs " + 
+				"on ugs.UserID = ui.UserID where UserAccess > 0;";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		// 디비에서 가져온 데이터를 임시로 저장하고 있는 공간
+		ManagerManagmentVO mmVO = null;
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				mmVO = new ManagerManagmentVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4),
+						rs.getString(5));
+				list.add(mmVO);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return list;
 	}
 
 }

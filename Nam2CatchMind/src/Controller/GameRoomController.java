@@ -73,8 +73,6 @@ public class GameRoomController implements Initializable {
 	}
 	
 	
-	
-	
 	Socket socket;
 
 	public void startClient(String IP, int port) {

@@ -47,7 +47,7 @@
                                     <ImageView fx:id="imgMainUser" fitHeight="150.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </VBox>
-                              <VBox alignment="CENTER_RIGHT" prefHeight="150.0" prefWidth="102.0" spacing="10.0">
+                              <VBox alignment="CENTER_RIGHT" prefHeight="177.0" prefWidth="68.0" spacing="10.0">
                                  <children>
                                     <Label text="ID" />
                                     <Label text="권한" />
@@ -57,7 +57,7 @@
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                  </padding>
                               </VBox>
-                              <VBox alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="149.0" spacing="10.0">
+                              <VBox alignment="CENTER_LEFT" prefHeight="177.0" prefWidth="245.0" spacing="10.0">
                                  <children>
                                     <Label fx:id="lblMainUserId" text="Label" />
                                     <Label fx:id="lblMainAccess" text="Label" />
@@ -98,13 +98,13 @@
          <content>
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="366.0" prefWidth="600.0">
+                  <VBox alignment="CENTER" prefHeight="517.0" prefWidth="721.0">
                      <children>
-                        <HBox prefHeight="114.0" prefWidth="600.0">
+                        <HBox prefHeight="210.0" prefWidth="721.0">
                            <children>
                               <VBox alignment="CENTER" prefHeight="150.0" prefWidth="39.0">
                                  <children>
-                                    <ImageView fitHeight="126.0" fitWidth="178.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="imgManagerUser" fitHeight="126.0" fitWidth="178.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER_RIGHT" prefHeight="177.0" prefWidth="83.0" spacing="10.0">
@@ -119,9 +119,9 @@
                               </VBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="177.0" prefWidth="180.0" spacing="10.0">
                                  <children>
-                                    <Label text="Label" />
-                                    <Label text="Label" />
-                                    <Label text="Label" />
+                                    <Label fx:id="lblManagerUserId" text="Label" />
+                                    <Label fx:id="lblManagerAccess" text="Label" />
+                                    <Label fx:id="lblManagerState" text="Label" />
                                  </children>
                                  <padding>
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -129,9 +129,9 @@
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="85.0" prefWidth="123.0" spacing="10.0">
                                  <children>
-                                    <Button mnemonicParsing="false" text="차트" />
-                                    <Button mnemonicParsing="false" text="수정" />
-                                    <Button mnemonicParsing="false" text="삭제" />
+                                    <Button fx:id="btnManagerChart" mnemonicParsing="false" text="차트" />
+                                    <Button fx:id="btnManagerUserEdit" mnemonicParsing="false" text="수정" />
+                                    <Button fx:id="btnManagerDel" mnemonicParsing="false" text="삭제" />
                                  </children>
                               </VBox>
                            </children>
@@ -139,24 +139,18 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="150.0" prefWidth="200.0" spacing="10.0">
+                        <HBox alignment="CENTER" prefHeight="350.0" prefWidth="721.0" spacing="10.0">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                            <children>
-                              <TableView prefHeight="141.0" prefWidth="441.0">
-                                 <columns>
-                                    <TableColumn prefWidth="138.0" text="관리자 ID" />
-                                    <TableColumn minWidth="0.0" prefWidth="81.0" text="권한" />
-                                    <TableColumn minWidth="0.0" prefWidth="132.0" text="상태" />
-                                 </columns>
-                              </TableView>
+                              <TableView fx:id="tableViewManager" prefHeight="309.0" prefWidth="576.0" />
                               <VBox alignment="CENTER" prefHeight="141.0" prefWidth="144.0" spacing="20.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="119.0" text="선택 권한 변경" />
-                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 취소" />
-                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 삭제" />
-                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="나가기" />
+                                    <Button fx:id="btnManagerSelectedEditAcc" mnemonicParsing="false" prefHeight="27.0" prefWidth="119.0" text="선택 권한 변경" />
+                                    <Button fx:id="btnManagerSelectedCancle" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 취소" />
+                                    <Button fx:id="btnManagerSelectedDel" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 삭제" />
+                                    <Button fx:id="btnManagerExit" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="나가기" />
                                  </children>
                                  <HBox.margin>
                                     <Insets />

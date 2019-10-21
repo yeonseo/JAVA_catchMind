@@ -47,7 +47,7 @@ import javafx.stage.StageStyle;
 
 public class ManagerMainTabController implements Initializable {
 	/*
-	 * 관리 메인텝
+	 * 관리 메인텝 (12)
 	 */
 	@FXML
 	private ImageView imgMainUser;
@@ -73,11 +73,41 @@ public class ManagerMainTabController implements Initializable {
 	private Button btnMainServerClose;
 	@FXML
 	private Button btnManagerMainTabExit;
+	
+	/*
+	 * 메니저 관리 메인텝 (13)
+	 */
 	@FXML
-	private Tab tabManager;
+	private Tab tabManager; 
+	@FXML
+	private ImageView imgManagerUser;
+	@FXML
+	private Label lblManagerUserId;
+	@FXML
+	private Label lblManagerAccess;
+	@FXML
+	private Label lblManagerState;
+	@FXML
+	private Button btnManagerChart;
+	@FXML
+	private Button btnManagerUserEdit;
+	@FXML
+	private Button btnManagerDel;
+	@FXML
+	private TableView<ManagerManagmentVO> tableViewManager;
+	@FXML
+	private Button btnManagerSelectedEditAcc;
+	@FXML
+	private Button btnManagerSelectedCancle;
+	@FXML
+	private Button btnManagerSelectedDel;
+	@FXML
+	private Button btnManagerExit;
+	
 
 	ObservableList<ManagerManagmentVO> userData;
 	ObservableList<ManagerManagmentVO> userRoomData;
+	ObservableList<ManagerManagmentVO> managerData;
 
 	ManagerManagmentVO mmVO;
 	ManagerManagmentDAO mmdao;
@@ -109,7 +139,11 @@ public class ManagerMainTabController implements Initializable {
 	private ObservableList<ManagerManagmentVO> selectedRoom;
 	private int selectedRoomIndex;
 	private String enteringRoomName;
-
+	private ObservableList<ManagerManagmentVO> selectedManager;
+	private int selectedManagerIndex;
+	private String selectingManagerName;
+	
+	
 	// 정보를 가져오기 위한 경로지정
 	private File selectedFile = null;
 	private String localUrl = "";
@@ -143,7 +177,6 @@ public class ManagerMainTabController implements Initializable {
 		btnMainLoginTimeChart.setOnAction(e2 -> {
 			handlerBtnMainLoginTimeChartAction(e2);
 		});
-
 		// 테이블 뷰 셋팅
 		tableViewSetting();
 		totalList();
@@ -167,19 +200,23 @@ public class ManagerMainTabController implements Initializable {
 
 		/*
 		 * 
-		 * [ 탭 ] 유저 관리(나중에 텝으로 묶기)
-		 * 
+		 * [ 탭 ] 관리자 관리(나중에 텝으로 묶기)
+		 * 아이디 패스워드 권한 이미지 상태
 		 * 
 		 */
+		tableViewManagerSetting();
+		handlerManagerInfoGet();
+		
+		btnManagerChart.setOnAction(e5 -> {
+			handlerBtnMainLoginTimeChartAction(e5);
+		});
+		// 관리자 관리 탭
+		btnManagerUserEdit.setOnAction(e6 -> {
+			((Stage) btnMainTabUserEdit.getScene().getWindow()).close();
+			handlerBtnMyInfoChangeAtion(e6);
+		});
+		
 
-//		// 유저들의 정보 보이기
-//		handlerUserInfoShow();
-//
-//		btnMainTabUserEdit.setOnAction(e -> {
-//			((Stage) btnMainTabUserEdit.getScene().getWindow()).close();
-//			handlerBtnMyInfoChangeAtion(e);
-//		});
-//
 
 		// 나가기
 		btnManagerMainTabExit.setOnAction(e999 -> {
@@ -278,7 +315,7 @@ public class ManagerMainTabController implements Initializable {
 			MyInfoChangeRoot = FXMLLoader.load(getClass().getResource("/View/ManagerMyInfoChange.fxml"));
 			Scene scene = new Scene(MyInfoChangeRoot);
 			MyInfoChangeStage = new Stage();
-			MyInfoChangeStage.setTitle("내 정보수정");
+			MyInfoChangeStage.setTitle("정보수정");
 			MyInfoChangeStage.initModality(Modality.WINDOW_MODAL);
 			MyInfoChangeStage.initOwner(btnMainServerOpen.getScene().getWindow());
 			MyInfoChangeStage.setResizable(false);
@@ -288,7 +325,6 @@ public class ManagerMainTabController implements Initializable {
 		} catch (IOException e1) {
 			AlertDisplay.alertDisplay(1, "내정보수정 창 가져오기 오류", "내정보수정 창 가져오기 오류", e1.toString());
 		}
-
 	}
 
 	/*
@@ -415,10 +451,6 @@ public class ManagerMainTabController implements Initializable {
 
 	}// end of handlerPieChartAction
 
-	/*
-	 * 드로잉
-	 * 
-	 */
 
 	/*
 	 * 그림을 그리기 위한 변수
@@ -462,101 +494,7 @@ public class ManagerMainTabController implements Initializable {
 
 	}
 
-	// 테이블 더블 클릭시 게임방으로 진입하게 값 가지고, handlerBtnMakeRoomAction()
-	// 유저의 게임방을 창으로 띄우기 (방 만들기 대신에상태 가지고 가서 들어가기) reference 방만들기
-	public void handlerBtnMakeRoomAction(ActionEvent e) {
-
-		try {
-
-			Parent makeGameRoomRoot = FXMLLoader.load(getClass().getResource("/View/MakeRoom.fxml"));
-			Stage stage = new Stage(StageStyle.UTILITY);
-			stage.initModality(Modality.WINDOW_MODAL);
-			stage.initOwner(btnMainTabUserEdit.getScene().getWindow());
-			stage.setTitle("방만들기");
-
-			TextField txtMakeRoomName = (TextField) makeGameRoomRoot.lookup("#txtMakeRoomName");
-			Button btnMakeRoom = (Button) makeGameRoomRoot.lookup("#btnMakeRoom");
-			Button btnCancle = (Button) makeGameRoomRoot.lookup("#btnCancle");
-
-			btnMakeRoom.setOnAction(e3 -> {
-				try {
-					mmVO = new ManagerManagmentVO(txtMakeRoomName.getText()); // 아이디값 vo넣음
-					usdao = new UserStateDAO(); // gdao 객체 가져옴
-					roomNameCheck = usdao.checkRoomName(mmVO); // 아이디값 vo를 gdao.checkUserID()에 매개변수로 넣고 불리언 으로 true,
-																// false로 받는다.
-					if (txtMakeRoomName.getText().equals("")) {
-						// 아디이값이 없을때
-						AlertDisplay.alertDisplay(1, "방이름 미입력", "방이름이 빈칸입니다", "방이름을 입력하세요");
-						return;
-					}
-					if (roomNameCheck == true) {
-						// 중복된 아이디일때
-						AlertDisplay.alertDisplay(1, "방이름중복!", "방이름이 중복되었습니다.", "다른 방이름을 적어주세요!");
-					} else {
-						AlertDisplay.alertDisplay(5, "방이름확인", "확인되었습니다.", "사용가능합니다.");
-
-						/*
-						 * 중복 검사 통과할 시, 데이터베이스에 방을 만듬 <mmVO> String roomName, String threadState (유저의
-						 * 상태와 방이름으로!) String managerID, String makeRoomUserID, String enterRoomUserID,
-						 * String gameRunOrWaitState
-						 * 
-						 */
-						mmVO = new ManagerManagmentVO(txtMakeRoomName.getText(),
-								UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT + "," + txtMakeRoomName.getText(), null,
-								GamerLoginController.UserId, null, "Wait");
-						usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
-						int count = usdao.getUserGameRoomRegistration(mmVO.getRoomName(), mmVO.getThreadState(),
-								mmVO.getManagerID(), mmVO.getMakeRoomUserID(), mmVO.getEnterRoomUserID(),
-								mmVO.getGameRunOrWaitState()); // DAO에 UserID, UserThreadState를 넣어줌!
-						AlertDisplay.alertDisplay(5, "DB 방등록", "등록성공!", "상태 : " + mmVO.getThreadState());
-
-						if (count != 0) {
-							/*
-							 * 방만들기 시도 후 데이터베이스에서 등록 성공시, 유저의 상태변경
-							 */
-							usvo = new UserStateVO(GamerLoginController.UserId, mmVO.getThreadState()); // DB에 아이디와 상태를
-																										// DAO에게!
-							usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
-							int count2 = usdao.getUserStateRegistration(usvo.getUserID(), mmVO.getThreadState()); // DAO에
-																													// UserID,
-																													// UserThreadState를
-																													// 넣어줌!
-							if (count2 != 0) {
-								AlertDisplay.alertDisplay(5, "상태변동", "변동성공!", "상태 : " + mmVO.getThreadState());
-								userState = mmVO.getThreadState();
-							} else {
-								throw new Exception("데이터베이스 등록실패!");
-							}
-
-							// 방만들기 성공후 메세지를 보내서 새로고침하게 함
-							send(mmVO.getThreadState());
-							stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
-
-						} else {
-							throw new Exception("데이터베이스 등록실패!");
-						}
-					}
-
-				} catch (Exception e4) {
-					AlertDisplay.alertDisplay(1, "방등록", "등록실패!", e4.toString());
-				}
-			});
-
-			btnCancle.setOnAction(e2 -> {
-				stage.close();
-			});
-
-			Scene scene = new Scene(makeGameRoomRoot);
-			stage.setScene(scene);
-			stage.show();
-
-		} catch (IOException e2) {
-
-			e2.printStackTrace();
-		}
-
-	}
-
+	
 	/*
 	 * 유저 관리 탭을 위한 함수들
 	 */
@@ -566,21 +504,102 @@ public class ManagerMainTabController implements Initializable {
 	 * 모든 유저들의 정보를 가지고 옴 total list 참고함
 	 * 
 	 */
-	private void handlerUserInfoGet() {
+	private void tableViewManagerSetting() {
+		managerData = FXCollections.observableArrayList();
 
+		tableViewManager.setEditable(true);
+		//ui.UserID, ui.UserAccess, ui.UserImage, ugs.ThreadState
+		TableColumn managerName = new TableColumn("UserID");
+		managerName.setMaxWidth(60);
+		managerName.setStyle("-fx-alignment: CENTER;");
+		managerName.setCellValueFactory(new PropertyValueFactory("UserID"));
+
+		TableColumn managerAccess = new TableColumn("UserAccess");
+		managerAccess.setMaxWidth(60);
+		managerAccess.setStyle("-fx-alignment: CENTER;");
+		managerAccess.setCellValueFactory(new PropertyValueFactory("UserAccess"));
+
+		TableColumn threadState = new TableColumn("ThreadState");
+		threadState.setMaxWidth(60);
+		threadState.setStyle("-fx-alignment: CENTER;");
+		threadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
+
+		TableColumn managerImage = new TableColumn("UserImage");
+		managerImage.setMaxWidth(60);
+		managerImage.setStyle("-fx-alignment: CENTER;");
+		managerImage.setCellValueFactory(new PropertyValueFactory("UserImage"));
+
+		tableViewManager.setItems(managerData);
+		tableViewManager.getColumns().addAll(managerName, managerAccess, threadState, managerImage);
+
+	}// end of tableViewSetting
+
+	// 테이블 뷰를 새로고침하기 위한 함수
+	private void handlerManagerDataTableReloadAction(ActionEvent e9) {
+		try {
+			managerData.removeAll(managerData);
+			handlerManagerInfoGet();
+		} catch (Exception e) {
+			AlertDisplay.alertDisplay(1, "error", "error", e.toString());
+			e.printStackTrace();
+		}
+	} // end of handlerButtonTotalListAction
+
+	// 테이블 뷰에 넣을 데이터를 가져오기
+	public void handlerManagerInfoGet() {
 		ArrayList<ManagerManagmentVO> list = null;
 		ManagerManagmentVO mmVO = null;
-		ManagerManagmentDAO mmdao = new ManagerManagmentDAO();
-		list = mmdao.getUsersTotalForUserTabData();
+		ManagerManagmentDAO mmDAO = new ManagerManagmentDAO();
+		list = mmDAO.getTableViewManagerInfoTotal();
 
 		if (list == null) {
-			AlertDisplay.alertDisplay(1, "Users DB List Null Point", "Null Point", "Error");
+			AlertDisplay.alertDisplay(1, "total DB List Null Point", "Null Point", "Error");
 			return;
 		}
 
 		for (int i = 0; i < list.size(); i++) {
 			mmVO = list.get(i);
-			userRoomData.add(mmVO);
+			managerData.add(mmVO);
+//			System.out.println(mmVO.getRoomName() + " " + mmVO.getThreadState() + " " + mmVO.getMakeRoomUserID() + " "
+//					+ mmVO.getEnterRoomUserID() + " " + mmVO.getGameRunOrWaitState() + " " + mmVO.getImage());
+		}
+	} // end of totalList
+
+	// 테이블 클릭, 선택시, 메니저이름 가지고 오기
+	private void handlerMangagerTableViewSelectEvent(MouseEvent e3) {
+		try {
+			selectedManagerIndex = tableViewManager.getSelectionModel().getSelectedIndex();
+			selectedManager = tableViewManager.getSelectionModel().getSelectedItems();
+
+			selectingManagerName = selectedManager.get(0).getUserID();
+			txtMainAreaServerLog.appendText("메니져이름 : " + selectingManagerName + "\n");
+
+		} catch (Exception e2) {
+			AlertDisplay.alertDisplay(3, "메니져 가져오기", "메니져를 가져올 수 없습니다.", "메니져 정보를"
+					+ " 가져오지 못했습니다.");
+		} // end of try catch
+
+	}// end of handlerTableViewSelectEvent
+	
+	
+	// 채현이꺼 받아서 적용하기!!!
+	public void handlerBtnUserInfoChangeAtion(ActionEvent e) {
+		Parent MyInfoChangeRoot = null;
+		Stage MyInfoChangeStage = null;
+		selectedID=selectingManagerName;//테이블에서 값 가지고 오기
+		try {
+			MyInfoChangeRoot = FXMLLoader.load(getClass().getResource("/View/ManagerMyInfoChange.fxml"));
+			Scene scene = new Scene(MyInfoChangeRoot);
+			MyInfoChangeStage = new Stage();
+			MyInfoChangeStage.setTitle("정보수정");
+			MyInfoChangeStage.initModality(Modality.WINDOW_MODAL);
+			MyInfoChangeStage.initOwner(btnMainServerOpen.getScene().getWindow());
+			MyInfoChangeStage.setResizable(false);
+			MyInfoChangeStage.setScene(scene);
+			((Stage) btnManagerMainTabExit.getScene().getWindow()).close();
+			MyInfoChangeStage.show();
+		} catch (IOException e1) {
+			AlertDisplay.alertDisplay(1, "내정보수정 창 가져오기 오류", "내정보수정 창 가져오기 오류", e1.toString());
 		}
 	}
 
