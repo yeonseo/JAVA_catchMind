@@ -12,6 +12,7 @@ import Model.UserStateVO;
 import Model.UserVO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,6 +22,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -50,7 +53,7 @@ public class GamerLoginController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		btnLogin.setOnAction(e -> {
-			handlerBtnLoginAction(e);
+			handlerBtnLoginAction();
 		}); // 로그인 확인
 		btnMemberShip.setOnAction(e -> {
 			handlerBtnMemberShipAction(e);
@@ -58,10 +61,23 @@ public class GamerLoginController implements Initializable {
 		btnExit.setOnAction(e -> {
 			Platform.exit();
 		});
+		gamerPwd.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent ke) {
+				
+				KeyCode keyCode = ke.getCode();
+
+				if (keyCode.equals(KeyCode.ENTER)) {
+					handlerBtnLoginAction();
+				}
+			}
+
+		}); // end of btnLogin
 	}
 
 	// 로그인확인
-	public void handlerBtnLoginAction(ActionEvent e) {
+	public void handlerBtnLoginAction() {
 		gdao = new GamerDAO();
 		list = gdao.getLoginCheck(gamerId.getText(), gamerPwd.getText());
 		System.out.println("로그인 리스트 사이즈 : " + list.size());
@@ -82,11 +98,7 @@ public class GamerLoginController implements Initializable {
 			gdao=new GamerDAO();
 			loginTime=gdao.setCurrentTime(UserId);
 			
-			// 통신시작
 			try {
-				int port = 9876;
-	            String host = "localhost";
-	            startClient(host, port);
 	            usvo = new UserStateVO(gamerId.getText(), UserGameState.GAMER_WAITROOM); // DB에 아이디와 상태를 DAO에게!
 				usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
 				int count = usdao.getUserStateRegistration
@@ -145,79 +157,6 @@ public class GamerLoginController implements Initializable {
 
 		} catch (IOException e1) {
 			AlertDisplay.alertDisplay(1, "오류", "회원가입창을 가져오는데 실패했습니다.", e1.toString());
-		}
-
-	}
-
-	// 소켓
-	Socket socket;
-
-	public void startClient(String IP, int port) {
-		Thread thread = new Thread() {
-			public void run() {
-				try {
-					socket = new Socket(IP, port);
-					recive();
-					//send한꺼번에 수정하자!
-				} catch (Exception e) {
-					e.printStackTrace();
-					if (!socket.isClosed()) {
-						System.out.println("server accesse fail.");
-						stopClient();
-						Platform.exit();
-					}
-
-				}
-
-			}
-
-		};
-		thread.start();
-
-	}
-
-	public void recive() {
-		while (true) {
-
-			try {
-				InputStream in = socket.getInputStream();
-				byte[] buffer = new byte[512];
-				int length = in.read(buffer);
-				if (length == -1)
-					throw new IOException();
-				String message = new String(buffer, 0, length, "UTF-8");
-			} catch (Exception e) {
-				stopClient();
-				break;
-			}
-		}
-
-	}
-
-	public void send(String message) {
-		Thread thread = new Thread() {
-			public void run() {
-				try {
-					OutputStream os = socket.getOutputStream();
-					byte[] buffer = message.getBytes("UTF-8");
-					os.write(buffer);
-					os.flush();
-
-				} catch (Exception e) {
-					stopClient();
-				}
-			}
-		};
-		thread.start();
-	}
-
-	public void stopClient() {
-		try {
-			if (socket != null && !socket.isClosed()) {
-				socket.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 
 	}

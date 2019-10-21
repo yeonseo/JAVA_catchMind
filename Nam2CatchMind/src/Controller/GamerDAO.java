@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import Model.MakeRoomVO;
 import Model.UserVO;
 
 public class GamerDAO {
@@ -352,7 +353,7 @@ public class GamerDAO {
 		return i;
 	}
 
-	// 바꾼 비밀번호 저장
+	// 바꾼 비밀번호 저장(회원 수정에서)
 	public int getUserPwdChange(String changePwd, String userId) {
 		String sql = "update userinfo set UserPassword=? where UserID=?";
 		Connection con = null;
@@ -388,5 +389,152 @@ public class GamerDAO {
 		}
 		return i;
 	}
+	
+	//등록한 방 이름과 방장 이름 가져오기!
+	public ArrayList<MakeRoomVO> getMakeRoomName() {
+		
+		ArrayList<MakeRoomVO> list = new ArrayList<MakeRoomVO>();
+		String dml = "select * from usergameroom";
 
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		ResultSet rs = null;
+		MakeRoomVO MakeRoomVO = null;
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				MakeRoomVO = new MakeRoomVO(rs.getString(1),rs.getString(4),rs.getString(5),rs.getString(6));
+				list.add(MakeRoomVO);		
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
+		}
+		return list;
+	}
+	
+	//게임유저2 방 등록 하기 wait 상태일때만
+	public int getUser2EnterGameRoom(String userId , String makeRoomName ) {
+		String sql = "update usergameroom set Gamer2=? where RoomName=?";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int i = 0;
+		try {
+			con = DBUtil.getConnection();
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			pstmt.setString(2, makeRoomName);
+
+			i = pstmt.executeUpdate();
+
+			if (i == 1) {
+				System.out.println("게임방 user2 들어가기 성공!");
+			} else {
+				System.out.println("게임방 user2 들어가기 실패!");
+			}
+
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+			}
+		}
+		return i;
+		
+	}
+	
+	
+	//방장의 이름으로 방이름 가져오기
+	public String getRoomNamefromGamer1(String userID) {
+		String sql = "select RoomName from usergameroom where Gamer1=?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String RoomName=null;
+		ResultSet rs = null;
+		String Gamer1 = userID;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, Gamer1);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				RoomName = rs.getString(1);
+				System.out.println("test : "+RoomName);
+			}
+			System.out.println("sql에서 방이름 : "+RoomName);
+		} catch (Exception e) {
+			AlertDisplay.alertDisplay(1, "기존에 있던 방이름 찾기 오류", "기존에 있던 방이름 찾기 오류", e.toString());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
+				AlertDisplay.alertDisplay(1, "기존에 있던 방이름 찾기 오류", "기존에 있던 방이름 찾기 오류창 닫기 실패", e.toString());
+			}
+		}
+		return RoomName;
+	}
+	
+	//gamer2의 이름으로 방이름 가져오기
+		public String getRoomNamefromGamer2(String userID) {
+			String sql = "select RoomName from usergameroom where Gamer2=?";
+
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			String RoomName=null;
+			ResultSet rs = null;
+			String Gamer2 = userID;
+			try {
+				con = DBUtil.getConnection();
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, Gamer2);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					RoomName = rs.getString(1);
+				}
+			} catch (Exception e) {
+				AlertDisplay.alertDisplay(1, "기존에 있던 방이름 찾기 오류", "기존에 있던 방이름 찾기 오류", e.toString());
+			} finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (pstmt != null)
+						pstmt.close();
+					if (con != null)
+						con.close();
+				} catch (Exception e) {
+					AlertDisplay.alertDisplay(1, "기존에 있던 방이름 찾기 오류", "기존에 있던 방이름 찾기 오류창 닫기 실패", e.toString());
+				}
+			}
+			return RoomName;
+		}
+	
 }
