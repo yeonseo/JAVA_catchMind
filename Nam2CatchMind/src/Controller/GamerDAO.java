@@ -537,4 +537,77 @@ public class GamerDAO {
 			return RoomName;
 		}
 	
+		//방이름으로 user1,user2 찾기
+		public ArrayList<MakeRoomVO> getGamer1andGamer2(String MakeRoom) {
+			String sql = "select * from usergameroom where RoomName=?";
+			MakeRoomVO mrvo;
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			String RoomName=null;
+			ResultSet rs = null;
+			ArrayList<MakeRoomVO> list = new ArrayList<MakeRoomVO>();
+			String makeRoom = MakeRoom;
+			try {
+				con = DBUtil.getConnection();
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, makeRoom);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					mrvo = new MakeRoomVO(rs.getString(4), rs.getString(5));
+					list.add(mrvo);
+				}
+				
+			} catch (Exception e) {
+				AlertDisplay.alertDisplay(1, "유저1,유저2 찾기 실패", "방이름으로 유저들 찾기 실패!", e.toString());
+			} finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (pstmt != null)
+						pstmt.close();
+					if (con != null)
+						con.close();
+				} catch (Exception e) {
+					AlertDisplay.alertDisplay(1, "유저찾기실패", "방이름으로 유저들 찾기 오류창 닫기 실패", e.toString());
+				}
+			}
+			return list;
+		}
+		
+		//방상태 Update wait-->GameRun 
+		public int MakeRoomUpdateState(String RoomName) {
+			String sql = "update usergameroom set GameRunOrWaitState='GameRun' where RoomName=? ";
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			int i = 0;
+			try {
+				con = DBUtil.getConnection();
+
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, RoomName);
+
+				i = pstmt.executeUpdate();
+
+				if (i == 1) {
+					System.out.println("방상태 업데이트 ok");
+				} else {
+					System.out.println("방상태 업데이트 실패");
+				}
+
+			} catch (SQLException e) {
+				System.out.println("e=[" + e + "]");
+			} catch (Exception e) {
+				System.out.println("e=[" + e + "]");
+			} finally {
+				try {
+					if (pstmt != null)
+						pstmt.close();
+					if (con != null)
+						con.close();
+				} catch (SQLException e) {
+				}
+			}
+			return i;
+		}
+		
 }

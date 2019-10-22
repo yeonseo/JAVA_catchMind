@@ -63,7 +63,9 @@ public class GamerMemberShipController implements Initializable {
 	UserVO uvo;
 	GamerDAO gdao;
 	boolean idcheck = false;
-
+	boolean idDuplicateCheck=false; //등록 버튼 누를때 아이디 중복 버튼 검사 했는지 체크
+	boolean pwdDuplicateCheck=false; //등록 버튼 누를때 비밀번호 확인 버튼 검사 했는지 체크
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnImg.setOnAction(e -> {
@@ -92,33 +94,52 @@ public class GamerMemberShipController implements Initializable {
 				AlertDisplay.alertDisplay(1, "미입력 확인", "미입력된 부분이있습니다!", "아이디 와 패스워드 이미지 다시 확인해주세요!");
 				return;
 			}
-
+			if(idDuplicateCheck!=true) {
+				AlertDisplay.alertDisplay(1, "아이디중복확인", "아이디 중복확인!", "아이디중복확인해주세요!");
+				return;
+			}
+			if(pwdDuplicateCheck!=true) {
+				AlertDisplay.alertDisplay(1, "비밀번호 확인", "비밀번호를 확인!", "비밀번호 확인해주세요!");
+				return;
+			}
+			
+			
 			// 등록버튼 누를때 비밀번호 다시 확인 . 이미지 다시 확인, 아이디 다시 확인
-			if (memberShipPwd.getText().equals(memberShipCheckPwd.getText()) && localUrl != null && idcheck != true) {
-
-				// 이미지 저장 폴더 생성
-				File dirMake = new File(dirSave.getAbsolutePath());
-				if (!dirMake.exists()) {
-					dirMake.mkdir();
-				}
-				// 이미지 파일 저장
-				String fileName = imageSave(selectedFile);
-				System.out.println("fileName:" + selectedFile);
-				System.out.println(membershipId.getText().toString() + memberShipPwd.getText().toString());
-				System.out.println(fileName);
-				uvo = new UserVO(membershipId.getText(), memberShipPwd.getText(), null, fileName); // DB에 아이디와 패스워드 성별
-																									// 이미지를 DAO에게!
-
-				gdao = new GamerDAO(); // DAO의 객체를 부름
-				int count = gdao.getGamerRegistration(uvo); // DAO에 gvo객체를 넣어줌!
-				if (count != 0) {
-					AlertDisplay.alertDisplay(3, "등록", "등록성공!", "회원가입이 되었습니다!^^즐거운 플레이되세요!^^");
-					Stage stage = (Stage) btnExit.getScene().getWindow();
-					stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
+			if (memberShipPwd.getText().equals(memberShipCheckPwd.getText()) && localUrl != null && 					
+				idcheck != true &&  idDuplicateCheck==true && pwdDuplicateCheck==true ) {
+				
+				if (memberShipPwd.getText().equals(memberShipCheckPwd.getText()) ) {
+				
+						
+						// 이미지 저장 폴더 생성
+						File dirMake = new File(dirSave.getAbsolutePath());
+						if (!dirMake.exists()) {
+							dirMake.mkdir();
+						}
+						// 이미지 파일 저장
+						String fileName = imageSave(selectedFile);
+						System.out.println("fileName:" + selectedFile);
+						System.out.println(membershipId.getText().toString() + memberShipPwd.getText().toString());
+						System.out.println(fileName);
+						uvo = new UserVO(membershipId.getText(), memberShipPwd.getText(), null, fileName); // DB에 아이디와 패스워드 성별
+																											// 이미지를 DAO에게!
+	
+						gdao = new GamerDAO(); // DAO의 객체를 부름
+						int count = gdao.getGamerRegistration(uvo); // DAO에 gvo객체를 넣어줌!
+						if (count != 0) {
+							AlertDisplay.alertDisplay(3, "등록", "등록성공!", "회원가입이 되었습니다!^^즐거운 플레이되세요!^^");
+							Stage stage = (Stage) btnExit.getScene().getWindow();
+							stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
+						} else {
+							throw new Exception("데이터베이스 등록실패!");
+						}			
+					
 				} else {
-					throw new Exception("데이터베이스 등록실패!");
+					// 패스워드 다를때
+					AlertDisplay.alertDisplay(1, "패스워드 불일치", "패스워드가 불일치 합니다.", "패스워드를 다시 확인해주세요!");
 				}
-
+				
+			
 			} else {
 				AlertDisplay.alertDisplay(1, "등록오류", "패스워드가 불일치하거나 아이디가 중복되거나 선택된 이미지오류!",
 						"아이디 및 패스워드 및 이미지를 다시 확인해주세요!");
@@ -134,6 +155,7 @@ public class GamerMemberShipController implements Initializable {
 		uvo = new UserVO(membershipId.getText()); // 아이디값 vo넣음
 		gdao = new GamerDAO(); // gdao 객체 가져옴
 		idcheck = gdao.checkUserID(uvo); // 아이디값 vo를 gdao.checkUserID()에 매개변수로 넣고 불리언 으로 true, false로 받는다.
+		idDuplicateCheck=true;
 		if (membershipId.getText().equals("")) {
 			// 아디이값이 없을때
 			AlertDisplay.alertDisplay(1, "아이디 미입력", "아이디 미입력.", "아이디를 입력해주세요!");
@@ -150,6 +172,7 @@ public class GamerMemberShipController implements Initializable {
 
 	// 패스워드 중복검사
 	public void handlerBtnCheckPwdAciotn(ActionEvent e) {
+		pwdDuplicateCheck=true;
 		if (memberShipPwd.getText().equals("") || memberShipCheckPwd.getText().equals("")) {
 			// 패스워드 미입력이면 여기서 함수 끝냄.
 			AlertDisplay.alertDisplay(1, "패스워드 미입력", "패스워드 미입력!", "패스워드를  입력해주세요!");

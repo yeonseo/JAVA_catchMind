@@ -14,6 +14,14 @@ public class MakeRoomVO {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	public MakeRoomVO(String gamer1, String gamer2) {
+		super();
+		Gamer1 = gamer1;
+		Gamer2 = gamer2;
+	}
+
+
 	//방이름 등록한것 DB에서 가져오기
 	public MakeRoomVO(String roomName, String gamer1, String gamer2, String gameRunOrWaitState) {
 		super();

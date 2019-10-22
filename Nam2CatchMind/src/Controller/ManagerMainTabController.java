@@ -122,6 +122,7 @@ public class ManagerMainTabController implements Initializable {
 	Image userImg;
 	String managerMainTabFileName;
 	String loginTime;
+	
 
 	GamerDAO gdao;
 	UserVO uvo;
@@ -214,6 +215,10 @@ public class ManagerMainTabController implements Initializable {
 		btnManagerUserEdit.setOnAction(e6 -> {
 			((Stage) btnMainTabUserEdit.getScene().getWindow()).close();
 			handlerBtnMyInfoChangeAtion(e6);
+		});
+		// 클릭 정보가져오기
+		tableViewManager.setOnMousePressed(e7 -> {
+			handlerMangagerTableViewSelectEvent(e7);
 		});
 		
 
@@ -334,29 +339,30 @@ public class ManagerMainTabController implements Initializable {
 		userRoomData = FXCollections.observableArrayList();
 
 		tableView.setEditable(true);
+		tableView.isResizable();
 
-		TableColumn roomName = new TableColumn("RoomName");
-		roomName.setMaxWidth(60);
+		TableColumn roomName = new TableColumn("방이름");
+		roomName.setMaxWidth(160);
 		roomName.setStyle("-fx-alignment: CENTER;");
 		roomName.setCellValueFactory(new PropertyValueFactory("RoomName"));
 
-		TableColumn threadState = new TableColumn("ThreadState");
-		threadState.setMaxWidth(60);
+		TableColumn threadState = new TableColumn("접속상태");
+		threadState.setMaxWidth(200);
 		threadState.setStyle("-fx-alignment: CENTER;");
 		threadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
 
-		TableColumn makeRoomUserID = new TableColumn("MakeRoomUserID");
-		makeRoomUserID.setMaxWidth(60);
+		TableColumn makeRoomUserID = new TableColumn("방장");
+		makeRoomUserID.setMaxWidth(160);
 		makeRoomUserID.setStyle("-fx-alignment: CENTER;");
 		makeRoomUserID.setCellValueFactory(new PropertyValueFactory("MakeRoomUserID"));
 
-		TableColumn enterRoomUserID = new TableColumn("EnterRoomUserID");
-		enterRoomUserID.setMaxWidth(60);
+		TableColumn enterRoomUserID = new TableColumn("참여자");
+		enterRoomUserID.setMaxWidth(160);
 		enterRoomUserID.setStyle("-fx-alignment: CENTER;");
 		enterRoomUserID.setCellValueFactory(new PropertyValueFactory("EnterRoomUserID"));
 
-		TableColumn gameRunOrWaitState = new TableColumn("GameRunOrWaitState");
-		gameRunOrWaitState.setMaxWidth(60);
+		TableColumn gameRunOrWaitState = new TableColumn("게임방상태");
+		gameRunOrWaitState.setMaxWidth(160);
 		gameRunOrWaitState.setStyle("-fx-alignment: CENTER;");
 		gameRunOrWaitState.setCellValueFactory(new PropertyValueFactory("gameRunOrWaitState"));
 
@@ -366,7 +372,7 @@ public class ManagerMainTabController implements Initializable {
 	}// end of tableViewSetting
 
 	// 테이블 뷰를 새로고침하기 위한 함수
-	private void handlerButtonTotalListAction(ActionEvent e9) {
+	private void handlerButtonTotalListAction() {
 		try {
 			userRoomData.removeAll(userRoomData);
 			totalList();
@@ -476,8 +482,10 @@ public class ManagerMainTabController implements Initializable {
 			PieChart chart = (PieChart) pieChart.lookup("#pieChart");
 			Button btnClose = (Button) pieChart.lookup("#btnClose");
 
-			chart.setData(FXCollections.observableArrayList(new PieChart.Data("총점", (double) 3.4),
-					new PieChart.Data("1점", (double) 3.4), new PieChart.Data("2점", (double) 3.4)));
+			chart.setData(FXCollections.observableArrayList(
+					new PieChart.Data("총점", (double) 3.4),
+					new PieChart.Data("1점", (double) 3.4), 
+					new PieChart.Data("2점", (double) 3.4)));
 
 			btnClose.setOnAction(e22 -> {
 				stage.close();
@@ -508,24 +516,25 @@ public class ManagerMainTabController implements Initializable {
 		managerData = FXCollections.observableArrayList();
 
 		tableViewManager.setEditable(true);
+		tableView.isResizable();
 		//ui.UserID, ui.UserAccess, ui.UserImage, ugs.ThreadState
 		TableColumn managerName = new TableColumn("UserID");
-		managerName.setMaxWidth(60);
+		managerName.setMaxWidth(160);
 		managerName.setStyle("-fx-alignment: CENTER;");
 		managerName.setCellValueFactory(new PropertyValueFactory("UserID"));
 
 		TableColumn managerAccess = new TableColumn("UserAccess");
-		managerAccess.setMaxWidth(60);
+		managerAccess.setMaxWidth(160);
 		managerAccess.setStyle("-fx-alignment: CENTER;");
 		managerAccess.setCellValueFactory(new PropertyValueFactory("UserAccess"));
 
 		TableColumn threadState = new TableColumn("ThreadState");
-		threadState.setMaxWidth(60);
+		threadState.setMaxWidth(160);
 		threadState.setStyle("-fx-alignment: CENTER;");
 		threadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
 
 		TableColumn managerImage = new TableColumn("UserImage");
-		managerImage.setMaxWidth(60);
+		managerImage.setMaxWidth(160);
 		managerImage.setStyle("-fx-alignment: CENTER;");
 		managerImage.setCellValueFactory(new PropertyValueFactory("UserImage"));
 
@@ -565,20 +574,52 @@ public class ManagerMainTabController implements Initializable {
 		}
 	} // end of totalList
 
-	// 테이블 클릭, 선택시, 메니저이름 가지고 오기
+	// 테이블 클릭, 선택시, 메니저이름 가지고 오고, 상단에 정보 표시하기
 	private void handlerMangagerTableViewSelectEvent(MouseEvent e3) {
 		try {
+			/*
+			 * UserID = userID;
+		UserPassword = userPassword;
+		UserAccess = userAccess;
+		Image = image;
+		ThreadState = threadState;
+			 * 
+			 * */
 			selectedManagerIndex = tableViewManager.getSelectionModel().getSelectedIndex();
 			selectedManager = tableViewManager.getSelectionModel().getSelectedItems();
 
 			selectingManagerName = selectedManager.get(0).getUserID();
 			txtMainAreaServerLog.appendText("메니져이름 : " + selectingManagerName + "\n");
-
+			lblManagerUserId.setText(selectingManagerName);
+			switch (selectedManager.get(0).getUserAccess()) {
+			case 1:
+				lblManagerAccess.setText("예비관리자");
+				break;
+			case 2:
+				lblManagerAccess.setText("정식관리자");
+				break;
+			case 3:
+				lblManagerAccess.setText("총 관리자");
+				break;
+			}
+			userState = selectedManager.get(0).getThreadState();
+			lblManagerState.setText(userState);
+			
+			selectedFile = new File(System.getProperty("user.dir") 
+					+ "/images\\" + selectedManager.get(0).getImage()); // 저장한 이미지의 파일이름
+			if (selectedFile != null) {
+				// 저장한 파일의 이름의 url이 null값이 아니라면!
+				localUrl = selectedFile.toURI().toURL().toString();
+				userImg = new Image(localUrl, false);
+				imgManagerUser.setImage(userImg);
+				imgManagerUser.setFitHeight(250);
+				imgManagerUser.setFitWidth(230);
+				System.out.println("들어온 image : " + userImg);
+			}
 		} catch (Exception e2) {
 			AlertDisplay.alertDisplay(3, "메니져 가져오기", "메니져를 가져올 수 없습니다.", "메니져 정보를"
 					+ " 가져오지 못했습니다.");
 		} // end of try catch
-
 	}// end of handlerTableViewSelectEvent
 	
 	
@@ -646,9 +687,7 @@ public class ManagerMainTabController implements Initializable {
 
 					switch (sendMessage[0]) {
 					case UserGameState.GAMER_WAITROOM:
-
-						tableViewSetting();
-						totalList();
+						handlerButtonTotalListAction();
 						txtMainAreaServerLog.appendText(sendMessage[1] + " : " + sendMessage[2]);
 						break;
 					case UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT:
@@ -686,9 +725,7 @@ public class ManagerMainTabController implements Initializable {
 							}
 
 						}
-						tableViewSetting();
-						totalList();
-						// txtMainAreaServerLog.appendText(sendMessage[1]+" : "+sendMessage[2]);
+						handlerButtonTotalListAction();
 
 						break;
 					default: {
@@ -700,8 +737,7 @@ public class ManagerMainTabController implements Initializable {
 
 						// 메인에 방 테이블 뷰 셋팅
 						System.out.println("여기????");
-						tableViewSetting();
-						totalList();
+						handlerButtonTotalListAction();
 						txtMainAreaServerLog.appendText(message);
 						break;
 					}
