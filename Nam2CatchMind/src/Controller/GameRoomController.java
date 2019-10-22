@@ -102,6 +102,7 @@ public class GameRoomController implements Initializable {
 		});
 		
 		btnExit.setOnAction(e -> {
+			send("welcome2"+",>>>>>"+GamerLoginController.UserId+","+"님이 "+GameWaitRoomController.roomName+"나가셨습니다.<<<<<\n");
 			Parent gameRoomRoot = null;
 			Stage gameRoomStage = null;
 			try {
@@ -312,6 +313,7 @@ public class GameRoomController implements Initializable {
 									   }
 										
 									} else {
+										send("welcome2"+",>>>>>"+GamerLoginController.UserId+","+"님이 "+GameWaitRoomController.roomName+"나가셨습니다.<<<<<\n");
 										//게임대기방 진입
 										Parent gameRoomRoot = null;
 										Stage gameRoomStage = null;
