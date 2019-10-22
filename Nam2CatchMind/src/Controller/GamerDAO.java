@@ -213,7 +213,7 @@ public class GamerDAO {
 
 	// 시작시간 찾기
 	public String getCurrentTime(String userId) {
-		String sql = "select EnterTime from  usertime where UserID like ?";
+		String sql = "select EnterTime from usertime where UserID like ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String currentTime = null;
@@ -226,12 +226,12 @@ public class GamerDAO {
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				sdf = new SimpleDateFormat("yyyy,MM,dd,HH,mm,ss");
 				Date date = rs.getTimestamp("EnterTime");
 				currentTime = sdf.format(date);
 			}
 		} catch (Exception e) {
-			AlertDisplay.alertDisplay(1, "로그인된 이미지 가져오기 오류", "로그인된 아이디와 이미지 가져오기 오류", e.toString());
+			AlertDisplay.alertDisplay(1, "시간 가져오기 오류", "시간 가져오기 오류", e.toString());
 		} finally {
 			try {
 				if (rs != null)
@@ -241,10 +241,9 @@ public class GamerDAO {
 				if (con != null)
 					con.close();
 			} catch (Exception e) {
-				AlertDisplay.alertDisplay(1, "로그인된 이미지 가져오기 오류", "로그인된 이미지 가져오기 오류창 닫기 실패", e.toString());
+				AlertDisplay.alertDisplay(1, "시간 가져오기 오류", "시간 가져오기 실패", e.toString());
 			}
 		}
-
 		return currentTime;
 	}
 
@@ -391,16 +390,16 @@ public class GamerDAO {
 		}
 		return i;
 	}
-	
-	//등록한 방 이름과 방장 이름 가져오기!
+
+	// 등록한 방 이름과 방장 이름 가져오기!
 	public ArrayList<MakeRoomVO> getMakeRoomName() {
-		
+
 		ArrayList<MakeRoomVO> list = new ArrayList<MakeRoomVO>();
 		String dml = "select * from usergameroom";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		
+
 		ResultSet rs = null;
 		MakeRoomVO MakeRoomVO = null;
 
@@ -409,8 +408,8 @@ public class GamerDAO {
 			pstmt = con.prepareStatement(dml);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				MakeRoomVO = new MakeRoomVO(rs.getString(1),rs.getString(4),rs.getString(5),rs.getString(6));
-				list.add(MakeRoomVO);		
+				MakeRoomVO = new MakeRoomVO(rs.getString(1), rs.getString(4), rs.getString(5), rs.getString(6));
+				list.add(MakeRoomVO);
 			}
 		} catch (SQLException se) {
 			System.out.println(se);
@@ -429,9 +428,9 @@ public class GamerDAO {
 		}
 		return list;
 	}
-	
-	//게임유저2 방 등록 하기 wait 상태일때만
-	public int getUser2EnterGameRoom(String userId , String makeRoomName ) {
+
+	// 게임유저2 방 등록 하기 wait 상태일때만
+	public int getUser2EnterGameRoom(String userId, String makeRoomName) {
 		String sql = "update usergameroom set Gamer2=? where RoomName=?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -465,17 +464,16 @@ public class GamerDAO {
 			}
 		}
 		return i;
-		
+
 	}
-	
-	
-	//방장의 이름으로 방이름 가져오기
+
+	// 방장의 이름으로 방이름 가져오기
 	public String getRoomNamefromGamer1(String userID) {
 		String sql = "select RoomName from usergameroom where Gamer1=?";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		String RoomName=null;
+		String RoomName = null;
 		ResultSet rs = null;
 		String Gamer1 = userID;
 		try {
@@ -485,9 +483,9 @@ public class GamerDAO {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				RoomName = rs.getString(1);
-				System.out.println("test : "+RoomName);
+				System.out.println("test : " + RoomName);
 			}
-			System.out.println("sql에서 방이름 : "+RoomName);
+			System.out.println("sql에서 방이름 : " + RoomName);
 		} catch (Exception e) {
 			AlertDisplay.alertDisplay(1, "기존에 있던 방이름 찾기 오류", "기존에 있던 방이름 찾기 오류", e.toString());
 		} finally {
@@ -504,152 +502,152 @@ public class GamerDAO {
 		}
 		return RoomName;
 	}
-	
-	//gamer2의 이름으로 방이름 가져오기
-		public String getRoomNamefromGamer2(String userID) {
-			String sql = "select RoomName from usergameroom where Gamer2=?";
 
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			String RoomName=null;
-			ResultSet rs = null;
-			String Gamer2 = userID;
-			try {
-				con = DBUtil.getConnection();
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, Gamer2);
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					RoomName = rs.getString(1);
-				}
-			} catch (Exception e) {
-				AlertDisplay.alertDisplay(1, "기존에 있던 방이름 찾기 오류", "기존에 있던 방이름 찾기 오류", e.toString());
-			} finally {
-				try {
-					if (rs != null)
-						rs.close();
-					if (pstmt != null)
-						pstmt.close();
-					if (con != null)
-						con.close();
-				} catch (Exception e) {
-					AlertDisplay.alertDisplay(1, "기존에 있던 방이름 찾기 오류", "기존에 있던 방이름 찾기 오류창 닫기 실패", e.toString());
-				}
+	// gamer2의 이름으로 방이름 가져오기
+	public String getRoomNamefromGamer2(String userID) {
+		String sql = "select RoomName from usergameroom where Gamer2=?";
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String RoomName = null;
+		ResultSet rs = null;
+		String Gamer2 = userID;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, Gamer2);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				RoomName = rs.getString(1);
 			}
-			return RoomName;
-		}
-	
-   //방이름으로 user1,user2 찾기
-		public ArrayList<MakeRoomVO> getGamer1andGamer2(String MakeRoom) {
-			String sql = "select * from usergameroom where RoomName=?";
-			MakeRoomVO mrvo;
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			String RoomName=null;
-			ResultSet rs = null;
-			ArrayList<MakeRoomVO> list = new ArrayList<MakeRoomVO>();
-			String makeRoom = MakeRoom;
+		} catch (Exception e) {
+			AlertDisplay.alertDisplay(1, "기존에 있던 방이름 찾기 오류", "기존에 있던 방이름 찾기 오류", e.toString());
+		} finally {
 			try {
-				con = DBUtil.getConnection();
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, makeRoom);
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					mrvo = new MakeRoomVO(rs.getString(4), rs.getString(5));
-					list.add(mrvo);
-				}
-				
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
 			} catch (Exception e) {
-				AlertDisplay.alertDisplay(1, "유저1,유저2 찾기 실패", "방이름으로 유저들 찾기 실패!", e.toString());
-			} finally {
-				try {
-					if (rs != null)
-						rs.close();
-					if (pstmt != null)
-						pstmt.close();
-					if (con != null)
-						con.close();
-				} catch (Exception e) {
-					AlertDisplay.alertDisplay(1, "유저찾기실패", "방이름으로 유저들 찾기 오류창 닫기 실패", e.toString());
-				}
+				AlertDisplay.alertDisplay(1, "기존에 있던 방이름 찾기 오류", "기존에 있던 방이름 찾기 오류창 닫기 실패", e.toString());
 			}
-			return list;
 		}
-		
-	//방상태 Update wait-->GameRun 
-		public int MakeRoomUpdateState(String RoomName) {
-			String sql = "update usergameroom set GameRunOrWaitState='GameRun' where RoomName=? ";
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			int i = 0;
+		return RoomName;
+	}
+
+	// 방이름으로 user1,user2 찾기
+	public ArrayList<MakeRoomVO> getGamer1andGamer2(String MakeRoom) {
+		String sql = "select * from usergameroom where RoomName=?";
+		MakeRoomVO mrvo;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String RoomName = null;
+		ResultSet rs = null;
+		ArrayList<MakeRoomVO> list = new ArrayList<MakeRoomVO>();
+		String makeRoom = MakeRoom;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, makeRoom);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				mrvo = new MakeRoomVO(rs.getString(4), rs.getString(5));
+				list.add(mrvo);
+			}
+
+		} catch (Exception e) {
+			AlertDisplay.alertDisplay(1, "유저1,유저2 찾기 실패", "방이름으로 유저들 찾기 실패!", e.toString());
+		} finally {
 			try {
-				con = DBUtil.getConnection();
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
+				AlertDisplay.alertDisplay(1, "유저찾기실패", "방이름으로 유저들 찾기 오류창 닫기 실패", e.toString());
+			}
+		}
+		return list;
+	}
 
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, RoomName);
+	// 방상태 Update wait-->GameRun
+	public int MakeRoomUpdateState(String RoomName) {
+		String sql = "update usergameroom set GameRunOrWaitState='GameRun' where RoomName=? ";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int i = 0;
+		try {
+			con = DBUtil.getConnection();
 
-				i = pstmt.executeUpdate();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, RoomName);
 
-				if (i == 1) {
-					System.out.println("방상태 업데이트 ok");
-				} else {
-					System.out.println("방상태 업데이트 실패");
-				}
+			i = pstmt.executeUpdate();
 
+			if (i == 1) {
+				System.out.println("방상태 업데이트 ok");
+			} else {
+				System.out.println("방상태 업데이트 실패");
+			}
+
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
 			} catch (SQLException e) {
-				System.out.println("e=[" + e + "]");
-			} catch (Exception e) {
-				System.out.println("e=[" + e + "]");
-			} finally {
-				try {
-					if (pstmt != null)
-						pstmt.close();
-					if (con != null)
-						con.close();
-				} catch (SQLException e) {
-				}
 			}
-			return i;
 		}
-		
-	//DB에 저장되어있는 제시어 가져오기
-		public ArrayList<KeyWordVO>  getKeyWord() {
-			String sql = "select * from  gamekeyword";
-			ArrayList<KeyWordVO> list=new ArrayList<KeyWordVO>();
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			
-			ResultSet rs = null;
-			KeyWordVO KeyWordVO= null;
+		return i;
+	}
 
-			try {
-				con = DBUtil.getConnection();
-				pstmt = con.prepareStatement(sql);
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					KeyWordVO = new KeyWordVO(rs.getString(2));
-					list.add(KeyWordVO);			
-				}
-			} catch (SQLException se) {
-				AlertDisplay.alertDisplay(1, "sql오류", "sql오류!", se.toString());
-			} catch (Exception e) {
-				AlertDisplay.alertDisplay(1, "가져오기 오류", "단어가져오기 오류!", e.toString());
-			} finally {
-				try {
-					if (rs != null)
-						rs.close();
-					if (pstmt != null)
-						pstmt.close();
-					if (con != null)
-						con.close();
-				} catch (SQLException se) {
-				}
+	// DB에 저장되어있는 제시어 가져오기
+	public ArrayList<KeyWordVO> getKeyWord() {
+		String sql = "select * from  gamekeyword";
+		ArrayList<KeyWordVO> list = new ArrayList<KeyWordVO>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		ResultSet rs = null;
+		KeyWordVO KeyWordVO = null;
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				KeyWordVO = new KeyWordVO(rs.getString(2));
+				list.add(KeyWordVO);
 			}
-			return list;
-		
+		} catch (SQLException se) {
+			AlertDisplay.alertDisplay(1, "sql오류", "sql오류!", se.toString());
+		} catch (Exception e) {
+			AlertDisplay.alertDisplay(1, "가져오기 오류", "단어가져오기 오류!", e.toString());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException se) {
+			}
 		}
-		
-	//Gamer1 과 Gamer2에 각 각 승수와 넣기
+		return list;
+
+	}
+
+	// Gamer1 과 Gamer2에 각 각 승수와 넣기
 	public int getGamer1andGamer2Result(UserGameHistroryVO ughvo) {
 		String sql = "insert into usergamehistory (UserID,Play,Win) values (?,?,?) ON DUPLICATE KEY UPDATE UserID=?,Play=Play+1,Win=Win+1";
 		Connection con = null;
@@ -683,11 +681,11 @@ public class GamerDAO {
 			} catch (SQLException e) {
 				AlertDisplay.alertDisplay(1, "DB연결해제오류", "DB연결해제 오류", e.toString());
 			}
-		}		
+		}
 		return count;
 	}
-	
-	//Gamer1의 아이디로 센스표 업데이트
+
+	// Gamer1의 아이디로 센스표 업데이트
 	public int getGamer1Sence(String userId) {
 		String sql = "update usergamehistory set Sence=Sence+1 where UserID=?";
 		Connection con = null;
@@ -721,9 +719,5 @@ public class GamerDAO {
 		}
 		return i;
 	}
-	
-	
-	
-	
-	
+
 }

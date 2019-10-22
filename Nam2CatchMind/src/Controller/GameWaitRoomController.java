@@ -182,8 +182,8 @@ public class GameWaitRoomController implements Initializable {
 		     	}
 		     });
 		
-	
-		// 화면상단에 접속 시간표시하기
+
+		// 시간등록하기
 		int Time = GamerLoginController.loginTime;
 		if (Time != 0) {
 			gdao = new GamerDAO();

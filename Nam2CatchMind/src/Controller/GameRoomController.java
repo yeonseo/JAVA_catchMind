@@ -15,7 +15,10 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -25,6 +28,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import Model.DrowInfoVO;
 import Model.KeyWordVO;
 import Model.MakeRoomVO;
@@ -98,12 +102,23 @@ public class GameRoomController implements Initializable {
 		});
 		
 		btnExit.setOnAction(e -> {
-
-			Platform.runLater(() -> {
+			Parent gameRoomRoot = null;
+			Stage gameRoomStage = null;
+			try {
+				gameRoomRoot = FXMLLoader.load(getClass().getResource("/View/GameWaitRoom.fxml"));
+				Scene scene = new Scene(gameRoomRoot);
+				gameRoomStage = new Stage();
+				gameRoomStage.setTitle("게임대기방");
+				gameRoomStage.setScene(scene);
+				gameRoomStage.setResizable(false);
+				((Stage) btnExit.getScene().getWindow()).close();
 				stopClient();
-				Platform.exit();
-				//DB지워야함...방이름으로
-			});
+				gameRoomStage.show();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 
 		});
 		
@@ -255,7 +270,14 @@ public class GameRoomController implements Initializable {
 							
 							//Gamer2가 정답일경우
 							if(sendMessage[3].equals(keyWord)) {
-							
+								/*
+								 * 방장에게는 센스표의 득표찬스
+								 * 참여자에게는 승리수 득표찬스, 플레이수 +1
+								 * */
+								
+								/*
+								 * 
+								 * */
 								if(sendMessage[2].equals(GamerLoginController.UserId)) {
 									ughvo2=new UserGameHistroryVO(Gamer2, Win);
 									 int Gamer2Win=gdao.getGamer1andGamer2Result(ughvo2);
@@ -267,13 +289,14 @@ public class GameRoomController implements Initializable {
 //									Gamer2Win++;
 									//Gamer2인경우
 //									System.out.println(GamerLoginController.UserId+"님의 win"+Gamer2Win);
-									AlertDisplay.alertDisplay(2, "정답", "정답입니다!", "센스표를 주시겠습니까?");
+									AlertDisplay.alertDisplay(2, "정답", "정답입니다!", "센스표를 방장에게!");
 									if (AlertDisplay.result.get() == ButtonType.OK) {
-										sence=true;	
-																
-									} else {
-										
+										sence=true;
+										//센스표 업뎃
 									}
+									/*
+									 * OK : 게임룸 유지 / NO : 게임대기방 진입
+									 * */
 									AlertDisplay.alertDisplay(2, "게임종료", "게임이종료되었습니다.", "계속하시겠습니까?");
 									if (AlertDisplay.result.get() == ButtonType.OK) {
 										ughvo=new UserGameHistroryVO(Gamer1, Play);
@@ -289,11 +312,22 @@ public class GameRoomController implements Initializable {
 									   }
 										
 									} else {
-										//상태대기방으로
-										
+										//게임대기방 진입
+										Parent gameRoomRoot = null;
+										Stage gameRoomStage = null;
+							            try {
+											gameRoomRoot = FXMLLoader.load(getClass().getResource("/View/GameWaitRoom.fxml"));
+											Scene scene = new Scene(gameRoomRoot);
+											gameRoomStage = new Stage();
+											gameRoomStage.setTitle("게임대기방");
+											gameRoomStage.setScene(scene);
+											gameRoomStage.setResizable(false);
+											((Stage) btnExit.getScene().getWindow()).close();
+											gameRoomStage.show();
+							            } catch (IOException e) {
+							            	AlertDisplay.alertDisplay(1, "게임 대기방 진입 실패", "게임 대기방을 불러오는데 실패했습니다.", e.toString());
+										}
 									}
-									
-									
 								}else {
 									//방장일경우
 									AlertDisplay.alertDisplay(5,"정답" ,"정답 맞춤!", "상대방이 정답을 맞췄습니다.");
