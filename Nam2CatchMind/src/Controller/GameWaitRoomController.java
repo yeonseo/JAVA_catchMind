@@ -113,6 +113,7 @@ public class GameWaitRoomController implements Initializable {
 		String path = System.getProperty("user.dir")+"/images/";
 		private File dirSave = new File(path); //이미지 저장할 폴더를 매개변수로 파일 객체 생성
 	
+		public static boolean startGame=false;
 		public static boolean hideGameStartBtn=false;
 	
 	
@@ -167,7 +168,6 @@ public class GameWaitRoomController implements Initializable {
 		        				GameRoomStart();
 		        				hideGameStartBtn=true;
 		        				send("welcome2"+UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT+GamerLoginController.UserId+"님이 "+","+roomName+"방에 입장하셨습니다. \n");
-		        				
 		        			}else {
 		        				AlertDisplay.alertDisplay(1,"방입장오류" ,"방입장오류", "wait상태에 있는방에 user2이름을 등록하지 못했습니다.");
 		        			}
@@ -736,6 +736,7 @@ public class GameWaitRoomController implements Initializable {
 						TableViewTotalMakeRoomName();	//다시 테이블뷰에 부름.!		
 						break;
 					case UserGameState.GAMER_WAITROOM : txtChatArea.appendText(sendMessage[1]+" : "+sendMessage[2]); break;
+					
 					default : {
 						/*
 						 * 업데이트가 필요한 행위를 넣어요~

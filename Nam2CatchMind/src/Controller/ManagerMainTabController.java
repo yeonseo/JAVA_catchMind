@@ -1,6 +1,10 @@
 package Controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,6 +13,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Model.DrowInfoVO;
@@ -29,7 +34,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -41,9 +48,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class ManagerMainTabController implements Initializable {
 	/*
@@ -73,12 +82,12 @@ public class ManagerMainTabController implements Initializable {
 	private Button btnMainServerClose;
 	@FXML
 	private Button btnManagerMainTabExit;
-	
+
 	/*
 	 * 메니저 관리 메인텝 (13)
 	 */
 	@FXML
-	private Tab tabManager; 
+	private Tab tabManager;
 	@FXML
 	private ImageView imgManagerUser;
 	@FXML
@@ -103,7 +112,6 @@ public class ManagerMainTabController implements Initializable {
 	private Button btnManagerSelectedDel;
 	@FXML
 	private Button btnManagerExit;
-	
 
 	ObservableList<ManagerManagmentVO> userData;
 	ObservableList<ManagerManagmentVO> userRoomData;
@@ -122,7 +130,24 @@ public class ManagerMainTabController implements Initializable {
 	Image userImg;
 	String managerMainTabFileName;
 	String loginTime;
-	
+
+	// 회원 정보 수정창
+	PasswordField userPreviousPwd;
+	PasswordField userChangePwd;
+	PasswordField userChangeCheckPwd;
+	Button btnUserPreviousCheckPwd;
+	Button btnUserCheckPwd;
+	Button btnCorrection;
+	Button btnExit;
+	Label GamerId;
+	String findPreviousPwd = null;
+	private boolean previousPwdCheck = false; // 등록하는 순간 기존패스워드 확인버튼을 눌렀는지 체크
+	private boolean changePwdCheck = false; // 등록하는 순간 변경할 비밀번호 체크혹인 버튼을 눌렀는지 체크
+	// 이미지 찾기(회원 정보 수정창)
+	Button btnChangeImage;
+	ImageView userChangeImage;
+	private String selectFileName = "";
+	String fileName;
 
 	GamerDAO gdao;
 	UserVO uvo;
@@ -140,14 +165,18 @@ public class ManagerMainTabController implements Initializable {
 	private ObservableList<ManagerManagmentVO> selectedRoom;
 	private int selectedRoomIndex;
 	private String enteringRoomName;
+	// 테이블 뷰에서 클릭시 메니저 가져오기
 	private ObservableList<ManagerManagmentVO> selectedManager;
 	private int selectedManagerIndex;
 	private String selectingManagerName;
-	
-	
+
 	// 정보를 가져오기 위한 경로지정
 	private File selectedFile = null;
 	private String localUrl = "";
+
+//	private File dirSave = new File("C://남채현/java/java_img"); //이미지 저장할 폴더를 매개변수로 파일 객체 생성
+	String path = System.getProperty("user.dir") + "/images/";
+	private File dirSave = new File(path); // 이미지 저장할 폴더를 매개변수로 파일 객체 생성
 
 	ObservableList<DrowInfoVO> drowData;
 
@@ -172,8 +201,10 @@ public class ManagerMainTabController implements Initializable {
 		// 로그인한 관리자의 정보 보이기
 		getUserIDandUserImage();
 		handlerUserInfoShow();
+		// 로그인한 본인의정보 수정하기
 		btnMainTabUserEdit.setOnAction(e -> {
 			handlerBtnMyInfoChangeAtion(e);
+			handlerButtonTotalListAction();
 		});
 		btnMainLoginTimeChart.setOnAction(e2 -> {
 			handlerBtnMainLoginTimeChartAction(e2);
@@ -190,38 +221,27 @@ public class ManagerMainTabController implements Initializable {
 			handlerTableViewEnterGameRoomAction(e4);
 		});
 
-		// 시간등록하기
-		int Time = ManagerLoginController.loginTime;
-		if (Time != 0) {
-			gdao = new GamerDAO();
-			loginTime = gdao.getCurrentTime(userId);
-		} else {
-			System.out.println("시간 등록안됨");
-		}
+		
 
 		/*
 		 * 
-		 * [ 탭 ] 관리자 관리(나중에 텝으로 묶기)
-		 * 아이디 패스워드 권한 이미지 상태
+		 * [ 탭 ] 관리자 관리(나중에 텝으로 묶기) 아이디 패스워드 권한 이미지 상태
 		 * 
 		 */
 		tableViewManagerSetting();
 		handlerManagerInfoGet();
-		
+
 		btnManagerChart.setOnAction(e5 -> {
 			handlerBtnMainLoginTimeChartAction(e5);
 		});
-		// 관리자 관리 탭
+		// 관리자 권한 상승시키기
 		btnManagerUserEdit.setOnAction(e6 -> {
-			((Stage) btnMainTabUserEdit.getScene().getWindow()).close();
-			handlerBtnMyInfoChangeAtion(e6);
+			handlerBtnManagerUserEditAction(e6);
 		});
 		// 클릭 정보가져오기
 		tableViewManager.setOnMousePressed(e7 -> {
-			handlerMangagerTableViewSelectEvent(e7);
+			handlerMangagerTableViewSelectEvent();
 		});
-		
-
 
 		// 나가기
 		btnManagerMainTabExit.setOnAction(e999 -> {
@@ -307,29 +327,226 @@ public class ManagerMainTabController implements Initializable {
 
 	}
 
-	/*
-	 * 정보 수정하기 Controller.ManagerMyInfoChangeController userChangeImage
-	 * btnChangeImage btnUserPreviousCheckPwd btnCorrection btnExit userId
-	 * userPreviousPwd userChangeCheckPwd userChangePwd
-	 */
+	// 내정보 수정하기(모달창)
 	public void handlerBtnMyInfoChangeAtion(ActionEvent e) {
 		Parent MyInfoChangeRoot = null;
 		Stage MyInfoChangeStage = null;
-		selectedID = ManagerLoginController.UserId;
 		try {
-			MyInfoChangeRoot = FXMLLoader.load(getClass().getResource("/View/ManagerMyInfoChange.fxml"));
-			Scene scene = new Scene(MyInfoChangeRoot);
-			MyInfoChangeStage = new Stage();
-			MyInfoChangeStage.setTitle("정보수정");
+			MyInfoChangeRoot = FXMLLoader.load(getClass().getResource("/View/MyInfoChange.fxml"));
+			MyInfoChangeStage = new Stage(StageStyle.UTILITY);
 			MyInfoChangeStage.initModality(Modality.WINDOW_MODAL);
-			MyInfoChangeStage.initOwner(btnMainServerOpen.getScene().getWindow());
+			MyInfoChangeStage.initOwner(btnMainTabUserEdit.getScene().getWindow());
+			MyInfoChangeStage.setTitle("내정보수정");
 			MyInfoChangeStage.setResizable(false);
+
+			userChangeImage = (ImageView) MyInfoChangeRoot.lookup("#userChangeImage");
+			userPreviousPwd = (PasswordField) MyInfoChangeRoot.lookup("#userPreviousPwd");
+			userChangePwd = (PasswordField) MyInfoChangeRoot.lookup("#userChangePwd");
+			userChangeCheckPwd = (PasswordField) MyInfoChangeRoot.lookup("#userChangeCheckPwd");
+			btnUserPreviousCheckPwd = (Button) MyInfoChangeRoot.lookup("#btnUserPreviousCheckPwd");
+			btnChangeImage = (Button) MyInfoChangeRoot.lookup("#btnChangeImage");
+			btnUserCheckPwd = (Button) MyInfoChangeRoot.lookup("#btnUserCheckPwd");
+			btnCorrection = (Button) MyInfoChangeRoot.lookup("#btnCorrection");
+			btnExit = (Button) MyInfoChangeRoot.lookup("#btnExit");
+			GamerId = (Label) MyInfoChangeRoot.lookup("#userId");
+
+			// 로그인된 아이디
+			GamerId.setText(userId);
+
+			// 기존 이미지 가져오기
+			userChangeImage.setImage(userImg);
+
+			// 기존 이미지 바꾸기
+			btnChangeImage.setOnAction(e1 -> {
+				handlerBtnChangeImageAction(e1);
+			});
+
+			// 기존 비밀번호 체크확인
+			btnUserPreviousCheckPwd.setOnAction(e1 -> {
+				handlerBtnUserPreviousCheckPwdAction(e1);
+			});
+
+			// 변경 비밀번호 체크확인
+			btnUserCheckPwd.setOnAction(e1 -> {
+				handlerbtnUserCheckPwdAction(e1);
+			});
+
+			// 전체 정보 저장 (비밀번호 and 이미지)
+			btnCorrection.setOnAction(e1 -> {
+				handlerBtnCorrectionAction(e1);
+			});
+
+			// 나가기
+			btnExit.setOnAction(e1 -> {
+				((Stage) btnExit.getScene().getWindow()).close();
+			});
+
+			Scene scene = new Scene(MyInfoChangeRoot);
 			MyInfoChangeStage.setScene(scene);
-			((Stage) btnManagerMainTabExit.getScene().getWindow()).close();
 			MyInfoChangeStage.show();
+
 		} catch (IOException e1) {
 			AlertDisplay.alertDisplay(1, "내정보수정 창 가져오기 오류", "내정보수정 창 가져오기 오류", e1.toString());
 		}
+
+	}
+
+	// 전체 정보 저장 (비밀번호 and 이미지)
+	public void handlerBtnCorrectionAction(ActionEvent e1) {
+		if (userPreviousPwd.getText().equals("") || userChangePwd.getText().equals("")
+				|| userChangeCheckPwd.getText().equals("") || localUrl == null) {
+
+			AlertDisplay.alertDisplay(1, "정보미기입", "정보 미기입", "미기입된 정보가 있습니다. 다시 확인해주세요!");
+			return;
+		}
+		if (previousPwdCheck != true) {
+			AlertDisplay.alertDisplay(1, "기존비밀번호 확인", "기존 비밀번호 확인 요망!", "기존 비밀번호 확인 버튼을 눌러 확인해주세요!");
+			return;
+		}
+		if (changePwdCheck != true) {
+			AlertDisplay.alertDisplay(1, "변경 비밀번호 확인", "변경할 비밀번호 확인 요망!", "변경할 비밀번호 확인 버튼을 눌러 " + "비밀번호를 다시 확인해주세요!");
+			return;
+		}
+		gdao = new GamerDAO();
+
+		int i = gdao.getUserPwdChange(userChangePwd.getText(), userId);
+		if (i == 1 && previousPwdCheck == true && changePwdCheck == true) {
+
+			if (userChangePwd.getText().equals(userChangeCheckPwd.getText())) {
+
+				changUserImage(); // 이미지 DB 으로 저장
+				AlertDisplay.alertDisplay(5, "내정보수정", "내 정보 수정 성공!", "이미지와 비밀번호를 수정하였습니다.");
+				((Stage) btnExit.getScene().getWindow()).close();
+				getUserIDandUserImage();
+
+			} else {
+				AlertDisplay.alertDisplay(1, "비밀번호확인", "비밀번호가 다릅니다,", "비밀번호를 다시 확인해주세요!");
+			}
+
+		} else {
+			AlertDisplay.alertDisplay(1, "내정보수정 실패", "내 정보 수정 실패", "이미지와 비밀번호를 수정하는데 실패했습니다.");
+		}
+	}
+
+	// 변경 비밀번호 체크확인
+	public void handlerbtnUserCheckPwdAction(ActionEvent e1) {
+		if (userChangePwd.getText().equals("") || userChangeCheckPwd.getText().equals("")) {
+			AlertDisplay.alertDisplay(1, "비밀번호확인", "변경 비밀번호 미입력!", "바꿀 비밀번호를 입력해주세요!");
+			return;
+		}
+		if (userChangePwd.getText().equals(findPreviousPwd)) {
+			AlertDisplay.alertDisplay(1, "비밀번호확인", "기존에 비밀번호와 중복됩니다.", "바꿀 비밀번호를 입력해주세요!");
+			return;
+		}
+		if (userChangePwd.getText().equals(userChangeCheckPwd.getText())) {
+			AlertDisplay.alertDisplay(5, "비밀번호확인", "비밀번호 일치합니다!", "비밀번호 변경이 가능합니다.");
+			changePwdCheck = true;
+		} else {
+			AlertDisplay.alertDisplay(1, "비밀번호확인", "비밀번호가 다릅니다,", "비밀번호를 다시 확인해주세요!");
+		}
+	}
+
+	// 기존 비밀번호 체크확인
+	public void handlerBtnUserPreviousCheckPwdAction(ActionEvent e1) {
+
+		gdao = new GamerDAO();
+		findPreviousPwd = gdao.getUserPreviousCheck(userId);
+		if (userPreviousPwd.getText().equals("")) {
+			AlertDisplay.alertDisplay(1, "비밀번호확인", "변경 비밀번호 미입력!", "바꿀 비밀번호를 입력해주세요!");
+			return;
+		}
+		if (userPreviousPwd.getText().equals(findPreviousPwd)) {
+			AlertDisplay.alertDisplay(5, "기존비밀번호확인", "기존 비밀번호 확인", "비밀번호 변경이 가능합니다.");
+			previousPwdCheck = true; // 기존 비밀번호를 체크를 해야 비밀번호를 바꿀 수 있다.
+		} else {
+			AlertDisplay.alertDisplay(1, "기존 비밀번호확인", "기존에 비밀번호와 맞지않습니다.", "다시 확인해주세요!");
+		}
+
+	}
+
+	// 기존 이미지 바꾸기
+	public void handlerBtnChangeImageAction(ActionEvent e1) {
+		// 이미지 선택
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters()
+				.addAll(new ExtensionFilter("Image File", "*.png", "*.jpg", "*.gif", "*.jpeg"));
+		try {
+			selectedFile = fileChooser.showOpenDialog(btnChangeImage.getScene().getWindow());
+			if (selectedFile != null) {
+				// 이미지 파일 경로
+				localUrl = selectedFile.toURI().toURL().toString(); // 선택된 이미지 파일 경로를 저장
+				selectFileName = selectedFile.getName();// 선택된 이미지 이름!! 도 저장함.
+
+			} else {
+				AlertDisplay.alertDisplay(1, "이미지오류", "이미지 선택요망!", "이미지를 선택해주세요!");
+			}
+			userImg = new Image(localUrl, false); // 이미지 객체
+			userChangeImage.setImage(userImg);
+			userChangeImage.setFitHeight(350);
+			userChangeImage.setFitWidth(350);
+
+		} catch (Exception e2) {
+			AlertDisplay.alertDisplay(1, "이미지오류", "이미지를 찾기, 수정 오류!",
+					"선택된 이미지 파일경로 오류, 선택된 이미지 이름 저장 오류" + e1.toString());
+		}
+
+	}
+
+	// 이미지 저장
+	public String imageSave(File file1) {
+		BufferedInputStream bis = null;
+		BufferedOutputStream bos = null;
+
+		int data = -1;
+		String fileName = null;
+		try {
+			// 이미지 파일명 생성
+			fileName = "changeImage" + System.currentTimeMillis() + "_" + file1.getName();
+			bis = new BufferedInputStream(new FileInputStream(file1)); // 선택한 파일 이미지를 읽어옴.
+			bos = new BufferedOutputStream(new FileOutputStream(dirSave.getAbsolutePath() + "\\" + fileName)); // 이미지를
+																												// 보냄!
+
+			// 선택한 이미지 파일 InputStream의 마지막에 이르렀을 경우는 -1
+			while ((data = bis.read()) != -1) {
+				bos.write(data);
+				bos.flush();
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		} finally {
+			try {
+				if (bos != null) {
+					bos.close();
+				}
+				if (bis != null) {
+					bis.close();
+				}
+			} catch (IOException e) {
+				e.getMessage();
+			}
+		}
+		return fileName; // << String 으로 리턴값
+	}
+
+	// 이미지 DB로 저장
+	public void changUserImage() {
+		try {
+			File dirMake = new File(dirSave.getAbsolutePath());
+			if (!dirMake.exists()) {
+				dirMake.mkdir();
+			}
+			// 이미지 파일 저장
+			fileName = imageSave(selectedFile);
+			System.out.println("fileName :" + selectedFile);
+			System.out.println(userPreviousPwd.getText());
+			System.out.println(fileName);
+			gdao = new GamerDAO();
+
+			gdao.getUserImageChange(fileName, userPreviousPwd.getText());
+		} catch (Exception e1) {
+			AlertDisplay.alertDisplay(1, "이미지오류", "이미지등록 오류!", "선택된 이미지 이름 저장 오류" + e1.toString());
+		}
+
 	}
 
 	/*
@@ -457,7 +674,6 @@ public class ManagerMainTabController implements Initializable {
 
 	}// end of handlerPieChartAction
 
-
 	/*
 	 * 그림을 그리기 위한 변수
 	 * 
@@ -482,10 +698,8 @@ public class ManagerMainTabController implements Initializable {
 			PieChart chart = (PieChart) pieChart.lookup("#pieChart");
 			Button btnClose = (Button) pieChart.lookup("#btnClose");
 
-			chart.setData(FXCollections.observableArrayList(
-					new PieChart.Data("총점", (double) 3.4),
-					new PieChart.Data("1점", (double) 3.4), 
-					new PieChart.Data("2점", (double) 3.4)));
+			chart.setData(FXCollections.observableArrayList(new PieChart.Data("총점", (double) 3.4),
+					new PieChart.Data("1점", (double) 3.4), new PieChart.Data("2점", (double) 3.4)));
 
 			btnClose.setOnAction(e22 -> {
 				stage.close();
@@ -502,7 +716,6 @@ public class ManagerMainTabController implements Initializable {
 
 	}
 
-	
 	/*
 	 * 유저 관리 탭을 위한 함수들
 	 */
@@ -517,34 +730,34 @@ public class ManagerMainTabController implements Initializable {
 
 		tableViewManager.setEditable(true);
 		tableView.isResizable();
-		//ui.UserID, ui.UserAccess, ui.UserImage, ugs.ThreadState
-		TableColumn managerName = new TableColumn("UserID");
+		// ui.UserID, ui.UserAccess, ui.UserImage, ugs.ThreadState
+		TableColumn managerName = new TableColumn("ID");
 		managerName.setMaxWidth(160);
 		managerName.setStyle("-fx-alignment: CENTER;");
 		managerName.setCellValueFactory(new PropertyValueFactory("UserID"));
 
-		TableColumn managerAccess = new TableColumn("UserAccess");
+		TableColumn managerAccess = new TableColumn("권한 단계");
 		managerAccess.setMaxWidth(160);
 		managerAccess.setStyle("-fx-alignment: CENTER;");
 		managerAccess.setCellValueFactory(new PropertyValueFactory("UserAccess"));
 
-		TableColumn threadState = new TableColumn("ThreadState");
+		TableColumn threadState = new TableColumn("접속상태");
 		threadState.setMaxWidth(160);
 		threadState.setStyle("-fx-alignment: CENTER;");
 		threadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
 
-		TableColumn managerImage = new TableColumn("UserImage");
-		managerImage.setMaxWidth(160);
-		managerImage.setStyle("-fx-alignment: CENTER;");
-		managerImage.setCellValueFactory(new PropertyValueFactory("UserImage"));
+//		TableColumn managerImage = new TableColumn("이미지");
+//		managerImage.setMaxWidth(160);
+//		managerImage.setStyle("-fx-alignment: CENTER;");
+//		managerImage.setCellValueFactory(new PropertyValueFactory("UserImage"));
 
 		tableViewManager.setItems(managerData);
-		tableViewManager.getColumns().addAll(managerName, managerAccess, threadState, managerImage);
+		tableViewManager.getColumns().addAll(managerName, managerAccess, threadState/*,managerImage*/);
 
 	}// end of tableViewSetting
 
 	// 테이블 뷰를 새로고침하기 위한 함수
-	private void handlerManagerDataTableReloadAction(ActionEvent e9) {
+	private void handlerManagerDataTableReloadAction() {
 		try {
 			managerData.removeAll(managerData);
 			handlerManagerInfoGet();
@@ -575,16 +788,13 @@ public class ManagerMainTabController implements Initializable {
 	} // end of totalList
 
 	// 테이블 클릭, 선택시, 메니저이름 가지고 오고, 상단에 정보 표시하기
-	private void handlerMangagerTableViewSelectEvent(MouseEvent e3) {
+	private void handlerMangagerTableViewSelectEvent() {
 		try {
 			/*
-			 * UserID = userID;
-		UserPassword = userPassword;
-		UserAccess = userAccess;
-		Image = image;
-		ThreadState = threadState;
+			 * UserID = userID; UserPassword = userPassword; UserAccess = userAccess; Image
+			 * = image; ThreadState = threadState;
 			 * 
-			 * */
+			 */
 			selectedManagerIndex = tableViewManager.getSelectionModel().getSelectedIndex();
 			selectedManager = tableViewManager.getSelectionModel().getSelectedItems();
 
@@ -604,9 +814,10 @@ public class ManagerMainTabController implements Initializable {
 			}
 			userState = selectedManager.get(0).getThreadState();
 			lblManagerState.setText(userState);
-			
-			selectedFile = new File(System.getProperty("user.dir") 
-					+ "/images\\" + selectedManager.get(0).getImage()); // 저장한 이미지의 파일이름
+
+			selectedFile = new File(System.getProperty("user.dir") + "/images\\" + selectedManager.get(0).getImage()); // 저장한
+																														// 이미지의
+																														// 파일이름
 			if (selectedFile != null) {
 				// 저장한 파일의 이름의 url이 null값이 아니라면!
 				localUrl = selectedFile.toURI().toURL().toString();
@@ -617,31 +828,47 @@ public class ManagerMainTabController implements Initializable {
 				System.out.println("들어온 image : " + userImg);
 			}
 		} catch (Exception e2) {
-			AlertDisplay.alertDisplay(3, "메니져 가져오기", "메니져를 가져올 수 없습니다.", "메니져 정보를"
-					+ " 가져오지 못했습니다.");
+			AlertDisplay.alertDisplay(3, "메니져 가져오기", "메니져를 가져올 수 없습니다.", "메니져 정보를" + " 가져오지 못했습니다.");
 		} // end of try catch
 	}// end of handlerTableViewSelectEvent
-	
-	
-	// 채현이꺼 받아서 적용하기!!!
-	public void handlerBtnUserInfoChangeAtion(ActionEvent e) {
-		Parent MyInfoChangeRoot = null;
-		Stage MyInfoChangeStage = null;
-		selectedID=selectingManagerName;//테이블에서 값 가지고 오기
+
+	// 관리자 권한 상승시키기
+	private void handlerBtnManagerUserEditAction(ActionEvent e6) {
 		try {
-			MyInfoChangeRoot = FXMLLoader.load(getClass().getResource("/View/ManagerMyInfoChange.fxml"));
-			Scene scene = new Scene(MyInfoChangeRoot);
-			MyInfoChangeStage = new Stage();
-			MyInfoChangeStage.setTitle("정보수정");
-			MyInfoChangeStage.initModality(Modality.WINDOW_MODAL);
-			MyInfoChangeStage.initOwner(btnMainServerOpen.getScene().getWindow());
-			MyInfoChangeStage.setResizable(false);
-			MyInfoChangeStage.setScene(scene);
-			((Stage) btnManagerMainTabExit.getScene().getWindow()).close();
-			MyInfoChangeStage.show();
-		} catch (IOException e1) {
-			AlertDisplay.alertDisplay(1, "내정보수정 창 가져오기 오류", "내정보수정 창 가져오기 오류", e1.toString());
+			switch (selectedManager.get(0).getUserAccess()) {
+			case 1:
+				AlertDisplay.alertDisplay(2, "권한수정", "권한을 상승합니다", "수정하시겠습니까?");
+				if (AlertDisplay.result.get() == ButtonType.OK) {
+					
+					//여기 수정중!!!
+					mmdao = new ManagerManagmentDAO();
+					mmdao.setManagerAccess(selectedManager.get(0).getUserID(),2);
+					AlertDisplay.alertDisplay(5, "권한수정", "권한을 상승합니다", "정식관리자로 변경합니다.");
+					handlerManagerDataTableReloadAction();
+					lblManagerAccess.setText("정식관리자");
+				} else {
+					AlertDisplay.alertDisplay(5, "권한유지", "권한을 유지합니다", "예비관리자입니다.");
+				} break;
+			case 2:
+				AlertDisplay.alertDisplay(2, "권한수정", "권한을 뺏습니다", "수정하시겠습니까?");
+				if (AlertDisplay.result.get() == ButtonType.OK) {
+					AlertDisplay.alertDisplay(5, "권한수정", "권한을 수정합니다", "예비관리자로 변경합니다.");
+					mmdao = new ManagerManagmentDAO();
+					mmdao.setManagerAccess(selectedManager.get(0).getUserID(),1);
+					System.out.println("testtest6");
+					handlerManagerDataTableReloadAction();
+					lblManagerAccess.setText("예비관리자");
+				} else {
+					AlertDisplay.alertDisplay(5, "권한유지", "권한을 유지합니다", "정식관리자입니다.");
+				} break;
+			case 3:
+				AlertDisplay.alertDisplay(5, "최고관리자", "최고 권한의 사용자입니다.", "수정이 불가합니다.");
+				break;
+			}
+		} catch (Exception e) {
+
 		}
+
 	}
 
 	Socket socket;
@@ -693,7 +920,7 @@ public class ManagerMainTabController implements Initializable {
 					case UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT:
 						if (sendMessage[1].equals(enteringRoomName)) {
 							if (sendMessage[2].startsWith("NoDrow")) {
-								txtTextArea.appendText("안 그릴꺼얏!!\n");
+//								txtTextArea.appendText("안 그릴꺼얏!!\n");
 								String drowMessage = message;
 								String[] array = drowMessage.split(",");
 								double x = Double.parseDouble(array[3]);
@@ -708,7 +935,7 @@ public class ManagerMainTabController implements Initializable {
 
 								drow.paint(g);
 							} else if (sendMessage[2].startsWith("Drow")) {
-								txtTextArea.appendText("그릴꺼얏!!\n");
+//								txtTextArea.appendText("그릴꺼얏!!\n");
 								String drowMessage = message;
 								String[] array = drowMessage.split(",");
 								double x = Double.parseDouble(array[3]);
@@ -736,9 +963,8 @@ public class ManagerMainTabController implements Initializable {
 						 */
 
 						// 메인에 방 테이블 뷰 셋팅
-						System.out.println("여기????");
 						handlerButtonTotalListAction();
-						txtMainAreaServerLog.appendText(message);
+
 						break;
 					}
 					}

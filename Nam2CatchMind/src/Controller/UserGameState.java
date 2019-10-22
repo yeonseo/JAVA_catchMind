@@ -20,9 +20,10 @@ public class UserGameState {
 	 * */
 	public static final String GAMER_WAITROOM = "GAMER_WAITROOM";
 	public static final String GAMER_GAMEROOM_ENTER_AND_WAIT = "GAMER_GAMEROOM_ENTER_AND_WAIT";
-	public static final String GAMER_GAMEROOM_ENTER_AND_START = "AMER_GAMEROOM_ENTER_AND_START";
+	public static final String GAMER_GAMEROOM_ENTER_AND_START = "GAMER_GAMEROOM_ENTER_AND_START";
 	public static final String GAMER_GAMEROOM_OUT_AND_WAITROOM = "GAMER_GAMEROOM_OUT_AND_WAITROOM";
 	public static final String GAMER_OFFLINE = "GAMER_OFFLINE";
+	
 
 
 }

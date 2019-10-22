@@ -55,7 +55,6 @@ public class ManagerLoginController implements Initializable {
 	
 	public  ArrayList<UserVO> list;
 	public static String UserId;
-	public static int loginTime;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -117,9 +116,9 @@ public class ManagerLoginController implements Initializable {
 				} else {
 					throw new Exception("상태 데이터베이스 등록실패!");
 				}
-				//현재시간 등록	
-				gdao=new GamerDAO();
-				loginTime=gdao.setCurrentTime(UserId);
+				//현재시간 디비에 저장하기
+				mmdao=new ManagerManagmentDAO();
+				mmdao.setEnterTime(UserId);
 				
 	            System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.MANAGER_ONLINE);
 	            
@@ -134,7 +133,7 @@ public class ManagerLoginController implements Initializable {
 					gameRoomStage.setResizable(false);
 					((Stage) btnExit.getScene().getWindow()).close();
 					gameRoomStage.show();
-					AlertDisplay.alertDisplay(5, "로그인 성공", usvo.getUserID() + " 관리자님, 안녕하세요.", "접속시간은 " + loginTime + " 입니다.");
+					AlertDisplay.alertDisplay(5, "로그인 성공", usvo.getUserID() + " 관리자님, 안녕하세요.", "접속시간은 " + "고치세요!!" + " 입니다.");
 	            }catch(Exception fxml) {
 	            	AlertDisplay.alertDisplay(1, "fmxl 실패", "메니저 메인을 불러오는데 실패했습니다.", fxml.toString());
 	            }

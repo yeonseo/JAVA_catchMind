@@ -92,7 +92,7 @@ public class ManagerManagmentDAO {
 	}
 
 	/*
-	 * 관리자의 정보를 가지고 오기위한 함수
+	 * 특정 관리자의 정보를 가지고 오기위한 함수
 	 * 
 	 * String userID, String userPassword, int userAccess, String image, String
 	 * threadState,String enterTime, String outTime
@@ -221,6 +221,10 @@ public class ManagerManagmentDAO {
 		return list;
 	}
 
+	
+	/*
+	 * 관리자 관리 탭에서 관리자 정보를 가져올 함수
+	 * */
 	public ArrayList<ManagerManagmentVO> getTableViewManagerInfoTotal() {
 		ArrayList<ManagerManagmentVO> list = new ArrayList<ManagerManagmentVO>();
 		String dml = "SELECT ui.UserID, ui.UserPassword, ui.UserAccess, ui.UserImage, ugs.ThreadState " + 
@@ -258,6 +262,46 @@ public class ManagerManagmentDAO {
 			}
 		}
 		return list;
+	}
+	
+	/*
+	 * 관리자의 권한을 바꾸기 위한 함수
+	 */
+	public int setManagerAccess(String managerID, int managerAccess) {
+		String sql = "update Nam2CatchMind.UserInfo set UserAccess =? where UserID=?";
+		System.out.println("ttt1");
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		System.out.println("ttt2");
+		int count = 0;
+		try {
+			con = DBUtil.getConnection();
+			System.out.println("ttt3");
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, managerAccess);
+			pstmt.setString(2, managerID);
+			count = pstmt.executeUpdate();
+			System.out.println("ttt4");
+			if (count == 1) {
+				AlertDisplay.alertDisplay(5, "권한 수정", "권한 수정성공!", "권한 수정되었습니다.");
+			} else {
+
+				AlertDisplay.alertDisplay(1, "권한 수정", "권한 수정실패", "권한 수정하는데 실패했습니다.");
+			}
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+			}
+		}
+		return count;
 	}
 
 }

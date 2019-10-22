@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import Model.DrowInfoVO;
+import Model.KeyWordVO;
 import Model.MakeRoomVO;
 
 public class GameRoomController implements Initializable {
@@ -38,12 +39,15 @@ public class GameRoomController implements Initializable {
 	@FXML Button btnSend;
 	@FXML Button btnGameStart;
 	@FXML Button btnExit;
+	String Gamer2;
+	String keyWord; //랜덤 단어 
 	
 	String userState = UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT;
 	
 	GamerDAO gdao;
 	ArrayList<MakeRoomVO> mrvoList;
 	ObservableList<DrowInfoVO> drowData;
+	
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -57,14 +61,13 @@ public class GameRoomController implements Initializable {
 			//방장에 이름으로 방이름 보내기
 			send("welcome2"+","+GamerLoginController.UserId+","+"님이"+GameWaitRoomController.roomName+"에 입장하셨습니다.\n");
 		});
+		//방장 버튼, 캔버스 초기화
+		BtnInitialization();
+	
 		
-		btnGameStart.setDisable(false);
-		canvas.setDisable(true);
-		btnStrColorBlack.setDisable(true);
-		btnStrColorBlue.setDisable(true);
-		btnStrColorRed.setDisable(true);
 		// 게임시작 버튼!
 		btnGameStart.setOnAction(e->{  handlerBtnGameStartAction(e);   });
+			
 		
 		
 		//메시지 시작 버튼!
@@ -76,11 +79,14 @@ public class GameRoomController implements Initializable {
 			 * > A < 게임방에서는 방이름까지 합쳐서 던저주는 걸로 바꿨어용~~~~
 			 * 
 			 * */
-			send(userState + "," + GameWaitRoomController.roomName + "," + GamerLoginController.UserId + "," + txtTextField.getText() + "\n");
+			send(userState + "," + GameWaitRoomController.roomName + "," + GamerLoginController.UserId + "," + txtTextField.getText() + ","+"\n");
 			System.out.println(userState + "," + GameWaitRoomController.roomName + "," + GamerLoginController.UserId + "," + txtTextField.getText());
 			/**여기까지 바꿨어용~~~~~~**/
 			txtTextField.setText("");
 			txtTextField.requestFocus();
+			
+		
+		
 		});
 		
 		btnExit.setOnAction(e -> {
@@ -88,31 +94,55 @@ public class GameRoomController implements Initializable {
 			Platform.runLater(() -> {
 				stopClient();
 				Platform.exit();
+				//DB지워야함...방이름으로
 			});
 
 		});
 		
 		
 	}
+	public void BtnInitialization() {
+		btnGameStart.setDisable(false);
+		txtTextArea.setEditable(false);
+		canvas.setDisable(true);
+		btnStrColorBlack.setDisable(true);
+		btnStrColorBlue.setDisable(true);
+		btnStrColorRed.setDisable(true);
+	}
 	//게임시작버튼
 	public void handlerBtnGameStartAction(ActionEvent e) {
+		GameWaitRoomController.startGame=true;
 		gdao=new GamerDAO();
 		mrvoList=gdao.getGamer1andGamer2(GameWaitRoomController.roomName);
-		String Gamer2=mrvoList.get(0).getGamer2(); //방이름을 통해 유저2 가  null인지 판단.
-		if(Gamer2 !=null) {		
-			AlertDisplay.alertDisplay(5,"게임시작" ,"게임을 시작합니다!", "즐거운 플레이되세요!>_<");
-			canvas.setDisable(false);
-			btnStrColorBlack.setDisable(false);
-			btnStrColorBlue.setDisable(false);
-			btnStrColorRed.setDisable(false);
-			//방상태 업데이트 gameRun
-			int i=gdao.MakeRoomUpdateState(GameWaitRoomController.roomName);
-			if(i==1) {
-				AlertDisplay.alertDisplay(5,"방상태 업데이트" ,"방상태 업데이트 성공", "방상태 업데이트 성공!");
-				send("roomStateUpdate"+","+UserGameState.GAMER_WAITROOM);
-			}else {
-				AlertDisplay.alertDisplay(1,"방상태업데이트오류" ,"방상태 업데이트 오류!", "방상태 등록오류!");
-			}
+		Gamer2=mrvoList.get(0).getGamer2(); //방이름을 통해 유저2 가  null인지 판단.
+		if(Gamer2 !=null) {	
+			
+				AlertDisplay.alertDisplay(5,"게임시작" ,"게임을 시작합니다!", "즐거운 플레이되세요!>_<");
+				canvas.setDisable(false);
+				btnStrColorBlack.setDisable(false);
+				btnStrColorBlue.setDisable(false);
+				btnStrColorRed.setDisable(false);
+				
+				
+				//DB에 등록된 제시어 가져오기!		
+				startGetKeyWord();
+				send(UserGameState.GAMER_GAMEROOM_ENTER_AND_START 
+						+","+GameWaitRoomController.roomName+","
+						+GamerLoginController.UserId +","
+						+">>>>게임이 시작되었습니다!<<<<\n"+","+keyWord);
+				//방상태 업데이트 gameRun
+				int i=gdao.MakeRoomUpdateState(GameWaitRoomController.roomName);
+				if(i==1) {
+					AlertDisplay.alertDisplay(5,"방상태 업데이트" ,"방상태 업데이트 성공", "방상태 업데이트 성공!");
+					//테이블 업데이트용 메세지 전송
+					send("roomStateUpdate"+","+UserGameState.GAMER_WAITROOM);
+				}else {
+					AlertDisplay.alertDisplay(1,"방상태업데이트오류" ,"방상태 업데이트 오류!", "방상태 등록오류!");
+				}
+				
+				btnGameStart.setDisable(true);
+				txtTextField.setDisable(true);
+				
 			
 		}else {
 			AlertDisplay.alertDisplay(1,"게임시작" ,"게임시작을 할수 없습니다.", "다른 유저가 올때까지 기다려야합니다...ㅠㅠㅠ");
@@ -120,6 +150,14 @@ public class GameRoomController implements Initializable {
 		
 	}
 
+	//제시어 가져오기!
+	public void startGetKeyWord() {
+		gdao=new GamerDAO();
+		ArrayList<KeyWordVO>list=gdao.getKeyWord();
+		int random=(int)(Math.random()*(list.size()-1+1)+0);
+		keyWord=list.get(random).getKeyWord();
+		word.setText(keyWord);
+	}
 
 	Socket socket;
 
@@ -160,7 +198,6 @@ public class GameRoomController implements Initializable {
 					// 게임 대기방의 메세지 받기
 					// 새로고침을 위한 옵션
 					String[] sendMessage = messageSplit(message);
-					
 					switch (sendMessage[0]) {
 					
 					case "welcome2" : txtTextArea.appendText(sendMessage[1]+sendMessage[2]);	
@@ -171,49 +208,57 @@ public class GameRoomController implements Initializable {
 							btnStrColorBlue.setDisable(true);
 							btnStrColorRed.setDisable(true);
 						}
+						break;
+					case UserGameState.GAMER_GAMEROOM_ENTER_AND_START : 		
+						txtTextArea.appendText(sendMessage[3]);
 						
-					
+						if(!(sendMessage[2].equals(GamerLoginController.UserId ))) {
+							//방장이 아닌  user2 상태에서 
+							System.out.println(keyWord);
+							keyWord=sendMessage[4];
+//							word.setText(keyWord);
+							word.setText("맞춰봥");
+						}
 						break;
 					case UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT:
 						System.out.println("확인 : " + sendMessage[2]);
-						
 						if(sendMessage[1].equals(GameWaitRoomController.roomName)) {
-									
+							//게임이 시작되었습니다. 메세지
+							if(sendMessage[3].equals(keyWord)) {
+								txtTextArea.appendText("정답입니다아아아아아아아ㅏ아앙");
+							}
 							
-									if (sendMessage[2].startsWith("NoDrow")) {
-										txtTextArea.appendText("안 그릴꺼얏!!\n");
-										String drowMessage = message;
-										String[] array = drowMessage.split(",");
-										double x = Double.parseDouble(array[3]);
-										double y = Double.parseDouble(array[4]);
-										boolean draw = false;
-										int color = Integer.parseInt(array[6]);
-										
-										arPt.add(new DrowInfoVO(x, y, draw, color));
-										
-										DrawCanvas drow = new DrawCanvas(arPt);
-										GraphicsContext g = canvas.getGraphicsContext2D();
-										
-										drow.paint(g);
-									} else if (sendMessage[2].startsWith("Drow")) {
-										txtTextArea.appendText("그릴꺼얏!!\n");
-										String drowMessage = message;
-										String[] array = drowMessage.split(",");
-										double x = Double.parseDouble(array[3]);
-										double y = Double.parseDouble(array[4]);
-										boolean draw = true;
-										int color = Integer.parseInt(array[6]);
-										
-										DrawCanvas drow = new DrawCanvas(arPt);
-										GraphicsContext g = canvas.getGraphicsContext2D();
-										arPt.add(new DrowInfoVO(x, y, draw, color));
-										drow.paint(g);
-									} else {
-										txtTextArea.appendText(sendMessage[2]+" : "+sendMessage[3]);
-									}
-									
-							
-							
+							if (sendMessage[2].startsWith("NoDrow")) {
+								txtTextArea.appendText("안 그릴꺼얏!!\n");
+								String drowMessage = message;
+								String[] array = drowMessage.split(",");
+								double x = Double.parseDouble(array[3]);
+								double y = Double.parseDouble(array[4]);
+								boolean draw = false;
+								int color = Integer.parseInt(array[6]);
+								
+								arPt.add(new DrowInfoVO(x, y, draw, color));
+								
+								DrawCanvas drow = new DrawCanvas(arPt);
+								GraphicsContext g = canvas.getGraphicsContext2D();
+								
+								drow.paint(g);
+							} else if (sendMessage[2].startsWith("Drow")) {
+								txtTextArea.appendText("그릴꺼얏!!\n");
+								String drowMessage = message;
+								String[] array = drowMessage.split(",");
+								double x = Double.parseDouble(array[3]);
+								double y = Double.parseDouble(array[4]);
+								boolean draw = true;
+								int color = Integer.parseInt(array[6]);
+								
+								DrawCanvas drow = new DrawCanvas(arPt);
+								GraphicsContext g = canvas.getGraphicsContext2D();
+								arPt.add(new DrowInfoVO(x, y, draw, color));
+								drow.paint(g);
+							} else {
+								txtTextArea.appendText(sendMessage[2]+" : "+sendMessage[3] +keyWord);
+							}
 						}
 						break;
 					default : {

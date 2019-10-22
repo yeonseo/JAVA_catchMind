@@ -129,9 +129,9 @@
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="85.0" prefWidth="123.0" spacing="10.0">
                                  <children>
-                                    <Button fx:id="btnManagerChart" mnemonicParsing="false" text="차트" />
-                                    <Button fx:id="btnManagerUserEdit" mnemonicParsing="false" text="수정" />
-                                    <Button fx:id="btnManagerDel" mnemonicParsing="false" text="삭제" />
+                                    <Button fx:id="btnManagerChart" mnemonicParsing="false" prefWidth="70.0" text="차트" />
+                                    <Button fx:id="btnManagerUserEdit" mnemonicParsing="false" prefWidth="70.0" text="권한수정" />
+                                    <Button fx:id="btnManagerDel" mnemonicParsing="false" prefWidth="70.0" text="삭제" />
                                  </children>
                               </VBox>
                            </children>

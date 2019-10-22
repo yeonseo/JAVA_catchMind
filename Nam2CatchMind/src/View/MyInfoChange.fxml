@@ -1,31 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="850.0" style="-fx-background-color: F2F2EB;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MyInfoChangeController">
+<AnchorPane prefHeight="800.0" prefWidth="484.0" style="-fx-background-color: F2F2EB;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="userChangeImage" fitHeight="375.0" fitWidth="400.0" layoutX="232.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="userChangeImage" fitHeight="324.0" fitWidth="301.0" layoutX="84.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/gamerBasicImg.jpg" />
          </image>
       </ImageView>
-      <Label layoutX="361.0" layoutY="48.0" style="-fx-font-size: 18;" text="내 정보 수정" />
-      <Button fx:id="btnChangeImage" layoutX="359.0" layoutY="488.0" mnemonicParsing="false" text="이미지 수정" />
-      <Label layoutX="235.0" layoutY="590.0" text="기존 비밀번호" />
-      <Label layoutX="234.0" layoutY="676.0" text="비밀번호 확인" />
-      <Button fx:id="btnUserPreviousCheckPwd" layoutX="503.0" layoutY="585.0" mnemonicParsing="false" text="비밀번호 확인" />
-      <Button fx:id="btnCorrection" layoutX="341.0" layoutY="723.0" mnemonicParsing="false" text="수정하기" />
-      <Button fx:id="btnExit" layoutX="438.0" layoutY="723.0" mnemonicParsing="false" text="취 소" />
-      <Label layoutX="359.0" layoutY="545.0" text="아이디 : " />
-      <Label fx:id="userId" layoutX="426.0" layoutY="545.0" text="name" />
-      <PasswordField fx:id="userPreviousPwd" layoutX="339.0" layoutY="585.0" prefHeight="29.0" prefWidth="146.0" />
-      <PasswordField fx:id="userChangeCheckPwd" layoutX="339.0" layoutY="671.0" prefHeight="29.0" prefWidth="146.0" />
-      <Label layoutX="236.0" layoutY="633.0" text="변경 비밀번호" />
-      <PasswordField fx:id="userChangePwd" layoutX="339.0" layoutY="628.0" prefHeight="29.0" prefWidth="146.0" />
-      <Button fx:id="btnUserCheckPwd" layoutX="502.0" layoutY="671.0" mnemonicParsing="false" text="비밀번호 확인" />
+      <Label layoutX="184.0" layoutY="43.0" style="-fx-font-size: 18;" text="정보 수정" />
+      <Button id="btnChangeImage" layoutX="182.0" layoutY="483.0" mnemonicParsing="false" text="이미지 수정" />
+      <Label layoutX="58.0" layoutY="585.0" text="기존 비밀번호" />
+      <Label layoutX="57.0" layoutY="671.0" text="비밀번호 확인" />
+      <Button id="btnUserPreviousCheckPwd" layoutX="326.0" layoutY="580.0" mnemonicParsing="false" text="비밀번호 확인" />
+      <Button id="btnCorrection" layoutX="164.0" layoutY="718.0" mnemonicParsing="false" text="수정하기" />
+      <Button id="btnExit" layoutX="261.0" layoutY="718.0" mnemonicParsing="false" text="취 소" />
+      <Label layoutX="173.0" layoutY="540.0" text="아이디 : ">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <Label id="userId" layoutX="225.0" layoutY="536.0" text="name">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <PasswordField id="userPreviousPwd" layoutX="162.0" layoutY="580.0" prefHeight="29.0" prefWidth="146.0" />
+      <PasswordField id="userChangeCheckPwd" layoutX="162.0" layoutY="666.0" prefHeight="29.0" prefWidth="146.0" />
+      <Label layoutX="59.0" layoutY="628.0" text="변경 비밀번호" />
+      <PasswordField id="userChangePwd" layoutX="162.0" layoutY="623.0" prefHeight="29.0" prefWidth="146.0" />
+      <Button id="btnUserCheckPwd" layoutX="325.0" layoutY="666.0" mnemonicParsing="false" text="비밀번호 확인" />
    </children>
 </AnchorPane>
