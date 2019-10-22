@@ -10,6 +10,7 @@ import java.util.Date;
 
 import Model.KeyWordVO;
 import Model.MakeRoomVO;
+import Model.UserGameHistroryVO;
 import Model.UserVO;
 
 public class GamerDAO {
@@ -648,5 +649,81 @@ public class GamerDAO {
 		
 		}
 		
-		
+	//Gamer1 과 Gamer2에 각 각 승수와 넣기
+	public int getGamer1andGamer2Result(UserGameHistroryVO ughvo) {
+		String sql = "insert into usergamehistory (UserID,Play,Win) values (?,?,?) ON DUPLICATE KEY UPDATE UserID=?,Play=Play+1,Win=Win+1";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			// ③ DBUtil 클래스의 getConnection( )메서드로 데이터베이스와 연결
+			con = DBUtil.getConnection();
+			// ④ 입력받은 회원 정보를 처리하기 위하여 SQL문장을 생성
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, ughvo.getUserID());
+			pstmt.setInt(2, ughvo.getPlay());
+			pstmt.setInt(3, ughvo.getWin());
+			pstmt.setString(4, ughvo.getUserID());
+
+			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			count = pstmt.executeUpdate(); // 쿼리문 진짜 실행! // 아이디,패스워드,이미지,성별 DB저장!
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+			AlertDisplay.alertDisplay(1, "쿼리문(DB) 오류", "쿼리문을 가져오는데 실패함", e.toString());
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+			AlertDisplay.alertDisplay(1, "DB등록 오류", "DB등록하는데 실패함", e.toString());
+		} finally {
+			try {
+				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				AlertDisplay.alertDisplay(1, "DB연결해제오류", "DB연결해제 오류", e.toString());
+			}
+		}		
+		return count;
+	}
+	
+	//Gamer1의 아이디로 센스표 업데이트
+	public int getGamer1Sence(String userId) {
+		String sql = "update usergamehistory set Sence=Sence+1 where UserID=?";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int i = 0;
+		try {
+			con = DBUtil.getConnection();
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			i = pstmt.executeUpdate();
+
+			if (i == 1) {
+				System.out.println("Sence등록 ok");
+			} else {
+				System.out.println("Sence등록 실패");
+			}
+
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+			}
+		}
+		return i;
+	}
+	
+	
+	
+	
+	
 }

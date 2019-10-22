@@ -183,12 +183,14 @@ public class GameWaitRoomController implements Initializable {
 		     });
 		
 	
-		// 시간등록하기
+		// 화면상단에 접속 시간표시하기
 		int Time = GamerLoginController.loginTime;
 		if (Time != 0) {
 			gdao = new GamerDAO();
 			String loginTime = gdao.getCurrentTime(userId);
-			gameStartTime.setText(loginTime);
+			String[] loginTimeArray = loginTime.split(",");
+			gameStartTime.setText(loginTimeArray[0]+"년"+loginTimeArray[1]+"월"+loginTimeArray[2]+"일  "
+									+loginTimeArray[3]+":"+loginTimeArray[4]);
 			System.out.println("로그인 시간:" + loginTime);
 		} else {
 			System.out.println("시간 등록안됨");

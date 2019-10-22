@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Model.ManagerManagmentVO;
+import Model.UserGameHistroryVO;
 import Model.UserStateVO;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -18,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -39,16 +41,22 @@ public class GameRoomController implements Initializable {
 	@FXML Button btnSend;
 	@FXML Button btnGameStart;
 	@FXML Button btnExit;
+	String Gamer1;
 	String Gamer2;
 	String keyWord; //랜덤 단어 
 	
 	String userState = UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT;
 	
 	GamerDAO gdao;
+	ArrayList<MakeRoomVO> mrlist;
 	ArrayList<MakeRoomVO> mrvoList;
-	ObservableList<DrowInfoVO> drowData;
-	
-	
+	ObservableList <DrowInfoVO> drowData;
+	UserGameHistroryVO ughvo;
+	UserGameHistroryVO ughvo2;
+	int Play=0;
+	int Gamer1Sence=0;
+	boolean sence=true;
+	int Win=0;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	
@@ -129,7 +137,7 @@ public class GameRoomController implements Initializable {
 				send(UserGameState.GAMER_GAMEROOM_ENTER_AND_START 
 						+","+GameWaitRoomController.roomName+","
 						+GamerLoginController.UserId +","
-						+">>>>게임이 시작되었습니다!<<<<\n"+","+keyWord);
+						+">>>>게임이 시작되었습니다!<<<<\n"+","+keyWord+","+sence+","+Win+","+Play);
 				//방상태 업데이트 gameRun
 				int i=gdao.MakeRoomUpdateState(GameWaitRoomController.roomName);
 				if(i==1) {
@@ -211,23 +219,101 @@ public class GameRoomController implements Initializable {
 						break;
 					case UserGameState.GAMER_GAMEROOM_ENTER_AND_START : 		
 						txtTextArea.appendText(sendMessage[3]);
+						gdao=new GamerDAO();
+						mrlist=gdao.getGamer1andGamer2(GameWaitRoomController.roomName);
+						Gamer1=mrlist.get(0).getGamer1();
+						Gamer2=mrlist.get(0).getGamer2();				
+//						Gamer1Play++;	// 방장의 플레이	
+//						ughvo=new UserGameHistroryVO(Gamer1, Play,0);
+//						int Gamer1Play=gdao.getGamer1andGamer2Result(ughvo);
+//						 if(Gamer1Play!=0) {
+//							 AlertDisplay.alertDisplay(5,"Gamer1 Play등록" ,"Gamer1 Play등록성공!", "Gamer1 Play등록했습니다!");
+//						 }else {
+//							 AlertDisplay.alertDisplay(1,"Gamer1 Play실패" ,"Gamer1 Play등록실패!", "Gamer1 Play실패했습니다!");
+//						 }
+						System.out.println(Gamer1+" "+Gamer2);
+//						System.out.println("방장의 play수 : "+Gamer1Play);	
 						
 						if(!(sendMessage[2].equals(GamerLoginController.UserId ))) {
 							//방장이 아닌  user2 상태에서 
-							System.out.println(keyWord);
-							keyWord=sendMessage[4];
-//							word.setText(keyWord);
 							word.setText("맞춰봥");
+//							ughvo2=new UserGameHistroryVO(Gamer2, Play);
+//							 int Gamer2Play=gdao.getGamer1andGamer2Result(ughvo2);
+//							 if(Gamer2Play!=0) {
+//								 AlertDisplay.alertDisplay(5,"Gamer2 Play등록" ,"Gamer2 Play등록성공!", "Gamer2 Play등록했습니다!");
+//							 }else {
+//								 AlertDisplay.alertDisplay(1,"Gamer2 Play실패" ,"Gamer2 Play등록실패!", "Gamer2 Play실패했습니다!");
+//							 }
+							keyWord=sendMessage[4];
+							System.out.println("제시어 : "+keyWord);
+							
 						}
 						break;
 					case UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT:
 						System.out.println("확인 : " + sendMessage[2]);
 						if(sendMessage[1].equals(GameWaitRoomController.roomName)) {
-							//게임이 시작되었습니다. 메세지
-							if(sendMessage[3].equals(keyWord)) {
-								txtTextArea.appendText("정답입니다아아아아아아아ㅏ아앙");
-							}
 							
+							//Gamer2가 정답일경우
+							if(sendMessage[3].equals(keyWord)) {
+							
+								if(sendMessage[2].equals(GamerLoginController.UserId)) {
+									ughvo2=new UserGameHistroryVO(Gamer2, Win);
+									 int Gamer2Win=gdao.getGamer1andGamer2Result(ughvo2);
+									 if(Gamer2Win!=0) {
+										 AlertDisplay.alertDisplay(5,"Gamer2 Win등록" ,"Gamer2 Win등록성공!", "Gamer2 Win등록했습니다!");
+									 }else {
+										 AlertDisplay.alertDisplay(1,"Gamer2 Win실패" ,"Gamer2 Win등록실패!", "Gamer2 Win실패했습니다!");
+									 }
+//									Gamer2Win++;
+									//Gamer2인경우
+//									System.out.println(GamerLoginController.UserId+"님의 win"+Gamer2Win);
+									AlertDisplay.alertDisplay(2, "정답", "정답입니다!", "센스표를 주시겠습니까?");
+									if (AlertDisplay.result.get() == ButtonType.OK) {
+										sence=true;	
+																
+									} else {
+										
+									}
+									AlertDisplay.alertDisplay(2, "게임종료", "게임이종료되었습니다.", "계속하시겠습니까?");
+									if (AlertDisplay.result.get() == ButtonType.OK) {
+										ughvo=new UserGameHistroryVO(Gamer1, Play);
+										ughvo2=new UserGameHistroryVO(Gamer2, Play);
+//										System.out.println(ughvo.getUserID()+" "+ughvo.getWin()+" "+ughvo.getPlay());
+//										System.out.println(ughvo2.getUserID()+" "+ughvo2.getWin()+" "+ughvo2.getPlay());
+									   int GamerOnePlay=gdao.getGamer1andGamer2Result(ughvo);
+									   int Gamer2Play=gdao.getGamer1andGamer2Result(ughvo2);
+									   if(GamerOnePlay!=0 && Gamer2Play!=0) {
+										   AlertDisplay.alertDisplay(5,"Gamer1,Gamer2 play등록" ,"Gamer1,Gamer2 play등록성공!", "Gamer1,Gamer2 play등록했습니다!");
+									   }else {
+										   AlertDisplay.alertDisplay(1,"Gamer1,Gamer2 play등록실패" ,"Gamer1,Gamer2 play등록실패", "Gamer1,Gamer2 play실패했습니다!");
+									   }
+										
+									} else {
+										//상태대기방으로
+										
+									}
+									
+									
+								}else {
+									//방장일경우
+									AlertDisplay.alertDisplay(5,"정답" ,"정답 맞춤!", "상대방이 정답을 맞췄습니다.");
+									System.out.println(sence);
+									if(sence==true) {
+										System.out.println(sence);
+										Gamer1Sence=gdao.getGamer1Sence(Gamer1);
+										if(Gamer1Sence==1) {
+											AlertDisplay.alertDisplay(5,"센스표" ,"센스표등록 완료!", "센스표를 받았습니다!");
+										}else {
+											AlertDisplay.alertDisplay(1,"센스표" ,"센스표등록 실패!", "센스표를 받지못했습니다.");
+										}
+									}
+									
+									
+								}
+								
+							}else {
+												
+							}
 							if (sendMessage[2].startsWith("NoDrow")) {
 								txtTextArea.appendText("안 그릴꺼얏!!\n");
 								String drowMessage = message;
@@ -257,7 +343,7 @@ public class GameRoomController implements Initializable {
 								arPt.add(new DrowInfoVO(x, y, draw, color));
 								drow.paint(g);
 							} else {
-								txtTextArea.appendText(sendMessage[2]+" : "+sendMessage[3] +keyWord);
+								txtTextArea.appendText(sendMessage[2]+" : "+sendMessage[3] +"\n");
 							}
 						}
 						break;

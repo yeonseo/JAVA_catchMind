@@ -52,6 +52,7 @@ public class ManagerLoginController implements Initializable {
 	UserStateVO usvo;
 	UserStateDAO usdao;
 	ManagerManagmentDAO mmdao;
+	String managerStartTime;
 	
 	public  ArrayList<UserVO> list;
 	public static String UserId;
@@ -133,7 +134,18 @@ public class ManagerLoginController implements Initializable {
 					gameRoomStage.setResizable(false);
 					((Stage) btnExit.getScene().getWindow()).close();
 					gameRoomStage.show();
-					AlertDisplay.alertDisplay(5, "로그인 성공", usvo.getUserID() + " 관리자님, 안녕하세요.", "접속시간은 " + "고치세요!!" + " 입니다.");
+					// 로그인 시, 접속 시간 표시하기
+					gdao = new GamerDAO();
+					String loginTime = gdao.getCurrentTime(managerId.getText());
+					String[] loginTimeArray = loginTime.split(",");
+					managerStartTime = loginTimeArray[0]+"년"+loginTimeArray[1]+"월"+loginTimeArray[2]+"일  "
+											+loginTimeArray[3]+":"+loginTimeArray[4];
+					System.out.println("로그인 시간:" + loginTime);
+//					mmdao.getCurrentTime(managerId.getText());
+					mmdao.getCurrentTime("nnn");
+					AlertDisplay.alertDisplay(5, "로그인 성공", usvo.getUserID() + " 관리자님, 안녕하세요."
+							, "접속시간은 " + managerStartTime + " 입니다.");
+					
 	            }catch(Exception fxml) {
 	            	AlertDisplay.alertDisplay(1, "fmxl 실패", "메니저 메인을 불러오는데 실패했습니다.", fxml.toString());
 	            }

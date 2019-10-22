@@ -137,12 +137,19 @@ public class ManagerMainTabController implements Initializable {
 	@FXML
 	private Button btnGamerExit;
 	
+	/*
+	 * 데이타 리스트 모음
+	 * */
+	ObservableList<ManagerManagmentVO> userData; //메인페이지의 관리자의 DB 가지고 오기위한 데이터 
+	ObservableList<ManagerManagmentVO> userRoomData; //게임방의 테이블 뷰를 위한 데이터 
+	ObservableList<ManagerManagmentVO> managerData; //관리자의 테이블 뷰를 위한 데이터 
+	ObservableList<ManagerManagmentVO> gamerData;  //유저의 테이블 뷰를 위한 데이터
+	ObservableList<ManagerManagmentVO> mainTimeData; //메인페이지의 관리자의 파이 차트를 만들기 위한 DB에서 가져온시간데이터
+	ObservableList<String> managerTimeData; //테이블 뷰의 관리자의 파이 차트를 만들기 위한 DB에서 가져온시간데이터
+	ObservableList<String> userTimeData; //테이블 뷰의 유저의 파이 차트를 만들기 위한 DB에서 가져온시간데이터
 	
-	ObservableList<ManagerManagmentVO> userData;
-	ObservableList<ManagerManagmentVO> userRoomData;
-	ObservableList<ManagerManagmentVO> managerData;
-	ObservableList<ManagerManagmentVO> gamerData;
-
+	GamerDAO gdao;
+	UserVO uvo;
 	ManagerManagmentVO mmVO;
 	ManagerManagmentDAO mmdao;
 
@@ -157,7 +164,7 @@ public class ManagerMainTabController implements Initializable {
 	String managerMainTabFileName;
 	String loginTime;
 
-	// 회원 정보 수정창
+	// (로그인한) 관리자의 회원 정보 수정창을 위한 변수
 	PasswordField userPreviousPwd;
 	PasswordField userChangePwd;
 	PasswordField userChangeCheckPwd;
@@ -174,10 +181,7 @@ public class ManagerMainTabController implements Initializable {
 	ImageView userChangeImage;
 	private String selectFileName = "";
 	String fileName;
-
-	GamerDAO gdao;
-	UserVO uvo;
-
+	
 	// 게임방 만들기
 	UserStateDAO usdao;
 	boolean roomNameCheck = false;
@@ -203,6 +207,7 @@ public class ManagerMainTabController implements Initializable {
 	// 정보를 가져오기 위한 경로지정
 	private File selectedFile = null;
 	private String localUrl = "";
+	
 
 //	private File dirSave = new File("C://남채현/java/java_img"); //이미지 저장할 폴더를 매개변수로 파일 객체 생성
 	String path = System.getProperty("user.dir") + "/images/";
@@ -363,7 +368,7 @@ public class ManagerMainTabController implements Initializable {
 	public void getUserIDandUserImage() {
 		try {
 			userId = ManagerLoginController.UserId;
-			System.out.println("로그인 들어온 아이디 : " + userId);
+//			System.out.println("로그인 들어온 아이디 : " + userId);
 			gdao = new GamerDAO();
 			lblMainUserId.setText(userId);
 			managerMainTabFileName = gdao.getUserLoginIdAndImage(userId); // 저장한 이미지의 파일 이름
@@ -715,8 +720,13 @@ public class ManagerMainTabController implements Initializable {
 			Button btnSend = (Button) gameRoomRoot.lookup("#btnSend");
 			Button btnGameStart = (Button) gameRoomRoot.lookup("#btnGameStart");
 			Button btnExit = (Button) gameRoomRoot.lookup("#btnExit");
-
-			word.setText("제시어는 공개되지 않습니다.");
+			
+			canvas.setDisable(true);
+			txtTextField.setDisable(true);
+			btnSend.setDisable(true);
+			btnGameStart.setDisable(true);
+			
+			word.setText("보기모드");
 
 			btnExit.setOnAction(e2 -> {
 				stage.close();
@@ -745,19 +755,68 @@ public class ManagerMainTabController implements Initializable {
 
 	// 시간을 가지고 파이차트 만들기
 	public void handlerBtnMainLoginTimeChartAction(ActionEvent e2) {
+		ArrayList<String> timeData=null;
+		int[] month = new int[12];
 		try {
-
 			Parent pieChart = FXMLLoader.load(getClass().getResource("/View/piechart.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(btnMainTabUserEdit.getScene().getWindow());
-			stage.setTitle("총점과 평균");
-
+			stage.setTitle("월별 접속횟수");
 			PieChart chart = (PieChart) pieChart.lookup("#pieChart");
 			Button btnClose = (Button) pieChart.lookup("#btnClose");
-
-			chart.setData(FXCollections.observableArrayList(new PieChart.Data("총점", (double) 3.4),
-					new PieChart.Data("1점", (double) 3.4), new PieChart.Data("2점", (double) 3.4)));
+			try {
+				txtMainAreaServerLog.appendText("test1 \n");
+				timeData = handlerGetUserTimeSplit();
+				String[] splitTimeDB=null;
+				for (String i : timeData) {
+					splitTimeDB = i.split(",");
+					txtMainAreaServerLog.appendText(splitTimeDB[0]+" "+splitTimeDB[1]+" "+splitTimeDB[2]+
+							" "+splitTimeDB[3]+" "+splitTimeDB[4]+" "+splitTimeDB[5]+"\n");
+				}
+				txtMainAreaServerLog.appendText("test2 \n");
+				for(String i : timeData) {
+					splitTimeDB = i.split(",");
+					switch(splitTimeDB[1]) {
+					case "01": month[0]++; break;
+					case "02": month[1]++; break;
+					case "03": month[2]++; break;
+					case "04": month[3]++; break;
+					case "05": month[4]++; break;
+					case "06": month[5]++; break;
+					case "07": month[6]++; break;
+					case "08": month[7]++; break;
+					case "09": month[8]++; break;
+					case "10": month[9]++; break;
+					case "11": month[10]++; break;
+					case "12": month[11]++; break;
+					}
+				}
+				txtMainAreaServerLog.appendText("test3 \n");
+				
+				for(int i : month) {
+					txtMainAreaServerLog.appendText(i+"\n");
+				}
+				txtMainAreaServerLog.appendText("test4 \n");
+				
+			}catch (Exception e){
+				AlertDisplay.alertDisplay(1, "시간 가져오기 실패", " 출력안됨 ", "시간 가져오는 함수 확인 요망");
+			}
+			txtMainAreaServerLog.appendText("test5 \n");
+			
+			chart.setData(FXCollections.observableArrayList(
+					new PieChart.Data("1월",(double) month[0]),
+					new PieChart.Data("2월",(double) month[1]),
+					new PieChart.Data("3월",(double) month[2]),
+					new PieChart.Data("4월",(double) month[3]),
+					new PieChart.Data("5월",(double) month[4]),
+					new PieChart.Data("6월",(double) month[5]),
+					new PieChart.Data("7월",(double) month[6]),
+					new PieChart.Data("8월",(double) month[7]),
+					new PieChart.Data("9월",(double) month[8]),
+					new PieChart.Data("10월",(double) month[9]),
+					new PieChart.Data("11월",(double) month[10]),
+					new PieChart.Data("12월",(double) month[11])));
 
 			btnClose.setOnAction(e22 -> {
 				stage.close();
@@ -774,6 +833,22 @@ public class ManagerMainTabController implements Initializable {
 
 	}
 
+
+	private ArrayList<String> handlerGetUserTimeSplit() {
+		ArrayList<String> list = null;
+		ManagerManagmentDAO mmDAO = new ManagerManagmentDAO();
+		
+		try {
+			list = mmDAO.getCurrentTime(userId);
+			if (list == null) {
+				AlertDisplay.alertDisplay(1, "total DB List Null Point", "Null Point", "Error");
+				return null;
+			}
+		}catch(Exception e) {
+			AlertDisplay.alertDisplay(1, "시간 가져오기 실패", " 출력안됨 ", "시간 가져오는 함수 확인 요망");
+		}
+		return list;
+	}
 
 	/*
 	 * 메니저 탭
@@ -1006,7 +1081,7 @@ public class ManagerMainTabController implements Initializable {
 			selectingGamerName = selectedGamer.get(0).getUserID();
 			txtMainAreaServerLog.appendText("메니져이름 : " + selectingGamerName + "\n");
 			lblGamerUserId.setText(selectingGamerName);
-			lblGamerState.setText(userState);
+			lblGamerState.setText(selectedGamer.get(0).getThreadState());
 
 			selectedFile = new File(System.getProperty("user.dir") + "/images\\" + selectedGamer.get(0).getImage()); // 저장한
 																														// 이미지의
@@ -1119,6 +1194,8 @@ public class ManagerMainTabController implements Initializable {
 
 						// 메인에 방 테이블 뷰 셋팅
 						handlerButtonTotalListAction();
+						handlerManagerDataTableReloadAction();
+						handlerGamerDataTableReloadAction();
 
 						break;
 					}

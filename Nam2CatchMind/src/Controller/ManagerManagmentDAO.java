@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import Model.ManagerManagmentVO;
 
@@ -49,6 +51,46 @@ public class ManagerManagmentDAO {
 			}
 		}
 		return count;
+	}
+
+	/*
+	 * 시간을 가져오기 위한 함수
+	 */
+	// 모든 유저의 시작시간 찾기
+	public ArrayList<String> getCurrentTime(String userId) {
+		ArrayList<String> list = new ArrayList<String>();
+		String currentTime = null;
+		String sql = "select EnterTime from usertime where UserID = ?";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		SimpleDateFormat sdf;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				sdf = new SimpleDateFormat("yyyy,MM,dd,HH,mm,ss");
+				Date enterTime = rs.getTimestamp("EnterTime");
+				currentTime = sdf.format(enterTime);
+				list.add(currentTime);
+			}
+		} catch (Exception e) {
+			AlertDisplay.alertDisplay(1, "시간 가져오기 오류", "시간 가져오기 오류", e.toString());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
+				AlertDisplay.alertDisplay(1, "시간 가져오기 오류", "시간 가져오기 실패", e.toString());
+			}
+		}
+		return list;
 	}
 
 	/*
@@ -221,15 +263,14 @@ public class ManagerManagmentDAO {
 		return list;
 	}
 
-	
 	/*
 	 * 관리자 관리 탭에서 관리자 정보를 가져올 함수
-	 * */
+	 */
 	public ArrayList<ManagerManagmentVO> getTableViewManagerInfoTotal() {
 		ArrayList<ManagerManagmentVO> list = new ArrayList<ManagerManagmentVO>();
-		String dml = "SELECT ui.UserID, ui.UserPassword, ui.UserAccess, ui.UserImage, ugs.ThreadState " + 
-				"FROM UserInfo AS ui  left join UserGameState as ugs " + 
-				"on ugs.UserID = ui.UserID where UserAccess > 0;";
+		String dml = "SELECT ui.UserID, ui.UserPassword, ui.UserAccess, ui.UserImage, ugs.ThreadState "
+				+ "FROM UserInfo AS ui  left join UserGameState as ugs "
+				+ "on ugs.UserID = ui.UserID where UserAccess > 0;";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -263,7 +304,7 @@ public class ManagerManagmentDAO {
 		}
 		return list;
 	}
-	
+
 	/*
 	 * 관리자의 권한을 바꾸기 위한 함수
 	 */
@@ -306,9 +347,9 @@ public class ManagerManagmentDAO {
 
 	public ArrayList<ManagerManagmentVO> getTableViewGamerInfoTotal() {
 		ArrayList<ManagerManagmentVO> list = new ArrayList<ManagerManagmentVO>();
-		String dml = "SELECT ui.UserID, ui.UserImage, ugs.ThreadState " + 
-				"FROM UserInfo AS ui  left join UserGameState as ugs " + 
-				"on ugs.UserID = ui.UserID where UserAccess = 0;";
+		String dml = "SELECT ui.UserID, ui.UserImage, ugs.ThreadState "
+				+ "FROM UserInfo AS ui  left join UserGameState as ugs "
+				+ "on ugs.UserID = ui.UserID where UserAccess = 0;";
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
