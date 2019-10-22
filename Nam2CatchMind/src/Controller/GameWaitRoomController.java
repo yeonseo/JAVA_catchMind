@@ -521,7 +521,7 @@ public class GameWaitRoomController implements Initializable {
 	// 게임방 만들기
 
 	public static ManagerManagmentVO mmVO;
-	UserStateDAO usdao;
+	static UserStateDAO usdao;
 	boolean roomNameCheck = false;
 	UserStateVO usvo;
 

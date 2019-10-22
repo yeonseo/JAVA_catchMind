@@ -55,7 +55,10 @@ public class UserStateDAO {
 			String managerID, String makeRoomUserID, String enterRoomUserID,
 			String gameRunOrWaitState) {
 		System.out.println("방 등록");
-		String sql = "insert into UserGameRoom (RoomName,ThreadState,ManagerID,Gamer1,Gamer2,GameRunOrWaitState) values (?,?,?,?,?,?)";
+		String sql = "insert into UserGameRoom (RoomName,ThreadState,ManagerID,Gamer1,Gamer2,GameRunOrWaitState) "
+				+ "values (?,?,?,?,?,?) "
+				+ "ON DUPLICATE KEY UPDATE RoomName = ?, ThreadState = ?, "
+				+ "ManagerID = ?,Gamer1 = ?,Gamer2 = ?,GameRunOrWaitState = ?;";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		int count = 0;
@@ -70,6 +73,12 @@ public class UserStateDAO {
 			pstmt.setString(4, makeRoomUserID);
 			pstmt.setString(5, enterRoomUserID);
 			pstmt.setString(6, gameRunOrWaitState);
+			pstmt.setString(7, roomName);
+			pstmt.setString(8, threadState);
+			pstmt.setString(9, managerID);
+			pstmt.setString(10, makeRoomUserID);
+			pstmt.setString(11, enterRoomUserID);
+			pstmt.setString(12, gameRunOrWaitState);
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			count = pstmt.executeUpdate(); // 쿼리문 진짜 실행! // 아이디,패스워드,이미지,성별 DB저장!
 		} catch (SQLException e) {

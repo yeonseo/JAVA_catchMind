@@ -90,8 +90,9 @@ public class GameRoomController implements Initializable {
 			 * 여기부터
 			 * > A < 게임방에서는 방이름까지 합쳐서 던저주는 걸로 바꿨어용~~~~
 			 * 
-			 * */
+			 * */			
 			send(userState + "," + GameWaitRoomController.roomName + "," + GamerLoginController.UserId + "," + txtTextField.getText() + ","+"\n");
+			
 			System.out.println(userState + "," + GameWaitRoomController.roomName + "," + GamerLoginController.UserId + "," + txtTextField.getText());
 			/**여기까지 바꿨어용~~~~~~**/
 			txtTextField.setText("");
@@ -102,7 +103,10 @@ public class GameRoomController implements Initializable {
 		});
 		
 		btnExit.setOnAction(e -> {
-			send("welcome2"+",>>>>>"+GamerLoginController.UserId+","+"님이 "+GameWaitRoomController.roomName+"나가셨습니다.<<<<<\n");
+			send("welcome2out"+",>>>>>"+GamerLoginController.UserId+","+"님이 "+GameWaitRoomController.roomName+"나가셨습니다.<<<<<\n");
+			/* 유저의 이름으로 데이터 베이스를 찾아서 삭제해야
+			 * */
+			
 			Parent gameRoomRoot = null;
 			Stage gameRoomStage = null;
 			try {
@@ -233,6 +237,35 @@ public class GameRoomController implements Initializable {
 							btnStrColorRed.setDisable(true);
 						}
 						break;
+					case "welcome2out" : txtTextArea.appendText(sendMessage[1]+sendMessage[2]);	
+						if(GameWaitRoomController.hideGameStartBtn==true) {
+						try {
+							GameWaitRoomController.mmVO = new ManagerManagmentVO(
+									GameWaitRoomController.roomName,
+									UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT + "," + GameWaitRoomController.roomName,
+									null,
+									GamerLoginController.UserId,
+									null, 
+									"Wait");
+							GameWaitRoomController.usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
+							int count = GameWaitRoomController.usdao.getUserGameRoomRegistration(
+									GameWaitRoomController.mmVO.getRoomName(),
+									GameWaitRoomController.mmVO.getThreadState(),
+									GameWaitRoomController.mmVO.getManagerID(),
+									GameWaitRoomController.mmVO.getMakeRoomUserID(),
+									GameWaitRoomController.mmVO.getEnterRoomUserID(),
+									GameWaitRoomController.mmVO.getGameRunOrWaitState());
+							// DAO에 UserID, UserThreadState를 넣어줌!
+						}catch(Exception e) {
+							AlertDisplay.alertDisplay(1, "참여자 퇴장", "상태변경 실패", "다시 확인해주세요.");
+						}
+						btnGameStart.setDisable(true);
+						canvas.setDisable(true);
+						btnStrColorBlack.setDisable(true);
+						btnStrColorBlue.setDisable(true);
+						btnStrColorRed.setDisable(true);
+					}
+					break;
 					case UserGameState.GAMER_GAMEROOM_ENTER_AND_START : 		
 						txtTextArea.appendText(sendMessage[3]);
 						gdao=new GamerDAO();
