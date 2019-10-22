@@ -113,9 +113,35 @@ public class ManagerMainTabController implements Initializable {
 	@FXML
 	private Button btnManagerExit;
 
+	/*
+	 * 유저 관리 메인텝 (13)
+	 */
+	@FXML
+	private Tab tabGamer;
+	@FXML
+	private ImageView imgGamerUser;
+	@FXML
+	private Label lblGamerUserId;
+	@FXML
+	private Label lblGamerState;
+	@FXML
+	private Button btnGamerChart;
+	@FXML
+	private Button btnGamerDel;
+	@FXML
+	private TableView<ManagerManagmentVO> tableViewGamer;
+	@FXML
+	private Button btnGamerSelectedCancle;
+	@FXML
+	private Button btnGamerSelectedDel;
+	@FXML
+	private Button btnGamerExit;
+	
+	
 	ObservableList<ManagerManagmentVO> userData;
 	ObservableList<ManagerManagmentVO> userRoomData;
 	ObservableList<ManagerManagmentVO> managerData;
+	ObservableList<ManagerManagmentVO> gamerData;
 
 	ManagerManagmentVO mmVO;
 	ManagerManagmentDAO mmdao;
@@ -169,6 +195,10 @@ public class ManagerMainTabController implements Initializable {
 	private ObservableList<ManagerManagmentVO> selectedManager;
 	private int selectedManagerIndex;
 	private String selectingManagerName;
+	// 테이블 뷰에서 클릭시 저 가져오기
+	private ObservableList<ManagerManagmentVO> selectedGamer;
+	private int selectedGamerIndex;
+	private String selectingGamerName;
 
 	// 정보를 가져오기 위한 경로지정
 	private File selectedFile = null;
@@ -225,7 +255,8 @@ public class ManagerMainTabController implements Initializable {
 
 		/*
 		 * 
-		 * [ 탭 ] 관리자 관리(나중에 텝으로 묶기) 아이디 패스워드 권한 이미지 상태
+		 * [ 탭 ] 관리자 관리
+		 * 관리자의 아이디 패스워드 권한 이미지 상태 가지고 
 		 * 
 		 */
 		tableViewManagerSetting();
@@ -243,17 +274,44 @@ public class ManagerMainTabController implements Initializable {
 			handlerMangagerTableViewSelectEvent();
 		});
 
+		
+		
+		/*
+		 * 
+		 * [ 탭 ] 유저 관리
+		 * 유저 아이디 이미지 상태
+		 * 접속시간 맞춘수, 센스표 수
+		 * 
+		 */
+		tableViewGamerSetting();
+		handlerGamerInfoGet();
+		
+		tableViewGamer.setOnMousePressed(e8->{
+			handlerGamerTableViewSelectEvent();
+		});
+		
 		// 나가기
 		btnManagerMainTabExit.setOnAction(e999 -> {
-
-			Platform.runLater(() -> {
-				stopClient();
-				Platform.exit();
-			});
-
+			handlerBtnExitAction();
 		});
+		btnManagerExit.setOnAction(e999 -> {
+			handlerBtnExitAction();
+		});
+		btnGamerExit.setOnAction(e999 -> {
+			handlerBtnExitAction();
+		});
+		
 	}
 
+	//나가기버튼
+	private void handlerBtnExitAction() {
+		Platform.runLater(() -> {
+			stopClient();
+			Platform.exit();
+		});
+	}
+	
+	
 	/*
 	 * 
 	 * [ 탭 ] 관리자 메인
@@ -262,7 +320,7 @@ public class ManagerMainTabController implements Initializable {
 	 */
 
 	/*
-	 * 관리자의 정보를 가져오기 위한 함수
+	 * 로그인한 관리자의 정보를 가져오기 위한 함수
 	 */
 	private void handlerUserInfoShow() {
 		ManagerManagmentVO mmVO = null;
@@ -716,14 +774,10 @@ public class ManagerMainTabController implements Initializable {
 
 	}
 
-	/*
-	 * 유저 관리 탭을 위한 함수들
-	 */
 
 	/*
-	 * 
-	 * 모든 유저들의 정보를 가지고 옴 total list 참고함
-	 * 
+	 * 메니저 탭
+	 * 메니저 정보를 가지고 옴 total list 참고함
 	 */
 	private void tableViewManagerSetting() {
 		managerData = FXCollections.observableArrayList();
@@ -871,6 +925,107 @@ public class ManagerMainTabController implements Initializable {
 
 	}
 
+	
+	
+	/*
+	 * 
+	 * 유저 탭
+	 * 
+	 * */
+	private void tableViewGamerSetting() {
+		gamerData = FXCollections.observableArrayList();
+
+		tableViewGamer.setEditable(true);
+		tableViewGamer.isResizable();
+		// ui.UserID, ui.UserAccess, ui.UserImage, ugs.ThreadState
+		TableColumn gamerName = new TableColumn("ID");
+		gamerName.setMaxWidth(160);
+		gamerName.setStyle("-fx-alignment: CENTER;");
+		gamerName.setCellValueFactory(new PropertyValueFactory("UserID"));
+
+		TableColumn gamerAccess = new TableColumn("권한 단계");
+		gamerAccess.setMaxWidth(160);
+		gamerAccess.setStyle("-fx-alignment: CENTER;");
+		gamerAccess.setCellValueFactory(new PropertyValueFactory("UserAccess"));
+
+		TableColumn threadState = new TableColumn("접속상태");
+		threadState.setMaxWidth(260);
+		threadState.setStyle("-fx-alignment: CENTER;");
+		threadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
+
+//		TableColumn managerImage = new TableColumn("이미지");
+//		managerImage.setMaxWidth(160);
+//		managerImage.setStyle("-fx-alignment: CENTER;");
+//		managerImage.setCellValueFactory(new PropertyValueFactory("UserImage"));
+
+		tableViewGamer.setItems(gamerData);
+		tableViewGamer.getColumns().addAll(gamerName, gamerAccess, threadState/*,managerImage*/);
+
+	}// end of tableViewSetting
+	// 테이블 뷰를 새로고침하기 위한 함수
+	private void handlerGamerDataTableReloadAction() {
+		try {
+			gamerData.removeAll(gamerData);
+			handlerManagerInfoGet();
+		} catch (Exception e) {
+			AlertDisplay.alertDisplay(1, "error", "error", e.toString());
+			e.printStackTrace();
+		}
+	} // end of handlerButtonTotalListAction
+
+	// 테이블 뷰에 넣을 데이터를 가져오기
+	public void handlerGamerInfoGet() {
+		ArrayList<ManagerManagmentVO> list = null;
+		ManagerManagmentVO mmVO = null;
+		ManagerManagmentDAO mmDAO = new ManagerManagmentDAO();
+		list = mmDAO.getTableViewGamerInfoTotal();
+
+		if (list == null) {
+			AlertDisplay.alertDisplay(1, "total DB List Null Point", "Null Point", "Error");
+			return;
+		}
+
+		for (int i = 0; i < list.size(); i++) {
+			mmVO = list.get(i);
+			gamerData.add(mmVO);
+			System.out.println(mmVO.getUserID() + " " + mmVO.getImage() + "" + mmVO.getThreadState());
+		}
+	} // end of totalList
+
+	// 테이블 클릭, 선택시, 유저 이름 가지고 오고, 상단에 정보 표시하기
+	private void handlerGamerTableViewSelectEvent() {
+		try {
+			/*
+			 * UserID = userID; UserPassword = userPassword; UserAccess = userAccess; Image
+			 * = image; ThreadState = threadState;
+			 * 
+			 */
+			selectedGamerIndex = tableViewGamer.getSelectionModel().getSelectedIndex();
+			selectedGamer = tableViewGamer.getSelectionModel().getSelectedItems();
+
+			selectingGamerName = selectedGamer.get(0).getUserID();
+			txtMainAreaServerLog.appendText("메니져이름 : " + selectingGamerName + "\n");
+			lblGamerUserId.setText(selectingGamerName);
+			lblGamerState.setText(userState);
+
+			selectedFile = new File(System.getProperty("user.dir") + "/images\\" + selectedGamer.get(0).getImage()); // 저장한
+																														// 이미지의
+																														// 파일이름
+			if (selectedFile != null) {
+				// 저장한 파일의 이름의 url이 null값이 아니라면!
+				localUrl = selectedFile.toURI().toURL().toString();
+				userImg = new Image(localUrl, false);
+				imgGamerUser.setImage(userImg);
+				imgGamerUser.setFitHeight(250);
+				imgGamerUser.setFitWidth(230);
+				System.out.println("들어온 image : " + userImg);
+			}
+		} catch (Exception e2) {
+			AlertDisplay.alertDisplay(3, "메니져 가져오기", "메니져를 가져올 수 없습니다.", "메니져 정보를" + " 가져오지 못했습니다.");
+		} // end of try catch
+	}// end of handlerTableViewSelectEvent
+
+	
 	Socket socket;
 
 	public void startClient(String IP, int port) {

@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import Model.KeyWordVO;
 import Model.MakeRoomVO;
 import Model.UserVO;
 
@@ -537,7 +538,7 @@ public class GamerDAO {
 			return RoomName;
 		}
 	
-		//방이름으로 user1,user2 찾기
+   //방이름으로 user1,user2 찾기
 		public ArrayList<MakeRoomVO> getGamer1andGamer2(String MakeRoom) {
 			String sql = "select * from usergameroom where RoomName=?";
 			MakeRoomVO mrvo;
@@ -574,7 +575,7 @@ public class GamerDAO {
 			return list;
 		}
 		
-		//방상태 Update wait-->GameRun 
+	//방상태 Update wait-->GameRun 
 		public int MakeRoomUpdateState(String RoomName) {
 			String sql = "update usergameroom set GameRunOrWaitState='GameRun' where RoomName=? ";
 			Connection con = null;
@@ -609,5 +610,43 @@ public class GamerDAO {
 			}
 			return i;
 		}
+		
+	//DB에 저장되어있는 제시어 가져오기
+		public ArrayList<KeyWordVO>  getKeyWord() {
+			String sql = "select * from  gamekeyword";
+			ArrayList<KeyWordVO> list=new ArrayList<KeyWordVO>();
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			
+			ResultSet rs = null;
+			KeyWordVO KeyWordVO= null;
+
+			try {
+				con = DBUtil.getConnection();
+				pstmt = con.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					KeyWordVO = new KeyWordVO(rs.getString(2));
+					list.add(KeyWordVO);			
+				}
+			} catch (SQLException se) {
+				AlertDisplay.alertDisplay(1, "sql오류", "sql오류!", se.toString());
+			} catch (Exception e) {
+				AlertDisplay.alertDisplay(1, "가져오기 오류", "단어가져오기 오류!", e.toString());
+			} finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (pstmt != null)
+						pstmt.close();
+					if (con != null)
+						con.close();
+				} catch (SQLException se) {
+				}
+			}
+			return list;
+		
+		}
+		
 		
 }

@@ -85,11 +85,22 @@ public class ManagerManagmentVO {
 		Image = image;
 		ThreadState = threadState;
 	}
+	
+	/*
+	 * 관리자 유저 관리에서 유저 테이블을 만들기 위한 생성자
+	 * ui.UserID, ui.UserImage, ugs.ThreadState 
+	 * */
+	public ManagerManagmentVO(String userID, String image, String threadState) {
+		UserID = userID;
+		Image = image;
+		ThreadState = threadState;
+	}
 
 
 	public String getUserID() {
 		return UserID;
 	}
+	
 	
 	public void setUserID(String userID) {
 		UserID = userID;
