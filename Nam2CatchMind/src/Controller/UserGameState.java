@@ -28,8 +28,8 @@ public class UserGameState {
 	 * IP 지정
 	 * 
 	 * */
-//	public static final String IP = "localhost";
+	public static final String IP = "localhost";
 //	public static final String IP = "192.168.0.210";
-	public static final String IP = "192.168.0.209";
+//	public static final String IP = "192.168.0.209";
 
 }
