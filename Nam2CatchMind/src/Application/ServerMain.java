@@ -126,7 +126,7 @@ public class ServerMain extends Application {
 		BorderPane.setMargin(toggleButton, new Insets(1, 0, 0, 0));
 		root.setBottom(toggleButton);
 
-		String IP = "localhost";
+		String IP = UserGameState.IP;
 		int port = 9876;
 
 		toggleButton.setOnAction(event -> {

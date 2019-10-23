@@ -6,26 +6,12 @@ public class UserGameHistroryVO {
 	private int Play;
 	private int Win;
 	private int Sence;
-	
-	public UserGameHistroryVO() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	
-
-	
 
 	public UserGameHistroryVO(String userID, int play) {
 		super();
 		UserID = userID;
 		Play = play;
 	}
-
-
-
-
-
 	public UserGameHistroryVO(String userID, int play, int win, int sence) {
 		super();
 		UserID = userID;

@@ -647,9 +647,9 @@ public class GamerDAO {
 
 	}
 
-	// Gamer1 과 Gamer2에 각 각 승수와 넣기
-	public int getGamer1andGamer2Result(UserGameHistroryVO ughvo) {
-		String sql = "insert into usergamehistory (UserID,Play,Win) values (?,?,?) ON DUPLICATE KEY UPDATE UserID=?,Play=Play+1,Win=Win+1";
+	// Gamer1 과 Gamer2에 각 각 플레이 수 넣기
+	public int getGamer1andGamer2PlayPlus(String userId) {
+		String sql = "insert into usergamehistory (UserID,Play) values (?,?) ON DUPLICATE KEY UPDATE UserID=?,Play=Play+1";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		int count = 0;
@@ -658,10 +658,46 @@ public class GamerDAO {
 			con = DBUtil.getConnection();
 			// ④ 입력받은 회원 정보를 처리하기 위하여 SQL문장을 생성
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, ughvo.getUserID());
-			pstmt.setInt(2, ughvo.getPlay());
-			pstmt.setInt(3, ughvo.getWin());
-			pstmt.setString(4, ughvo.getUserID());
+			pstmt.setString(1, userId);
+			pstmt.setInt(2, 1);
+			pstmt.setString(3, userId);
+
+			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+			count = pstmt.executeUpdate(); // 쿼리문 진짜 실행! // 아이디,패스워드,이미지,성별 DB저장!
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+			AlertDisplay.alertDisplay(1, "쿼리문(DB) 오류", "쿼리문을 가져오는데 실패함", e.toString());
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+			AlertDisplay.alertDisplay(1, "DB등록 오류", "DB등록하는데 실패함", e.toString());
+		} finally {
+			try {
+				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				AlertDisplay.alertDisplay(1, "DB연결해제오류", "DB연결해제 오류", e.toString());
+			}
+		}
+		return count;
+	}
+
+	//Gamer2에 정답수 넣기
+	public int getGamer2WinPlus(String userId) {
+		String sql = "insert into usergamehistory (UserID,Win) values (?,?) ON DUPLICATE KEY UPDATE UserID=?,Win=Win+1";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int count = 0;
+		try {
+			// ③ DBUtil 클래스의 getConnection( )메서드로 데이터베이스와 연결
+			con = DBUtil.getConnection();
+			// ④ 입력받은 회원 정보를 처리하기 위하여 SQL문장을 생성
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			pstmt.setInt(2, 1);
+			pstmt.setString(3, userId);
 
 			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
 			count = pstmt.executeUpdate(); // 쿼리문 진짜 실행! // 아이디,패스워드,이미지,성별 DB저장!
@@ -686,8 +722,8 @@ public class GamerDAO {
 	}
 
 	// Gamer1의 아이디로 센스표 업데이트
-	public int getGamer1Sence(String userId) {
-		String sql = "update usergamehistory set Sence=Sence+1 where UserID=?";
+	public int getGamer1SencePlus(String userId) {
+		String sql = "insert into usergamehistory (UserID,sence) values (?,?) ON DUPLICATE KEY UPDATE UserID=?,Sence=Sence+1";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		int i = 0;
@@ -696,6 +732,8 @@ public class GamerDAO {
 
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, userId);
+			pstmt.setInt(2, 1);
+			pstmt.setString(3, userId);
 			i = pstmt.executeUpdate();
 
 			if (i == 1) {

@@ -24,6 +24,12 @@ public class UserGameState {
 	public static final String GAMER_GAMEROOM_OUT_AND_WAITROOM = "GAMER_GAMEROOM_OUT_AND_WAITROOM";
 	public static final String GAMER_OFFLINE = "GAMER_OFFLINE";
 	
-
+	/*
+	 * IP 지정
+	 * 
+	 * */
+//	public static final String IP = "localhost";
+//	public static final String IP = "192.168.0.210";
+	public static final String IP = "192.168.0.209";
 
 }

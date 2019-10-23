@@ -7,13 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Model.ManagerManagmentVO;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class UserStateDAO {
-	
+
 	/*
 	 * 유저들의 상태 등록
 	 * 
-	 * */
+	 */
 	public int getUserStateRegistration(String userID, String userThreadState) {
 		System.out.println("상태 등록");
 		String sql = "insert into UserGameState (UserID,ThreadState) values (?,?) ON DUPLICATE KEY UPDATE UserID=?, ThreadState=?";
@@ -51,13 +53,10 @@ public class UserStateDAO {
 		return count;
 	}
 
-	public int getUserGameRoomRegistration(String roomName,String threadState,
-			String managerID, String makeRoomUserID, String enterRoomUserID,
-			String gameRunOrWaitState) {
-		System.out.println("방 등록");
+	public int getUserGameRoomRegistration(String roomName, String threadState, String managerID, String makeRoomUserID,
+			String enterRoomUserID, String gameRunOrWaitState) {
 		String sql = "insert into UserGameRoom (RoomName,ThreadState,ManagerID,Gamer1,Gamer2,GameRunOrWaitState) "
-				+ "values (?,?,?,?,?,?) "
-				+ "ON DUPLICATE KEY UPDATE RoomName = ?, ThreadState = ?, "
+				+ "values (?,?,?,?,?,?) " + "ON DUPLICATE KEY UPDATE RoomName = ?, ThreadState = ?, "
 				+ "ManagerID = ?,Gamer1 = ?,Gamer2 = ?,GameRunOrWaitState = ?;";
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -103,34 +102,81 @@ public class UserStateDAO {
 
 	public boolean checkRoomName(ManagerManagmentVO mmVO) {
 		boolean check = false;
-		String sql="select * from UserGameRoom where RoomName like ?";
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		
-		ResultSet rs=null; 
-		String roomName=mmVO.getRoomName();	
+		String sql = "select * from UserGameRoom where RoomName like ?";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		ResultSet rs = null;
+		String roomName = mmVO.getRoomName();
 		try {
-			con=DBUtil.getConnection();
-			pstmt=con.prepareStatement(sql);
-			pstmt.setString(1,roomName);
-			rs=pstmt.executeQuery();
-			while(rs.next()) {
-				check=true;
-				String txtRoomName=rs.getString(1).toString();
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, roomName);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				check = true;
+				String txtRoomName = rs.getString(1).toString();
 				System.out.println(txtRoomName);
 			}
 		} catch (Exception e) {
 			AlertDisplay.alertDisplay(1, "아이디중복검사 오류", "아이디 중복 오류입니다.", e.toString());
-		}finally {
+		} finally {
 			try {
-				if(rs !=null) rs.close();
-				if(pstmt !=null)  pstmt.close(); 
-				if(con != null) con.close();  		
-			}catch(Exception e) {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
 				AlertDisplay.alertDisplay(1, "아이디중복검사 오류", "아이디 중복창 닫기 실패", e.toString());
-			}		
-		}	
+			}
+		}
 		return check;
+	}
+
+	// 방장만 남은 방을 삭제하기
+	public void getUserGameRoomDelete(String roomName) {
+		String dml = "delete from Nam2CatchMind.UserGameRoom where roomName = ? and Gamer2 is null";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			pstmt.setString(1, roomName);
+			int i = pstmt.executeUpdate();
+
+			if (i == 1) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("게임방 삭제");
+				alert.setHeaderText("게임방 삭제 완료.");
+				alert.setContentText("게임방 삭제 성공!!!");
+
+				alert.showAndWait();
+
+			} else {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("게임방 삭제");
+				alert.setHeaderText("게임방 삭제 실패.");
+				alert.setContentText("게임방 삭제 실패!!!");
+				alert.showAndWait();
+			}
+
+		} catch (SQLException e) {
+			System.out.println("e=[" + e + "]");
+		} catch (Exception e) {
+			System.out.println("e=[" + e + "]");
+		} finally {
+			try {
+				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+			}
+		}
 	}
 
 }
