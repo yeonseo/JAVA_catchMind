@@ -10,7 +10,7 @@ import java.util.Date;
 
 import Model.KeyWordVO;
 import Model.MakeRoomVO;
-import Model.UserGameHistroryVO;
+import Model.UserGameHistoryVO;
 import Model.UserVO;
 
 public class GamerDAO {
@@ -648,114 +648,194 @@ public class GamerDAO {
 	}
 
 	// Gamer1 과 Gamer2에 각 각 플레이 수 넣기
-	public int getGamer1andGamer2PlayPlus(String userId) {
-		String sql = "insert into usergamehistory (UserID,Play) values (?,?) ON DUPLICATE KEY UPDATE UserID=?,Play=Play+1";
+		public int getGamer1andGamer2PlayPlus(String userId) {
+			String sql = "insert into usergamehistory (UserID,Play) values (?,?) ON DUPLICATE KEY UPDATE UserID=?,Play=Play+1";
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			int count = 0;
+			try {
+				// ③ DBUtil 클래스의 getConnection( )메서드로 데이터베이스와 연결
+				con = DBUtil.getConnection();
+				// ④ 입력받은 회원 정보를 처리하기 위하여 SQL문장을 생성
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, userId);
+				pstmt.setInt(2, 1);
+				pstmt.setString(3, userId);
+
+				// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+				count = pstmt.executeUpdate(); // 쿼리문 진짜 실행! // 아이디,패스워드,이미지,성별 DB저장!
+			} catch (SQLException e) {
+				System.out.println("e=[" + e + "]");
+				AlertDisplay.alertDisplay(1, "쿼리문(DB) 오류", "쿼리문을 가져오는데 실패함", e.toString());
+			} catch (Exception e) {
+				System.out.println("e=[" + e + "]");
+				AlertDisplay.alertDisplay(1, "DB등록 오류", "DB등록하는데 실패함", e.toString());
+			} finally {
+				try {
+					// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+					if (pstmt != null)
+						pstmt.close();
+					if (con != null)
+						con.close();
+				} catch (SQLException e) {
+					AlertDisplay.alertDisplay(1, "DB연결해제오류", "DB연결해제 오류", e.toString());
+				}
+			}
+			return count;
+		}
+		//Gamer2에 정답수 넣기
+		public int getGamer2WinPlus(String userId) {
+			String sql = "insert into usergamehistory (UserID,Win) values (?,?) ON DUPLICATE KEY UPDATE UserID=?,Win=Win+1";
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			int count = 0;
+			try {
+				// ③ DBUtil 클래스의 getConnection( )메서드로 데이터베이스와 연결
+				con = DBUtil.getConnection();
+				// ④ 입력받은 회원 정보를 처리하기 위하여 SQL문장을 생성
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, userId);
+				pstmt.setInt(2, 1);
+				pstmt.setString(3, userId);
+
+				// ⑤ SQL문을 수행후 처리 결과를 얻어옴
+				count = pstmt.executeUpdate(); // 쿼리문 진짜 실행! // 아이디,패스워드,이미지,성별 DB저장!
+			} catch (SQLException e) {
+				System.out.println("e=[" + e + "]");
+				AlertDisplay.alertDisplay(1, "쿼리문(DB) 오류", "쿼리문을 가져오는데 실패함", e.toString());
+			} catch (Exception e) {
+				System.out.println("e=[" + e + "]");
+				AlertDisplay.alertDisplay(1, "DB등록 오류", "DB등록하는데 실패함", e.toString());
+			} finally {
+				try {
+					// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+					if (pstmt != null)
+						pstmt.close();
+					if (con != null)
+						con.close();
+				} catch (SQLException e) {
+					AlertDisplay.alertDisplay(1, "DB연결해제오류", "DB연결해제 오류", e.toString());
+				}
+			}
+			return count;
+		}	
+		
+		
+		
+		
+		// Gamer1의 아이디로 센스표 업데이트
+		public int getGamer1SencePlus(String userId) {
+			String sql = "insert into usergamehistory (UserID,sence) values (?,?) ON DUPLICATE KEY UPDATE UserID=?,Sence=Sence+1";
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			int i = 0;
+			try {
+				con = DBUtil.getConnection();
+
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, userId);
+				pstmt.setInt(2, 1);
+				pstmt.setString(3, userId);
+				i = pstmt.executeUpdate();
+
+				if (i == 1) {
+					System.out.println("Sence등록 ok");
+				} else {
+					System.out.println("Sence등록 실패");
+				}
+
+			} catch (SQLException e) {
+				System.out.println("e=[" + e + "]");
+			} catch (Exception e) {
+				System.out.println("e=[" + e + "]");
+			} finally {
+				try {
+					if (pstmt != null)
+						pstmt.close();
+					if (con != null)
+						con.close();
+				} catch (SQLException e) {
+				}
+			}
+			return i;
+		}
+		
+		
+		
+	//아이디로 나의 전적 테이블 가져오기!
+	public ArrayList<UserGameHistoryVO> getUserGameHistroy(String userID) {
+
+		ArrayList<UserGameHistoryVO> list = new ArrayList<UserGameHistoryVO>();
+		UserGameHistoryVO ughvo=null;
+		String dml = "select * from usergamehistory where UserID = ? ";
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		int count = 0;
-		try {
-			// ③ DBUtil 클래스의 getConnection( )메서드로 데이터베이스와 연결
-			con = DBUtil.getConnection();
-			// ④ 입력받은 회원 정보를 처리하기 위하여 SQL문장을 생성
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, userId);
-			pstmt.setInt(2, 1);
-			pstmt.setString(3, userId);
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
-			count = pstmt.executeUpdate(); // 쿼리문 진짜 실행! // 아이디,패스워드,이미지,성별 DB저장!
-		} catch (SQLException e) {
-			System.out.println("e=[" + e + "]");
-			AlertDisplay.alertDisplay(1, "쿼리문(DB) 오류", "쿼리문을 가져오는데 실패함", e.toString());
+		ResultSet rs = null;
+
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(dml);
+			pstmt.setString(1, userID);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ughvo = new UserGameHistoryVO(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4));
+				list.add(ughvo);
+			}
+		} catch (SQLException se) {
+			System.out.println(se);
 		} catch (Exception e) {
-			System.out.println("e=[" + e + "]");
-			AlertDisplay.alertDisplay(1, "DB등록 오류", "DB등록하는데 실패함", e.toString());
+			System.out.println(e);
 		} finally {
 			try {
-				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				if (rs != null)
+					rs.close();
 				if (pstmt != null)
 					pstmt.close();
 				if (con != null)
 					con.close();
-			} catch (SQLException e) {
-				AlertDisplay.alertDisplay(1, "DB연결해제오류", "DB연결해제 오류", e.toString());
+			} catch (SQLException se) {
 			}
 		}
-		return count;
+		return list;
 	}
-
-	//Gamer2에 정답수 넣기
-	public int getGamer2WinPlus(String userId) {
-		String sql = "insert into usergamehistory (UserID,Win) values (?,?) ON DUPLICATE KEY UPDATE UserID=?,Win=Win+1";
+	
+	//유저들의 전적 가지고 오기!
+	public ArrayList<UserGameHistoryVO> getUserTotalRecord(){
+		String sql = "select * from usergamehistory";
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		int count = 0;
-		try {
-			// ③ DBUtil 클래스의 getConnection( )메서드로 데이터베이스와 연결
-			con = DBUtil.getConnection();
-			// ④ 입력받은 회원 정보를 처리하기 위하여 SQL문장을 생성
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, userId);
-			pstmt.setInt(2, 1);
-			pstmt.setString(3, userId);
 
-			// ⑤ SQL문을 수행후 처리 결과를 얻어옴
-			count = pstmt.executeUpdate(); // 쿼리문 진짜 실행! // 아이디,패스워드,이미지,성별 DB저장!
-		} catch (SQLException e) {
-			System.out.println("e=[" + e + "]");
-			AlertDisplay.alertDisplay(1, "쿼리문(DB) 오류", "쿼리문을 가져오는데 실패함", e.toString());
+		ResultSet rs = null;
+		ArrayList<UserGameHistoryVO> list=new ArrayList<UserGameHistoryVO>();
+		UserGameHistoryVO ughvo;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ughvo=new UserGameHistoryVO(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4));
+				list.add(ughvo);		
+			}
 		} catch (Exception e) {
-			System.out.println("e=[" + e + "]");
-			AlertDisplay.alertDisplay(1, "DB등록 오류", "DB등록하는데 실패함", e.toString());
+			AlertDisplay.alertDisplay(1, "가져오기실패", "가져오기실패", e.toString());
 		} finally {
 			try {
-				// ⑥ 데이터베이스와의 연결에 사용되었던 오브젝트를 해제
+				if (rs != null)
+					rs.close();
 				if (pstmt != null)
 					pstmt.close();
 				if (con != null)
 					con.close();
-			} catch (SQLException e) {
-				AlertDisplay.alertDisplay(1, "DB연결해제오류", "DB연결해제 오류", e.toString());
+			} catch (Exception e) {
+				AlertDisplay.alertDisplay(1, "창닫기실패", "창닫기실패", e.toString());
 			}
 		}
-		return count;
+		
+		
+		return list;
 	}
-
-	// Gamer1의 아이디로 센스표 업데이트
-	public int getGamer1SencePlus(String userId) {
-		String sql = "insert into usergamehistory (UserID,sence) values (?,?) ON DUPLICATE KEY UPDATE UserID=?,Sence=Sence+1";
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		int i = 0;
-		try {
-			con = DBUtil.getConnection();
-
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, userId);
-			pstmt.setInt(2, 1);
-			pstmt.setString(3, userId);
-			i = pstmt.executeUpdate();
-
-			if (i == 1) {
-				System.out.println("Sence등록 ok");
-			} else {
-				System.out.println("Sence등록 실패");
-			}
-
-		} catch (SQLException e) {
-			System.out.println("e=[" + e + "]");
-		} catch (Exception e) {
-			System.out.println("e=[" + e + "]");
-		} finally {
-			try {
-				if (pstmt != null)
-					pstmt.close();
-				if (con != null)
-					con.close();
-			} catch (SQLException e) {
-			}
-		}
-		return i;
-	}
-
+	
+	
 }

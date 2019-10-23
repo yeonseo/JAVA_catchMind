@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <PieChart id="pieChart" layoutX="46.0" layoutY="119.0" prefHeight="439.0" prefWidth="524.0" />
+      <BarChart id="barChart" layoutX="621.0" layoutY="138.0" prefHeight="420.0" prefWidth="524.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <Label layoutX="546.0" layoutY="33.0" style="-fx-font-size: 25;" text="나의 전적" />
+      <Button id="btnExit" layoutX="1093.0" layoutY="26.0" mnemonicParsing="false" text="닫기" />
+      <Label layoutX="193.0" layoutY="67.0" style="-fx-font-size: 20;" text="시간 대 별 접속시간" />
+      <Label layoutX="843.0" layoutY="79.0" style="-fx-font-size: 20;" text="게임 승수" />
+   </children>
+</AnchorPane>

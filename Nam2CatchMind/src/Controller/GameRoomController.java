@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Model.ManagerManagmentVO;
-import Model.UserGameHistroryVO;
+import Model.UserGameHistoryVO;
 import Model.UserStateVO;
 import Model.UserVO;
 import javafx.application.Platform;
@@ -70,8 +70,8 @@ public class GameRoomController implements Initializable {
 	ArrayList<MakeRoomVO> mrlist;
 	ArrayList<MakeRoomVO> mrvoList;
 	ObservableList<DrowInfoVO> drowData;
-	UserGameHistroryVO ughvo;
-	UserGameHistroryVO ughvo2;
+	UserGameHistoryVO ughvo;
+	UserGameHistoryVO ughvo2;
 	int Play = 0;
 	int Gamer1Sence = 0;
 	boolean sence = true;
@@ -100,9 +100,10 @@ public class GameRoomController implements Initializable {
 
 		btnSend.setDisable(false);
 
-		startClient("localhost", 9876);
+		startClient(UserGameState.IP, 9876);
 		Platform.runLater(() -> {
 			txtTextArea.appendText("[Chat Start] \n");
+			
 			// 방장에 이름으로 방이름 보내기
 			send(userState + "," + GameWaitRoomController.roomName + "," + "welcome2" + ","
 					+ GamerLoginController.UserId + " 님이" + GameWaitRoomController.roomName + "에 입장하셨습니다.\n");
@@ -137,7 +138,6 @@ public class GameRoomController implements Initializable {
 		btnExit.setOnAction(e -> {
 			send(userState + "," + GameWaitRoomController.roomName + "," + "welcome2out" + "," + ">>>>>"
 					+ GamerLoginController.UserId + " 님이 " + GameWaitRoomController.roomName + "나가셨습니다.<<<<<\n");
-
 			Parent gameRoomRoot = null;
 			Stage gameRoomStage = null;
 			try {
@@ -148,8 +148,13 @@ public class GameRoomController implements Initializable {
 				gameRoomStage.setScene(scene);
 				gameRoomStage.setResizable(false);
 				((Stage) btnExit.getScene().getWindow()).close();
-				stopClient();
+				send("roomStateUpdate" + "," + UserGameState.GAMER_WAITROOM);
 				gameRoomStage.show();
+//				stopClient();
+				
+				
+				
+			
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -511,6 +516,7 @@ public class GameRoomController implements Initializable {
 					GamerLoginController.UserId, null, "Wait");
 			GameWaitRoomController.usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
 			GameWaitRoomController.usdao.getUserGameRoomDelete(GameWaitRoomController.mmVO.getRoomName());
+			
 			send("table_update,\n");
 		}
 	}
