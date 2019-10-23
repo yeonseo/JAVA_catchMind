@@ -1,18 +1,18 @@
 package Model;
 
-public class UserGameHistroryVO {
+public class UserGameHistoryVO {
 	
 	private String UserID;
 	private int Play;
 	private int Win;
 	private int Sence;
 
-	public UserGameHistroryVO(String userID, int play) {
+	public UserGameHistoryVO(String userID, int play) {
 		super();
 		UserID = userID;
 		Play = play;
 	}
-	public UserGameHistroryVO(String userID, int play, int win, int sence) {
+	public UserGameHistoryVO(String userID, int play, int win, int sence) {
 		super();
 		UserID = userID;
 		Play = play;

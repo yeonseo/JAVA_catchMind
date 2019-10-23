@@ -310,7 +310,31 @@ public class ManagerMainTabController implements Initializable {
 		 */
 		btnBubbleTotal.setOnAction(e9 -> {
 			try {
+				handlerBtnBubbleTotalAction(3);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		btnBubbleManager.setOnAction(e9 -> {
+			try {
+				handlerBtnBubbleTotalAction(2);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		btnBubbleBeManager.setOnAction(e9 -> {
+			try {
 				handlerBtnBubbleTotalAction(1);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		btnBubbleGamer.setOnAction(e9 -> {
+			try {
+				handlerBtnBubbleTotalAction(0);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -789,11 +813,11 @@ public class ManagerMainTabController implements Initializable {
 			try {
 				timeData = handlerGetUserTimeSplit();
 				String[] splitTimeDB = null;
-				for (String i : timeData) {
-					splitTimeDB = i.split(",");
-					txtMainAreaServerLog.appendText(splitTimeDB[0] + " " + splitTimeDB[1] + " " + splitTimeDB[2] + " "
-							+ splitTimeDB[3] + " " + splitTimeDB[4] + " " + splitTimeDB[5] + "\n");
-				}
+//				for (String i : timeData) {
+//					splitTimeDB = i.split(",");
+//					txtMainAreaServerLog.appendText(splitTimeDB[0] + " " + splitTimeDB[1] + " " + splitTimeDB[2] + " "
+//							+ splitTimeDB[3] + " " + splitTimeDB[4] + " " + splitTimeDB[5] + "\n");
+//				}
 				for (String i : timeData) {
 					splitTimeDB = i.split(",");
 					switch (splitTimeDB[1]) {
@@ -1006,11 +1030,11 @@ public class ManagerMainTabController implements Initializable {
 			try {
 				timeData = handlerGetManagerTimeSplit();
 				String[] splitTimeDB = null;
-				for (String i : timeData) {
-					splitTimeDB = i.split(",");
-					txtMainAreaServerLog.appendText(splitTimeDB[0] + " " + splitTimeDB[1] + " " + splitTimeDB[2] + " "
-							+ splitTimeDB[3] + " " + splitTimeDB[4] + " " + splitTimeDB[5] + "\n");
-				}
+//				for (String i : timeData) {
+//					splitTimeDB = i.split(",");
+//					txtMainAreaServerLog.appendText(splitTimeDB[0] + " " + splitTimeDB[1] + " " + splitTimeDB[2] + " "
+//							+ splitTimeDB[3] + " " + splitTimeDB[4] + " " + splitTimeDB[5] + "\n");
+//				}
 				for (String i : timeData) {
 					splitTimeDB = i.split(",");
 					switch (splitTimeDB[1]) {
@@ -1253,11 +1277,11 @@ public class ManagerMainTabController implements Initializable {
 			try {
 				timeData = handlerGetGamerTimeSplit();
 				String[] splitTimeDB = null;
-				for (String i : timeData) {
-					splitTimeDB = i.split(",");
-					txtMainAreaServerLog.appendText(splitTimeDB[0] + " " + splitTimeDB[1] + " " + splitTimeDB[2] + " "
-							+ splitTimeDB[3] + " " + splitTimeDB[4] + " " + splitTimeDB[5] + "\n");
-				}
+//				for (String i : timeData) {
+//					splitTimeDB = i.split(",");
+//					txtMainAreaServerLog.appendText(splitTimeDB[0] + " " + splitTimeDB[1] + " " + splitTimeDB[2] + " "
+//							+ splitTimeDB[3] + " " + splitTimeDB[4] + " " + splitTimeDB[5] + "\n");
+//				}
 				for (String i : timeData) {
 					splitTimeDB = i.split(",");
 					switch (splitTimeDB[1]) {
@@ -1356,22 +1380,36 @@ public class ManagerMainTabController implements Initializable {
 		ArrayList<String> timeData = null;
 		int[] month = new int[12];
 		XYChart.Series series = new XYChart.Series();
-		series.setName("work");
-		timeData = handlerGetUserTimeSplit();
+		String bubbleChartName = null;
+		switch (access) {
+		case 0:
+			bubbleChartName = "유저";
+			break;
+		case 1:
+			bubbleChartName = "예비관리자";
+			break;
+		case 2:
+			bubbleChartName = "정식관리자";
+			break;
+		case 3:
+			bubbleChartName = "총 관리자";
+			break;
+		}
+		series.setName(bubbleChartName);
+		timeData = handlerGetBtnBubbleTotalTimeSplit(access);
 		String[] splitTimeDB = null;
 		String list;
-		for (String i : timeData) {
-			splitTimeDB = i.split(",");
-			txtMainAreaServerLog.appendText(splitTimeDB[0] + " " + splitTimeDB[1] + " " + splitTimeDB[2] + " "
-					+ splitTimeDB[3] + " " + splitTimeDB[4] + " " + splitTimeDB[5] + "\n");
-		}
+//		for (String i : timeData) {
+//			splitTimeDB = i.split(",");
+//			txtMainAreaServerLog.appendText(splitTimeDB[0] + " " + splitTimeDB[1] + " " + splitTimeDB[2] + " "
+//					+ splitTimeDB[3] + " " + splitTimeDB[4] + " " + splitTimeDB[5] + "\n");
+//		}
 		int i;
 		for (String listData : timeData) {
 			splitTimeDB = listData.split(",");
 			switch (splitTimeDB[1]) {
 			case "01":
 				for (i = 0; i < splitTimeDB[2].length(); i++) {
-
 //					System.out.println(Integer.parseInt(splitTimeDB[1])+" "+
 //							Integer.parseInt(splitTimeDB[2])+" "+i);
 				}
@@ -1457,17 +1495,6 @@ public class ManagerMainTabController implements Initializable {
 			}
 		}
 		chartBubble.getData().add(series);
-//			chart.setData(FXCollections.observableArrayList(new PieChart.Data("1월", (double) month[0]),
-//					new PieChart.Data("2월", (double) month[1]), new PieChart.Data("3월", (double) month[2]),
-//					new PieChart.Data("4월", (double) month[3]), new PieChart.Data("5월", (double) month[4]),
-//					new PieChart.Data("6월", (double) month[5]), new PieChart.Data("7월", (double) month[6]),
-//					new PieChart.Data("8월", (double) month[7]), new PieChart.Data("9월", (double) month[8]),
-//					new PieChart.Data("10월", (double) month[9]), new PieChart.Data("11월", (double) month[10]),
-//					new PieChart.Data("12월", (double) month[11])));
-//
-//			btnClose.setOnAction(e22 -> {
-//				stage.close();
-//			});
 
 	}
 
@@ -1477,7 +1504,7 @@ public class ManagerMainTabController implements Initializable {
 		ManagerManagmentDAO mmDAO = new ManagerManagmentDAO();
 
 		try {
-			list = mmDAO.getCurrentTime(userId);
+			list = mmDAO.getFindUseAccessCurrentTime(access);
 			if (list == null) {
 				AlertDisplay.alertDisplay(1, "total DB List Null Point", "Null Point", "Error");
 				return null;

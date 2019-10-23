@@ -93,6 +93,43 @@ public class ManagerManagmentDAO {
 		return list;
 	}
 
+	// 특정 접근권한 유저의 시작시간 찾기
+	public ArrayList<String> getFindUseAccessCurrentTime(int userAccess) {
+		ArrayList<String> list = new ArrayList<String>();
+		String currentTime = null;
+		String sql = "select EnterTime from usertime join UserInfo where UserAccess = ?";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		SimpleDateFormat sdf;
+		try {
+			con = DBUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, userAccess);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				sdf = new SimpleDateFormat("yyyy,MM,dd,HH,mm,ss");
+				Date enterTime = rs.getTimestamp("EnterTime");
+				currentTime = sdf.format(enterTime);
+				list.add(currentTime);
+			}
+		} catch (Exception e) {
+			AlertDisplay.alertDisplay(1, "시간 가져오기 오류", "시간 가져오기 오류", e.toString());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (con != null)
+					con.close();
+			} catch (Exception e) {
+				AlertDisplay.alertDisplay(1, "시간 가져오기 오류", "시간 가져오기 실패", e.toString());
+			}
+		}
+		return list;
+	}
+
 	/*
 	 * 관리자 관리탭에서 관리자 권한을 가진 유저들만 조회하기 위한 함수
 	 */
