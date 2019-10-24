@@ -4,14 +4,22 @@
     -fx-font-size: 25;	
       -fx-text-fill: #ffffff;
 }
+#txtidPwd{
+	-fx-font-family: "Do Hyeon";
+    -fx-font-size: 18;	
+}
 #textChachMind{
 	-fx-font-family: "Do Hyeon";
     -fx-font-size: 28;
     -fx-text-fill: #ffffff;
 	
 }
+#loginBtn{
+		-fx-background-color:#000000;	
+		-fx-text-fill:#ffffff;
+}
 #loginBtn:hover{
-		-fx-background-color:#2a5058;	
+		-fx-background-color:#333333;	
 		-fx-text-fill:#ffffff;
 	
 }

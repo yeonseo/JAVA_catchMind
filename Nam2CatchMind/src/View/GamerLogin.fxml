@@ -24,8 +24,8 @@
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="63.0" spacing="10.0">
                <children>
-                  <Label text="아이디" />
-                  <Label text="패스워드" />
+                  <Label id="txtidPwd" text="아이디" />
+                  <Label id="txtidPwd" text="패스워드" />
                </children>
                <HBox.margin>
                   <Insets />
