@@ -87,8 +87,8 @@ public class ManagerLoginController implements Initializable {
 
 	// 로그인확인
 	public void handlerBtnLoginAction() {
-		gdao = new GamerDAO();
-		list = gdao.getLoginCheck(managerId.getText(), managerPwd.getText());
+		mmdao = new ManagerManagmentDAO();
+		list = mmdao.getLoginCheck(managerId.getText(), managerPwd.getText());
 		System.out.println("로그인 리스트 사이즈 : " + list.size());
 		if (managerId.getText().equals("") || managerPwd.getText().equals("")) {
 			AlertDisplay.alertDisplay(1, "아이디 및 패스워드 미입력", "아이디 및 패스워드 미입력", "아이디와 패스워드를 입력해주세요!");

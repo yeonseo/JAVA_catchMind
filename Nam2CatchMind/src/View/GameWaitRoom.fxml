@@ -27,25 +27,26 @@
             <Button fx:id="btnGameRoomExit" mnemonicParsing="false" text="나가기" />
          </children>
       </HBox>
-      <AnchorPane layoutX="37.0" layoutY="132.0" prefHeight="600.0" prefWidth="876.0">
+      <AnchorPane layoutX="24.0" layoutY="132.0" prefHeight="651.0" prefWidth="902.0">
          <children>
             <TableView fx:id="roomInfo" layoutY="-1.0" prefHeight="286.0" prefWidth="540.0" />
             <TextArea fx:id="txtChatArea" layoutY="324.0" prefHeight="264.0" prefWidth="540.0" />
-            <TableView fx:id="userRanking" layoutX="566.0" layoutY="325.0" prefHeight="310.0" prefWidth="310.0" />
+            <TableView fx:id="userRanking" layoutX="566.0" layoutY="325.0" prefHeight="310.0" prefWidth="328.0" />
             <HBox alignment="BOTTOM_CENTER" layoutY="606.0" prefHeight="29.0" prefWidth="540.0" spacing="10.0">
                <children>
                   <TextField fx:id="txtInputMessage" prefHeight="29.0" prefWidth="416.0" />
                   <Button fx:id="btnUserSend" mnemonicParsing="false" prefHeight="29.0" prefWidth="127.0" text="보 내 기" />
                </children>
             </HBox>
-            <Label layoutX="685.0" layoutY="295.0" style="-fx-font-size: 18;" text="랭킹순위" textFill="#736270" />
-            <ImageView fx:id="gamerImg" fitHeight="257.0" fitWidth="310.0" layoutX="596.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+            <Label layoutX="649.0" layoutY="282.0" style="-fx-font-size: 18;" text="유저현황" textFill="#736270" />
+            <ImageView fx:id="gamerImg" fitHeight="257.0" fitWidth="310.0" layoutX="596.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/gamerBasicImg.jpg" />
                </image>
             </ImageView>
-            <Label fx:id="gameUserId" layoutX="696.0" layoutY="-1.0" text="아이디 " />
+            <Button fx:id="refresh" layoutX="736.0" layoutY="275.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0" text="새로고침" />
          </children>
       </AnchorPane>
+      <Label fx:id="gameUserId" layoutX="720.0" layoutY="95.0" text="아이디 " />
    </children>
 </AnchorPane>

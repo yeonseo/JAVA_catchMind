@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Model.ManagerManagmentVO;
+import Model.UserVO;
 
 public class ManagerManagmentDAO {
 	/*
@@ -16,6 +17,47 @@ public class ManagerManagmentDAO {
 	 * 
 	 * * * * * * * * * * * * * * *
 	 */
+	// 관리자 로그인 아이디 및 패스워드 확인
+		public ArrayList<UserVO> getLoginCheck(String managerID, String managerPW) {
+			String sql = "select * from UserInfo where UserID=? and UserPassword=? and UserAccess > 0"; // 찾는 아이디와 찾는 패스워드가 DB에서 둘다 맞는걸 찾아라
+			ArrayList<UserVO> list = new ArrayList<UserVO>(); // 찾은 회원정보 넣는곳
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			UserVO uvo = null;
+			String loginId = managerID;
+			String loginPassword = managerPW;
+			try {
+				con = DBUtil.getConnection();
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, loginId); // 찾는 아이디
+				pstmt.setString(2, loginPassword); // 찾는 패스워드
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					uvo = new UserVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)); // 회원 정보 모두 넣음
+					list.add(uvo);
+
+				}
+				System.out.println("DAO에서 " + list.get(0).getImage());
+				System.out.println("DAO에서list 사이즈" + list.size());
+			} catch (Exception e) {
+				AlertDisplay.alertDisplay(1, "로그인 아이디 및 패스워드 찾기 오류", "로그인 아이디 및 패스워드 찾기 오류", e.toString());
+
+			} finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (pstmt != null)
+						pstmt.close();
+					if (con != null)
+						con.close();
+				} catch (Exception e) {
+					AlertDisplay.alertDisplay(1, "로그인창 닫기 오류", "로그인창 닫기 오류", e.toString());
+				}
+			}
+
+			return list;
+		}
 
 	/*
 	 * 관리자 로그인시 시간을 저장하기 위한 함수
