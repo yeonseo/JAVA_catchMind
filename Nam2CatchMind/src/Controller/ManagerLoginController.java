@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Application.ServerMain;
+import Model.ManagerManagmentVO;
 import Model.UserStateVO;
 import Model.UserVO;
 import javafx.application.Platform;
@@ -55,6 +56,7 @@ public class ManagerLoginController implements Initializable {
 	String managerStartTime;
 	
 	public  ArrayList<UserVO> list;
+	public  ArrayList<ManagerManagmentVO> mmlist;
 	public static String UserId;
 	public static int UserAccess;
 
@@ -89,31 +91,27 @@ public class ManagerLoginController implements Initializable {
 	// 로그인확인
 	public void handlerBtnLoginAction() {
 		mmdao = new ManagerManagmentDAO();
-		list = mmdao.getLoginCheck(managerId.getText(), managerPwd.getText());
-		System.out.println("로그인 리스트 사이즈 : " + list.size());
+		mmlist = mmdao.getLoginCheck(managerId.getText(), managerPwd.getText());
+		System.out.println("로그인 리스트 사이즈 : " + mmlist.size());
 		if (managerId.getText().equals("") || managerPwd.getText().equals("")) {
 			AlertDisplay.alertDisplay(1, "아이디 및 패스워드 미입력", "아이디 및 패스워드 미입력", "아이디와 패스워드를 입력해주세요!");
 			return;
 		}
-		if (list.size() != 0) {
+		if (mmlist.size() != 0) {
 			// 로그인 성공부분
-			UserId = list.get(0).getUserID();
-			UserAccess = list.get(0).getUserAccess();
-			System.out.println(UserId);
+			UserId = mmlist.get(0).getUserID();
+			UserAccess = mmlist.get(0).getUserAccess();
+			System.out.println(UserAccess);
 			// 유저 GameRoom FXML 로드
 			Parent gameRoomRoot = null;
 			Stage gameRoomStage = null;
 			AlertDisplay.alertDisplay(5, "로그인 성공", "로그인 성공!", "로그인 합니다.");
 			try {
-//				int port = 9876;
-//	            String host = "localhost";
-//	            startClient(host, port);
 	            
 	            usvo = new UserStateVO(managerId.getText(), UserGameState.MANAGER_ONLINE); // DB에 아이디와 상태를 DAO에게!
 				usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
 				int count = usdao.getUserStateRegistration(usvo.getUserID(), usvo.getThreadState()); // DAO에 UserStateVO객체를 넣어줌!
 				if (count != 0) {
-					System.out.println("test1");
 					Stage stage = (Stage) btnExit.getScene().getWindow();
 					stage.close(); // 등록 alert 띄우고 그 페이지 닫아짐!
 				} else {
@@ -126,10 +124,8 @@ public class ManagerLoginController implements Initializable {
 	            System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.MANAGER_ONLINE);
 	            
 	            try {
-	            	System.out.println("test4");
 	            	gameRoomRoot = FXMLLoader.load(getClass().getResource("/View/ManagerMainTab.fxml"));
 					Scene scene = new Scene(gameRoomRoot);
-					System.out.println("test5");
 					gameRoomStage = new Stage();
 					gameRoomStage.setTitle("관리자");
 					gameRoomStage.setScene(scene);

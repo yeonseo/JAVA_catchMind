@@ -247,7 +247,7 @@ public class ManagerMainTabController implements Initializable {
 		 * 
 		 * 
 		 */
-		if(ManagerLoginController.UserAccess<2) {
+		if (ManagerLoginController.UserAccess < 2) {
 			tabManager.setDisable(true);
 		}
 		// 로그인한 관리자의 정보 보이기
@@ -1381,7 +1381,12 @@ public class ManagerMainTabController implements Initializable {
 	public void handlerBtnBubbleTotalAction(int access) throws IOException {
 		ArrayList<String> timeData = null;
 		int[] month = new int[12];
-		XYChart.Series series = new XYChart.Series();
+		XYChart.Series<String, String> series = new XYChart.Series();
+
+		// 버블차트 초기화
+		series.getData().clear();
+		chartBubble.getData().clear();
+
 		String bubbleChartName = null;
 		switch (access) {
 		case 0:
@@ -1415,21 +1420,18 @@ public class ManagerMainTabController implements Initializable {
 //					System.out.println(Integer.parseInt(splitTimeDB[1])+" "+
 //							Integer.parseInt(splitTimeDB[2])+" "+i);
 				}
-				series.getData()
-						.add(new XYChart.Data(Integer.parseInt(splitTimeDB[1]), Integer.parseInt(splitTimeDB[2]), i));
+				series.getData().add(new XYChart.Data(splitTimeDB[1], splitTimeDB[2], i));
 				break;
 			case "02":
 				for (i = 0; i < splitTimeDB[2].length(); i++) {
-					series.getData().add(
-							new XYChart.Data(Integer.parseInt(splitTimeDB[1]), Integer.parseInt(splitTimeDB[2]), i));
+					series.getData().add(new XYChart.Data(splitTimeDB[1], splitTimeDB[2], i));
 				}
 				break;
 			case "03":
 				for (i = 0; i < splitTimeDB[2].length(); i++) {
 
 				}
-				series.getData()
-						.add(new XYChart.Data(Integer.parseInt(splitTimeDB[1]), Integer.parseInt(splitTimeDB[2]), i));
+				series.getData().add(new XYChart.Data(splitTimeDB[1], splitTimeDB[2], i));
 				break;
 			case "04":
 				for (i = 0; i < splitTimeDB[2].length(); i++) {
@@ -1496,6 +1498,7 @@ public class ManagerMainTabController implements Initializable {
 				break;
 			}
 		}
+
 		chartBubble.getData().add(series);
 
 	}

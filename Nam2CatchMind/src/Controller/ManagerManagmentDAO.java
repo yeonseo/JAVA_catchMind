@@ -13,18 +13,18 @@ import Model.UserVO;
 
 public class ManagerManagmentDAO {
 	/*
-	 * * * * * * * * * * * * * * * * 메니저 메인창에서 동작을 위한 클래스
+	 * 메니저 메인창에서 동작을 위한 클래스
 	 * 
-	 * * * * * * * * * * * * * * *
 	 */
+	
 	// 관리자 로그인 아이디 및 패스워드 확인
-		public ArrayList<UserVO> getLoginCheck(String managerID, String managerPW) {
+		public ArrayList<ManagerManagmentVO> getLoginCheck(String managerID, String managerPW) {
 			String sql = "select * from UserInfo where UserID=? and UserPassword=? and UserAccess > 0"; // 찾는 아이디와 찾는 패스워드가 DB에서 둘다 맞는걸 찾아라
-			ArrayList<UserVO> list = new ArrayList<UserVO>(); // 찾은 회원정보 넣는곳
+			ArrayList<ManagerManagmentVO> list = new ArrayList<ManagerManagmentVO>(); // 찾은 회원정보 넣는곳
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
-			UserVO uvo = null;
+			ManagerManagmentVO uvo = null;
 			String loginId = managerID;
 			String loginPassword = managerPW;
 			try {
@@ -34,7 +34,7 @@ public class ManagerManagmentDAO {
 				pstmt.setString(2, loginPassword); // 찾는 패스워드
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
-					uvo = new UserVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)); // 회원 정보 모두 넣음
+					uvo = new ManagerManagmentVO(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4),rs.getString(5)); // 회원 정보 모두 넣음
 					list.add(uvo);
 
 				}
