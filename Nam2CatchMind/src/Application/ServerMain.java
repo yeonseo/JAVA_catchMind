@@ -123,6 +123,8 @@ public class ServerMain extends Application {
 
 		Button toggleButton = new Button("start");
 		toggleButton.setMaxWidth(Double.MAX_VALUE);
+		toggleButton.setMaxHeight(200);
+		toggleButton.setFont(new Font("Arial",30));
 		BorderPane.setMargin(toggleButton, new Insets(1, 0, 0, 0));
 		root.setBottom(toggleButton);
 
@@ -146,7 +148,7 @@ public class ServerMain extends Application {
 				});// end of Platform.runLater
 			} // end of if/else
 		});// end of toggleButton
-		Scene scene = new Scene(root, 400, 400);
+		Scene scene = new Scene(root, 200, 200);
 		primaryStage.setTitle("Chat server");
 		primaryStage.setOnCloseRequest(event -> stopServer());
 		primaryStage.setScene(scene);
