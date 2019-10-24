@@ -97,7 +97,7 @@ public class ManagerManagmentDAO {
 	public ArrayList<String> getFindUseAccessCurrentTime(int userAccess) {
 		ArrayList<String> list = new ArrayList<String>();
 		String currentTime = null;
-		String sql = "select EnterTime from usertime join UserInfo where UserAccess = ?";
+		String sql = "select EnterTime from usertime join UserInfo on usertime.UserID=UserInfo.UserID where UserAccess = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
