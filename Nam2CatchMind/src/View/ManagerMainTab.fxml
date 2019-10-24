@@ -9,253 +9,278 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="747.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagerMainTabController">
-  <tabs>
-    <Tab text="관리 메인">
-         <content>
-            <Pane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="572.0" prefWidth="747.0">
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1063.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagerMainTabController">
+   <children>
+      <Label alignment="CENTER" layoutX="-152.0" layoutY="212.0" prefHeight="119.0" prefWidth="523.0" style="-fx-rotate: 270;" text="MANAGEMENT">
+         <font>
+            <Font name="Arial Black" size="54.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="227.0" fitWidth="282.0" layoutX="12.0" layoutY="507.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/managerTabMain.jpg" />
+         </image>
+      </ImageView>
+      <TabPane layoutX="286.0" layoutY="54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="621.0" prefWidth="767.0" style="-fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab text="관리 메인">
+               <content>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <HBox prefHeight="362.0" prefWidth="721.0">
+                        <VBox alignment="CENTER" prefHeight="572.0" prefWidth="747.0">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="261.0" prefWidth="0.0" spacing="10.0">
+                              <HBox alignment="CENTER" prefHeight="362.0" prefWidth="721.0">
                                  <children>
-                                    <Label>
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="lblMainTabServerState" />
-                                    <Button fx:id="btnMainServerOpen" mnemonicParsing="false" prefHeight="0.0" prefWidth="0.0" visible="false" />
-                                    <Button fx:id="btnMainServerClose" mnemonicParsing="false" prefWidth="0.0" visible="false" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </VBox>
-                              <VBox alignment="CENTER" maxHeight="240.0" maxWidth="240.0" prefHeight="240.0" prefWidth="240.0">
-                                 <children>
-                                    <ImageView fx:id="imgMainUser" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER_RIGHT" prefHeight="261.0" prefWidth="93.0" spacing="10.0">
-                                 <children>
-                                    <Label text="ID" />
-                                    <Label text="권한" />
-                                    <Label text="상태" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </padding>
-                              </VBox>
-                              <VBox alignment="CENTER_LEFT" prefHeight="261.0" prefWidth="230.0" spacing="10.0">
-                                 <children>
-                                    <Label fx:id="lblMainUserId" text="Label" />
-                                    <Label fx:id="lblMainAccess" text="Label" />
-                                    <Label fx:id="lblMainState" text="Label" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </padding>
-                              </VBox>
-                              <VBox alignment="CENTER" prefHeight="177.0" prefWidth="126.0" spacing="10.0">
-                                 <children>
-                                    <Button fx:id="btnMainLoginTimeChart" mnemonicParsing="false" prefHeight="27.0" prefWidth="75.0" text="접속시간" />
-                                    <Button fx:id="btnMainTabUserEdit" mnemonicParsing="false" prefWidth="75.0" text="수정" />
-                                    <Button fx:id="btnManagerMainTabExit" mnemonicParsing="false" prefWidth="75.0" text="나가기" />
-                                 </children>
-                              </VBox>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="373.0" prefWidth="721.0" spacing="20.0">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                           <children>
-                              <TableView fx:id="tableView" prefHeight="226.0" prefWidth="474.0" />
-                              <TextArea fx:id="txtMainAreaServerLog" prefHeight="226.0" prefWidth="265.0" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </Pane>
-         </content>
-    </Tab>
-      <Tab fx:id="tabManager" text="관리자 관리">
-         <content>
-            <Pane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="566.0" prefWidth="747.0">
-                     <children>
-                        <HBox prefHeight="400.0" prefWidth="747.0">
-                           <children>
-                              <VBox alignment="CENTER" maxHeight="333.0" maxWidth="240.0" prefHeight="310.0" prefWidth="240.0">
-                                 <children>
-                                    <ImageView fx:id="imgManagerUser" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER_RIGHT" prefHeight="177.0" prefWidth="80.0" spacing="10.0">
-                                 <children>
-                                    <Label text="ID" />
-                                    <Label text="권한" />
-                                    <Label text="상태" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </padding>
-                              </VBox>
-                              <VBox alignment="CENTER_LEFT" prefHeight="177.0" prefWidth="180.0" spacing="10.0">
-                                 <children>
-                                    <Label fx:id="lblManagerUserId" text="Label" />
-                                    <Label fx:id="lblManagerAccess" text="Label" />
-                                    <Label fx:id="lblManagerState" text="Label" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </padding>
-                              </VBox>
-                              <VBox alignment="CENTER" prefHeight="213.0" prefWidth="123.0" spacing="10.0">
-                                 <children>
-                                    <Button fx:id="btnManagerChart" mnemonicParsing="false" prefWidth="70.0" text="차트" />
-                                    <Button fx:id="btnManagerUserEdit" mnemonicParsing="false" prefWidth="70.0" text="권한수정" />
-                                    <Button fx:id="btnManagerDel" mnemonicParsing="false" prefWidth="70.0" text="삭제" visible="false" />
-                                 </children>
-                              </VBox>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="375.0" prefWidth="747.0" spacing="10.0">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                           <children>
-                              <TableView fx:id="tableViewManager" prefHeight="251.0" prefWidth="828.0" />
-                              <VBox alignment="CENTER" prefHeight="309.0" prefWidth="0.0" spacing="20.0">
-                                 <children>
-                                    <Button fx:id="btnManagerSelectedEditAcc" mnemonicParsing="false" prefHeight="27.0" prefWidth="119.0" text="선택 권한 변경" visible="false" />
-                                    <Button fx:id="btnManagerSelectedCancle" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 취소" visible="false" />
-                                    <Button fx:id="btnManagerSelectedDel" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 삭제" visible="false" />
-                                    <Button fx:id="btnManagerExit" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="나가기" visible="false" />
+                                    <VBox alignment="CENTER" maxHeight="240.0" maxWidth="240.0" prefHeight="164.0" prefWidth="149.0">
+                                       <children>
+                                          <ImageView fx:id="imgMainUser" fitHeight="240.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER_RIGHT" prefHeight="261.0" prefWidth="85.0" spacing="10.0">
+                                       <children>
+                                          <Label text="ID" />
+                                          <Label text="권한" />
+                                          <Label text="상태" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="261.0" prefWidth="144.0" spacing="10.0">
+                                       <children>
+                                          <Label fx:id="lblMainUserId" text="Label" />
+                                          <Label fx:id="lblMainAccess" text="Label" />
+                                          <Label fx:id="lblMainState" text="Label" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="177.0" prefWidth="126.0" spacing="10.0">
+                                       <children>
+                                          <Button fx:id="btnMainLoginTimeChart" mnemonicParsing="false" prefHeight="27.0" prefWidth="75.0" text="접속시간" />
+                                          <Button fx:id="btnMainTabUserEdit" mnemonicParsing="false" prefWidth="75.0" text="수정" />
+                                          <Button fx:id="btnManagerMainTabExit" mnemonicParsing="false" prefWidth="75.0" text="나가기" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="261.0" prefWidth="0.0" spacing="10.0">
+                                       <children>
+                                          <Label>
+                                             <font>
+                                                <Font name="System Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lblMainTabServerState" />
+                                          <Button fx:id="btnMainServerOpen" mnemonicParsing="false" prefHeight="0.0" prefWidth="0.0" visible="false" />
+                                          <Button fx:id="btnMainServerClose" mnemonicParsing="false" prefWidth="0.0" visible="false" />
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </VBox>
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
-                              </VBox>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </Pane>
-         </content>
-      </Tab>
-      <Tab fx:id="tabGamer" text="유저 관리">
-         <content>
-            <Pane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="566.0" prefWidth="747.0">
-                     <children>
-                        <HBox prefHeight="400.0" prefWidth="721.0">
-                           <children>
-                              <VBox alignment="CENTER" prefHeight="310.0" prefWidth="240.0">
-                                 <children>
-                                    <ImageView fx:id="imgGamerUser" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER_RIGHT" prefHeight="288.0" prefWidth="80.0" spacing="10.0">
-                                 <children>
-                                    <Label text="ID" />
-                                    <Label text="상태" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </padding>
-                              </VBox>
-                              <VBox alignment="CENTER_LEFT" prefHeight="177.0" prefWidth="180.0" spacing="10.0">
-                                 <children>
-                                    <Label fx:id="lblGamerUserId" text="Label" />
-                                    <Label fx:id="lblGamerState" text="Label" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </padding>
-                              </VBox>
-                              <VBox alignment="CENTER" prefHeight="85.0" prefWidth="123.0" spacing="10.0">
-                                 <children>
-                                    <Button fx:id="btnGamerChart" mnemonicParsing="false" prefWidth="70.0" text="차트" />
-                                    <Button fx:id="btnGamerDel" mnemonicParsing="false" prefWidth="70.0" text="삭제" visible="false" />
-                                 </children>
-                              </VBox>
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="350.0" prefWidth="721.0" spacing="10.0">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                           <children>
-                              <TableView fx:id="tableViewGamer" prefHeight="238.0" prefWidth="882.0" />
-                              <VBox alignment="CENTER" prefHeight="141.0" prefWidth="144.0" spacing="20.0">
-                                 <children>
-                                    <Button fx:id="btnGamerSelectedCancle" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 취소" visible="false" />
-                                    <Button fx:id="btnGamerSelectedDel" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 삭제" visible="false" />
-                                    <Button fx:id="btnGamerExit" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="나가기" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="386.0" prefWidth="747.0">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
-                              </VBox>
+                                 <children>
+                                    <TableView fx:id="tableView" prefHeight="226.0" prefWidth="600.0" />
+                                    <TextArea fx:id="txtMainAreaServerLog" prefHeight="272.0" prefWidth="0.0" visible="false" />
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
+                        </VBox>
                      </children>
-                  </VBox>
-               </children>
-            </Pane>
-         </content>
-      </Tab>
-      <Tab text="통계보기">
-         <content>
-            <Pane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <BubbleChart fx:id="chartBubble" layoutX="21.0" layoutY="44.0" prefHeight="484.0" prefWidth="500.0">
-                    <xAxis>
-                      <NumberAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </BubbleChart>
-                  <VBox alignment="CENTER" layoutX="550.0" layoutY="-2.0" prefHeight="573.0" prefWidth="172.0" spacing="20.0">
+                  </Pane>
+               </content>
+            </Tab>
+            <Tab fx:id="tabManager" text="관리자 관리">
+               <content>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="btnBubbleTotal" mnemonicParsing="false" prefWidth="150.0" text="총사용자" />
-                        <Button fx:id="btnBubbleManager" mnemonicParsing="false" prefWidth="150.0" text="관리자" />
-                        <Button fx:id="btnBubbleBeManager" mnemonicParsing="false" prefWidth="150.0" text="예비관리자" />
-                        <Button fx:id="btnBubbleGamer" mnemonicParsing="false" prefWidth="150.0" text="유저" />
+                        <VBox alignment="CENTER" prefHeight="566.0" prefWidth="747.0">
+                           <children>
+                              <HBox prefHeight="400.0" prefWidth="747.0">
+                                 <children>
+                                    <VBox alignment="CENTER" maxHeight="333.0" maxWidth="240.0" prefHeight="310.0" prefWidth="240.0">
+                                       <children>
+                                          <ImageView fx:id="imgManagerUser" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER_RIGHT" prefHeight="177.0" prefWidth="80.0" spacing="10.0">
+                                       <children>
+                                          <Label text="ID" />
+                                          <Label text="권한" />
+                                          <Label text="상태" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="177.0" prefWidth="180.0" spacing="10.0">
+                                       <children>
+                                          <Label fx:id="lblManagerUserId" text="Label" />
+                                          <Label fx:id="lblManagerAccess" text="Label" />
+                                          <Label fx:id="lblManagerState" text="Label" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="213.0" prefWidth="123.0" spacing="10.0">
+                                       <children>
+                                          <Button fx:id="btnManagerChart" mnemonicParsing="false" prefWidth="70.0" text="차트" />
+                                          <Button fx:id="btnManagerUserEdit" mnemonicParsing="false" prefWidth="70.0" text="권한수정" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="375.0" prefWidth="747.0" spacing="10.0">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <children>
+                                    <TableView fx:id="tableViewManager" prefHeight="251.0" prefWidth="828.0" />
+                                    <VBox alignment="CENTER" prefHeight="309.0" prefWidth="0.0" spacing="20.0">
+                                       <children>
+                                          <Button fx:id="btnManagerDel" mnemonicParsing="false" prefWidth="70.0" text="삭제" visible="false" />
+                                          <Button fx:id="btnManagerSelectedEditAcc" mnemonicParsing="false" prefHeight="27.0" prefWidth="119.0" text="선택 권한 변경" visible="false" />
+                                          <Button fx:id="btnManagerSelectedCancle" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 취소" visible="false" />
+                                          <Button fx:id="btnManagerSelectedDel" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 삭제" visible="false" />
+                                          <Button fx:id="btnManagerExit" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="나가기" visible="false" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
-                  </VBox>
-               </children></Pane>
-         </content>
-      </Tab>
-  </tabs>
-</TabPane>
+                  </Pane>
+               </content>
+            </Tab>
+            <Tab fx:id="tabGamer" text="유저 관리">
+               <content>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="566.0" prefWidth="747.0">
+                           <children>
+                              <HBox prefHeight="400.0" prefWidth="721.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="310.0" prefWidth="240.0">
+                                       <children>
+                                          <ImageView fx:id="imgGamerUser" fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER_RIGHT" prefHeight="288.0" prefWidth="80.0" spacing="10.0">
+                                       <children>
+                                          <Label text="ID" />
+                                          <Label text="상태" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="177.0" prefWidth="180.0" spacing="10.0">
+                                       <children>
+                                          <Label fx:id="lblGamerUserId" text="Label" />
+                                          <Label fx:id="lblGamerState" text="Label" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="85.0" prefWidth="123.0" spacing="10.0">
+                                       <children>
+                                          <Button fx:id="btnGamerChart" mnemonicParsing="false" prefWidth="70.0" text="차트" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="350.0" prefWidth="721.0" spacing="10.0">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <children>
+                                    <TableView fx:id="tableViewGamer" prefHeight="238.0" prefWidth="882.0" />
+                                    <VBox alignment="CENTER" prefHeight="141.0" prefWidth="144.0" spacing="20.0">
+                                       <children>
+                                          <Button fx:id="btnGamerSelectedCancle" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 취소" visible="false" />
+                                          <Button fx:id="btnGamerDel" mnemonicParsing="false" prefWidth="70.0" text="삭제" visible="false" />
+                                          <Button fx:id="btnGamerSelectedDel" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="선택 삭제" visible="false" />
+                                          <Button fx:id="btnGamerExit" mnemonicParsing="false" prefHeight="27.0" prefWidth="121.0" text="나가기" visible="false" />
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </Pane>
+               </content>
+            </Tab>
+            <Tab text="통계보기">
+               <content>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <BubbleChart fx:id="chartBubble" layoutX="21.0" layoutY="44.0" prefHeight="437.0" prefWidth="445.0">
+                           <xAxis>
+                              <NumberAxis side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </BubbleChart>
+                        <VBox alignment="TOP_CENTER" layoutX="459.0" layoutY="13.0" prefHeight="573.0" prefWidth="172.0" spacing="20.0">
+                           <children>
+                              <ImageView fitHeight="242.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/managerTabChart.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Button fx:id="btnBubbleTotal" mnemonicParsing="false" prefWidth="150.0" text="총관리자" />
+                              <Button fx:id="btnBubbleManager" mnemonicParsing="false" prefWidth="150.0" text="관리자" />
+                              <Button fx:id="btnBubbleBeManager" mnemonicParsing="false" prefWidth="150.0" text="예비관리자" />
+                              <Button fx:id="btnBubbleGamer" mnemonicParsing="false" prefWidth="150.0" text="유저" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </Pane>
+               </content>
+            </Tab>
+         </tabs>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </TabPane>
+   </children>
+</Pane>

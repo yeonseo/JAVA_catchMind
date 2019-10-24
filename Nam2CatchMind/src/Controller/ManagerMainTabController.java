@@ -677,11 +677,6 @@ public class ManagerMainTabController implements Initializable {
 		roomName.setStyle("-fx-alignment: CENTER;");
 		roomName.setCellValueFactory(new PropertyValueFactory("RoomName"));
 
-		TableColumn threadState = new TableColumn("접속상태");
-		threadState.setMaxWidth(200);
-		threadState.setStyle("-fx-alignment: CENTER;");
-		threadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
-
 		TableColumn makeRoomUserID = new TableColumn("방장");
 		makeRoomUserID.setMaxWidth(160);
 		makeRoomUserID.setStyle("-fx-alignment: CENTER;");
@@ -698,7 +693,7 @@ public class ManagerMainTabController implements Initializable {
 		gameRunOrWaitState.setCellValueFactory(new PropertyValueFactory("gameRunOrWaitState"));
 
 		tableView.setItems(userRoomData);
-		tableView.getColumns().addAll(roomName, threadState, makeRoomUserID, enterRoomUserID, gameRunOrWaitState);
+		tableView.getColumns().addAll(roomName, makeRoomUserID, enterRoomUserID, gameRunOrWaitState);
 
 	}// end of tableViewSetting
 
@@ -769,13 +764,7 @@ public class ManagerMainTabController implements Initializable {
 			txtTextArea = (TextArea) gameRoomRoot.lookup("#txtTextArea");
 			TextField txtTextField = (TextField) gameRoomRoot.lookup("#txtTextField");
 			Button btnSend = (Button) gameRoomRoot.lookup("#btnSend");
-			Button btnGameStart = (Button) gameRoomRoot.lookup("#btnGameStart");
 			Button btnExit = (Button) gameRoomRoot.lookup("#btnExit");
-
-			canvas.setDisable(true);
-			txtTextField.setDisable(true);
-			btnSend.setDisable(true);
-			btnGameStart.setDisable(true);
 
 			word.setText("보기모드");
 

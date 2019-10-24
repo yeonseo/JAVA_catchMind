@@ -5,16 +5,35 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="300.0" prefWidth="400.0" spacing="10.0" style="-fx-background-color: #F2F2F2;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagerLoginController">
+<VBox alignment="CENTER" prefHeight="643.0" prefWidth="765.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagerLoginController">
    <children>
-      <Label text="캐치마인드!" />
-      <Label text="로그인" />
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="350.0" spacing="10.0">
+      <HBox alignment="CENTER" prefHeight="118.0" prefWidth="725.0" spacing="10.0">
          <children>
-            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="63.0" spacing="10.0">
+            <VBox alignment="CENTER" prefHeight="117.0" prefWidth="247.0" spacing="10.0">
+               <children>
+                  <Label text="캐치 마인드">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+                  <Label text="for Manager">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label text="관리자 모드로 로그인합니다" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER_RIGHT" prefHeight="242.0" prefWidth="157.0" spacing="10.0">
                <children>
                   <Label text="아이디" />
                   <Label text="패스워드" />
@@ -22,8 +41,11 @@
                <HBox.margin>
                   <Insets />
                </HBox.margin>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="158.0" spacing="10.0">
+            <VBox alignment="CENTER" prefHeight="117.0" prefWidth="166.0" spacing="10.0">
                <children>
                   <TextField fx:id="managerId" prefHeight="29.0" prefWidth="177.0" />
                   <PasswordField fx:id="managerPwd" />
@@ -32,14 +54,28 @@
             <Button fx:id="btnLogin" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="로그인" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="340.0" spacing="10.0">
+      <HBox alignment="CENTER" prefHeight="303.0" prefWidth="725.0" spacing="30.0">
          <children>
-            <Button fx:id="btnMemberShip" mnemonicParsing="false" text="회원가입" />
-            <Button fx:id="btnExit" mnemonicParsing="false" text="나가기" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <ImageView fitHeight="370.0" fitWidth="372.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/managerLogin_bg.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label text="&lt;a href=&quot;https://www.freepik.com/free-photos-vectors/business&quot;&gt;Business vector created by pikisuperstar - www.freepik.com&lt;/a&gt;&lt;a href=&quot;https://www.freepik.com/free-photos-vectors/business&quot;&gt;Business vector created by pikisuperstar - www.freepik.com&lt;/a&gt;" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0">
+               <children>
+                  <Button fx:id="btnMemberShip" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="관리자 신청" />
+                  <Button fx:id="btnExit" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="나가기" />
+               </children>
+            </VBox>
          </children>
       </HBox>
    </children>
    <padding>
-      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
 </VBox>
