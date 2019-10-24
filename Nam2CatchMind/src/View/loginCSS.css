@@ -1,8 +1,17 @@
 
-
-
+#textLoing{
+	-fx-font-family: "Do Hyeon";
+    -fx-font-size: 25;	
+      -fx-text-fill: #ffffff;
+}
 #textChachMind{
-	-fx-font-family: "Yeon Sung";
-    -fx-font-size: 30;
+	-fx-font-family: "Do Hyeon";
+    -fx-font-size: 28;
+    -fx-text-fill: #ffffff;
+	
+}
+#loginBtn:hover{
+		-fx-background-color:#2a5058;	
+		-fx-text-fill:#ffffff;
 	
 }

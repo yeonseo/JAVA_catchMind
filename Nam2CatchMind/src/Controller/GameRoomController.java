@@ -136,8 +136,7 @@ public class GameRoomController implements Initializable {
 		});
 
 		btnExit.setOnAction(e -> {
-			send(userState + "," + GameWaitRoomController.roomName + "," + "welcome2out" + "," + ">>>>>"
-					+ GamerLoginController.UserId + " 님이 " + GameWaitRoomController.roomName + "나가셨습니다.<<<<<\n");
+			
 			Parent gameRoomRoot = null;
 			Stage gameRoomStage = null;
 			try {
@@ -150,6 +149,17 @@ public class GameRoomController implements Initializable {
 				((Stage) btnExit.getScene().getWindow()).close();
 				send("roomStateUpdate" + "," + UserGameState.GAMER_WAITROOM);
 				gameRoomStage.show();
+				System.out.print("out check : ");
+				System.out.println(GameWaitRoomController.makeRoom == true);
+				if(GameWaitRoomController.makeRoom == false) {
+					send(userState + "," + GameWaitRoomController.roomName + "," + "welcome2out" + "," + ">>>>>"
+							+ GamerLoginController.UserId + " 님이 " + GameWaitRoomController.roomName + "나가셨습니다.<<<<<\n");
+				}
+				if(GameWaitRoomController.makeRoom == true) {
+					handlerGamer1OutGameRoomDelAction();
+					GameWaitRoomController.makeRoom=false;
+				}
+				send("되냐!!");
 //				stopClient();
 				
 				
@@ -339,12 +349,11 @@ public class GameRoomController implements Initializable {
 							// 참여자가 나갈 시 상테 업데이트
 							case "welcome2out":
 								txtTextArea.appendText(sendMessage[3]);
-								if (GameWaitRoomController.makeRoom == true) {
+								if (GameWaitRoomController.makeRoom == false) {
 									try {
 										handlerWelcom2OutDBUdateAction();
 									} catch (Exception e) {
 										System.out.println(e.toString());
-										;
 									}
 								}
 								break;
@@ -382,7 +391,7 @@ public class GameRoomController implements Initializable {
 								 */
 
 								// 방장
-								if (GameWaitRoomController.makeRoom) {
+								if (GameWaitRoomController.makeRoom==true) {
 									send(userState + "," + GameWaitRoomController.roomName + ","
 											+ ">>>>>정답을 맞추셨습니다. 그림그리기를 멈춥니다.<<<<<\n");
 									// 사용자의 플레이수를 증가시
@@ -497,7 +506,7 @@ public class GameRoomController implements Initializable {
 
 	}
 
-	// 방장과 참여자가 나가기버튼을 통해 대기방진입시 디비업뎃
+	// 참여자가 나가기버튼을 통해 대기방진입시 디비업뎃
 	private void handlerWelcom2OutDBUdateAction() {
 		GameWaitRoomController.mmVO = new ManagerManagmentVO(GameWaitRoomController.roomName,
 				UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT + "," + GameWaitRoomController.roomName, null,
@@ -508,17 +517,16 @@ public class GameRoomController implements Initializable {
 				GameWaitRoomController.mmVO.getMakeRoomUserID(), GameWaitRoomController.mmVO.getEnterRoomUserID(),
 				GameWaitRoomController.mmVO.getGameRunOrWaitState());
 
-		// 방장인 경우, 현재 방에 참여자가 아무도 없는지 확인하고 방을 삭제한다.
-		if (GameWaitRoomController.makeRoom) {
-			send("table_update,\n");
-			GameWaitRoomController.mmVO = new ManagerManagmentVO(GameWaitRoomController.roomName,
-					UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT + "," + GameWaitRoomController.roomName, null,
-					GamerLoginController.UserId, null, "Wait");
-			GameWaitRoomController.usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
-			GameWaitRoomController.usdao.getUserGameRoomDelete(GameWaitRoomController.mmVO.getRoomName());
-			
-			send("table_update,\n");
-		}
+	}
+	
+	// 방장인 경우, 현재 방에 참여자가 아무도 없는지 확인하고 방을 삭제한다.
+	private void handlerGamer1OutGameRoomDelAction() {
+		System.out.println(GameWaitRoomController.makeRoom == true);
+		GameWaitRoomController.mmVO = new ManagerManagmentVO(GameWaitRoomController.roomName,
+				UserGameState.GAMER_GAMEROOM_ENTER_AND_WAIT + "," + GameWaitRoomController.roomName, null,
+				GamerLoginController.UserId, null, "Wait");
+		GameWaitRoomController.usdao = new UserStateDAO(); // UserStateDAO의 객체를 부름
+		GameWaitRoomController.usdao.getUserGameRoomDelete(GameWaitRoomController.mmVO.getRoomName(),GamerLoginController.UserId);
 	}
 
 	public void send(String message) {

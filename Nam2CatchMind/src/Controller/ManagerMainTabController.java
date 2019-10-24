@@ -227,6 +227,10 @@ public class ManagerMainTabController implements Initializable {
 //	private File dirSave = new File("C://남채현/java/java_img"); //이미지 저장할 폴더를 매개변수로 파일 객체 생성
 	String path = System.getProperty("user.dir") + "/images/";
 	private File dirSave = new File(path); // 이미지 저장할 폴더를 매개변수로 파일 객체 생성
+	
+	//버블차트를 위한 변수
+	ArrayList<String> timeData = null;
+	XYChart.Series<String, String> series = new XYChart.Series();
 
 	ObservableList<DrowInfoVO> drowData;
 
@@ -1379,13 +1383,11 @@ public class ManagerMainTabController implements Initializable {
 
 	// 총 데이터 가지고 버블차트 만들기(우선 유저데이터)
 	public void handlerBtnBubbleTotalAction(int access) throws IOException {
-		ArrayList<String> timeData = null;
 		int[] month = new int[12];
-		XYChart.Series<String, String> series = new XYChart.Series();
+		
 
 		// 버블차트 초기화
-		series.getData().clear();
-		chartBubble.getData().clear();
+		handlerBtnBubbleTotalAction();
 
 		String bubbleChartName = null;
 		switch (access) {
@@ -1500,6 +1502,13 @@ public class ManagerMainTabController implements Initializable {
 		}
 
 		chartBubble.getData().add(series);
+
+	}
+
+	private void handlerBtnBubbleTotalAction() {
+		// 버블차트 초기화
+		series.getData().clear();
+		chartBubble.getData().clear();
 
 	}
 

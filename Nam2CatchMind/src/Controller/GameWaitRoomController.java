@@ -178,7 +178,7 @@ public class GameWaitRoomController implements Initializable {
 		        			int i=gdao.getUser2EnterGameRoom(userId, roomName);//wait 상태에 있는방에 DB에 이름 저장
 		        			if(i==1) {
 		        				AlertDisplay.alertDisplay(5,"방입장" ,"user2방 DB등록 성공", "wait상태에 있는방에 user2이름을 등록하는데 성공!");	
-		        				
+								makeRoom=false;
 		        				totalTableGameRoomRefresh(); //초기화
 		        				
 		        				((Stage)btnGameRoomExit.getScene().getWindow()).close();
@@ -797,7 +797,6 @@ public class GameWaitRoomController implements Initializable {
 						int count = usdao.getUserGameRoomRegistration(mmVO.getRoomName(), mmVO.getThreadState(),
 								mmVO.getManagerID(), mmVO.getMakeRoomUserID(), mmVO.getEnterRoomUserID(),
 								mmVO.getGameRunOrWaitState()); // DAO에 UserID, UserThreadState를 넣어줌!
-						makeRoom=true;
 						AlertDisplay.alertDisplay(5, "DB 방등록", "등록성공!", "상태 : " + mmVO.getThreadState());
 						if (count != 0) {
 							/*
@@ -820,7 +819,7 @@ public class GameWaitRoomController implements Initializable {
 							// 방만들기 성공후 메세지를 보내서 새로고침하게 함
 							send(mmVO.getThreadState());
 							roomName=txtMakeRoomName.getText();
-	
+							makeRoom=true;
 							
 							//등록한 방이름,방장 테이블뷰에 나타내기!
 							gameMakeRoomdata.removeAll(gameMakeRoomdata); //기존에 있던 데이터 지우고

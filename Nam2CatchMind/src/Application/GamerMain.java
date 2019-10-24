@@ -20,7 +20,7 @@ public class GamerMain extends Application {
 		Scene scene=new Scene(gameMainRoot);
 		 Font.loadFont(
 				 getClass()
-	                .getResourceAsStream("YeonSung-Regular.ttf"), 20
+	                .getResourceAsStream("DoHyeon-Regular.ttf"), 20
 			    );
 		scene.getStylesheets().add(getClass().getResource("/View/loginCSS.css").toString());
 		primaryStage.setTitle("로그인");

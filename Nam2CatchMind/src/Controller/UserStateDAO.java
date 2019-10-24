@@ -136,31 +136,23 @@ public class UserStateDAO {
 	}
 
 	// 방장만 남은 방을 삭제하기
-	public void getUserGameRoomDelete(String roomName) {
-		String dml = "delete from Nam2CatchMind.UserGameRoom where roomName = ? and Gamer2 is null";
+	public void getUserGameRoomDelete(String roomName, String userID) {
+		System.out.println("check : "+roomName+" " + userID);
+//		String dml = "delete from Nam2CatchMind.UserGameRoom where RoomName = ? && Gamer1 = ? && Gamer2 is null && GameRunOrWaitState = 'Wait'";
+		String dml = "delete from Nam2CatchMind.UserGameRoom where RoomName = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
-
+		int i=0;
 		try {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement(dml);
 			pstmt.setString(1, roomName);
-			int i = pstmt.executeUpdate();
-
+			i = pstmt.executeUpdate();
 			if (i == 1) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("게임방 삭제");
-				alert.setHeaderText("게임방 삭제 완료.");
-				alert.setContentText("게임방 삭제 성공!!!");
-
-				alert.showAndWait();
+				System.out.println("실행");
 
 			} else {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("게임방 삭제");
-				alert.setHeaderText("게임방 삭제 실패.");
-				alert.setContentText("게임방 삭제 실패!!!");
-				alert.showAndWait();
+				System.out.println("ㄴㄴ아님");
 			}
 
 		} catch (SQLException e) {

@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="300.0" prefWidth="400.0" spacing="10.0" style="-fx-background-color: #F2F2F2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.GamerLoginController">
+<VBox alignment="BOTTOM_CENTER" prefHeight="500.0" prefWidth="400.0" spacing="25.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.GamerLoginController">
    <children>
-      <Label id="textChachMind" text="캐치마인드!" />
-      <Label text="로그인" />
+      <AnchorPane prefHeight="302.0" prefWidth="351.0">
+         <children>
+            <ImageView id="loginImg" fitHeight="295.0" fitWidth="328.0" layoutX="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/imgeLogin.png" />
+               </image>
+            </ImageView>
+            <Label id="textChachMind" layoutX="95.0" layoutY="165.0" text="캐치마인드" />
+            <Label id="textLoing" layoutX="133.0" layoutY="203.0" text="로그인!" />
+         </children>
+      </AnchorPane>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="350.0" spacing="10.0">
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="63.0" spacing="10.0">
@@ -27,13 +37,13 @@
                   <PasswordField fx:id="gamerPwd" />
                </children>
             </VBox>
-            <Button fx:id="btnLogin" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="로그인" />
+            <Button id="loginBtn" fx:id="btnLogin" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="로그인" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="340.0" spacing="10.0">
+      <HBox alignment="CENTER" prefHeight="52.0" prefWidth="340.0" spacing="20.0">
          <children>
-            <Button fx:id="btnMemberShip" mnemonicParsing="false" text="회원가입" />
-            <Button fx:id="btnExit" mnemonicParsing="false" text="나가기" />
+            <Button id="loginBtn" fx:id="btnMemberShip" mnemonicParsing="false" prefHeight="29.0" prefWidth="193.0" text="회원가입" />
+            <Button id="loginBtn" fx:id="btnExit" mnemonicParsing="false" prefHeight="29.0" prefWidth="163.0" text="나가기" />
          </children>
       </HBox>
    </children>
