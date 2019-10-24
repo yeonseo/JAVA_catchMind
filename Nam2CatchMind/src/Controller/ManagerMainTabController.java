@@ -247,7 +247,9 @@ public class ManagerMainTabController implements Initializable {
 		 * 
 		 * 
 		 */
-
+		if(ManagerLoginController.UserAccess<2) {
+			tabManager.setDisable(true);
+		}
 		// 로그인한 관리자의 정보 보이기
 		getUserIDandUserImage();
 		handlerUserInfoShow();

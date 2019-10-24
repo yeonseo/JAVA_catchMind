@@ -56,6 +56,7 @@ public class ManagerLoginController implements Initializable {
 	
 	public  ArrayList<UserVO> list;
 	public static String UserId;
+	public static int UserAccess;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -97,6 +98,7 @@ public class ManagerLoginController implements Initializable {
 		if (list.size() != 0) {
 			// 로그인 성공부분
 			UserId = list.get(0).getUserID();
+			UserAccess = list.get(0).getUserAccess();
 			System.out.println(UserId);
 			// 유저 GameRoom FXML 로드
 			Parent gameRoomRoot = null;
