@@ -29,7 +29,8 @@ public class Client {
 						int length = in.read(buffer);
 						while (length == -1)
 							throw new IOException();
-						System.out.println("[succese in message] " + getSocket().getRemoteSocketAddress() + " : "
+						System.out.println("[succese in message] " 
+								+ getSocket().getRemoteSocketAddress() + " : "
 								+ Thread.currentThread().getName());
 						String message = new String(buffer, 0, length, "UTF-8");
 						for (Client client : ServerMain.clients) {
@@ -38,7 +39,8 @@ public class Client {
 					} // end of while
 				} catch (Exception e) {
 					try {
-						System.out.println("[fail in message] " + getSocket().getRemoteSocketAddress() + " : "
+						System.out.println("[fail in message] " 
+								+ getSocket().getRemoteSocketAddress() + " : "
 								+ Thread.currentThread().getName());
 						ServerMain.clients.remove(Client.this);
 						getSocket().close();
@@ -63,7 +65,8 @@ public class Client {
 					out.flush();
 
 				} catch (Exception e) {
-					System.out.println("messge out fail" + getSocket().getRemoteSocketAddress() + " : "
+					System.out.println("messge out fail" 
+							+ getSocket().getRemoteSocketAddress() + " : "
 							+ Thread.currentThread().getName());
 					ServerMain.clients.remove(Client.this);
 					e.printStackTrace();

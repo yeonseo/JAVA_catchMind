@@ -123,6 +123,7 @@ public class ManagerLoginController implements Initializable {
 				
 	            System.out.println("ID : " + managerId.getText() + "  state : " + UserGameState.MANAGER_ONLINE);
 	            
+	            //로그인 성공, 메인화면으로 진입하
 	            try {
 	            	gameRoomRoot = FXMLLoader.load(getClass().getResource("/View/ManagerMainTab.fxml"));
 					Scene scene = new Scene(gameRoomRoot);
@@ -139,13 +140,13 @@ public class ManagerLoginController implements Initializable {
 					managerStartTime = loginTimeArray[0]+"년"+loginTimeArray[1]+"월"+loginTimeArray[2]+"일  "
 											+loginTimeArray[3]+":"+loginTimeArray[4];
 					System.out.println("로그인 시간:" + loginTime);
-//					mmdao.getCurrentTime(managerId.getText());
-					mmdao.getCurrentTime("nnn");
+					mmdao.getCurrentTime(managerId.getText());
+//					mmdao.getCurrentTime("nnn");
 					AlertDisplay.alertDisplay(5, "로그인 성공", usvo.getUserID() + " 관리자님, 안녕하세요."
 							, "접속시간은 " + managerStartTime + " 입니다.");
 					
 	            }catch(Exception fxml) {
-	            	AlertDisplay.alertDisplay(1, "fmxl 실패", "메니저 메인을 불러오는데 실패했습니다.", fxml.toString());
+	            	AlertDisplay.alertDisplay(1, "fxml 실패", "메니저 메인을 불러오는데 실패했습니다.", fxml.toString());
 	            }
 	            
 			} catch (IOException e2) {

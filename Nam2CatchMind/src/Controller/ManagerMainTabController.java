@@ -231,7 +231,8 @@ public class ManagerMainTabController implements Initializable {
 	//버블차트를 위한 변수
 	ArrayList<String> timeData = null;
 	XYChart.Series<String, String> series = new XYChart.Series();
-
+	
+	//그림좌표 데이터를 불러오기 위한 리스트
 	ObservableList<DrowInfoVO> drowData;
 
 	@Override
@@ -677,6 +678,11 @@ public class ManagerMainTabController implements Initializable {
 		roomName.setStyle("-fx-alignment: CENTER;");
 		roomName.setCellValueFactory(new PropertyValueFactory("RoomName"));
 
+		TableColumn threadState = new TableColumn("접속상태");
+		threadState.setMaxWidth(200);
+		threadState.setStyle("-fx-alignment: CENTER;");
+		threadState.setCellValueFactory(new PropertyValueFactory("ThreadState"));
+
 		TableColumn makeRoomUserID = new TableColumn("방장");
 		makeRoomUserID.setMaxWidth(160);
 		makeRoomUserID.setStyle("-fx-alignment: CENTER;");
@@ -693,7 +699,7 @@ public class ManagerMainTabController implements Initializable {
 		gameRunOrWaitState.setCellValueFactory(new PropertyValueFactory("gameRunOrWaitState"));
 
 		tableView.setItems(userRoomData);
-		tableView.getColumns().addAll(roomName, makeRoomUserID, enterRoomUserID, gameRunOrWaitState);
+		tableView.getColumns().addAll(roomName, threadState, makeRoomUserID, enterRoomUserID, gameRunOrWaitState);
 
 	}// end of tableViewSetting
 
@@ -740,19 +746,16 @@ public class ManagerMainTabController implements Initializable {
 			txtMainAreaServerLog.appendText("방이름 : " + enteringRoomName + "\n");
 
 		} catch (Exception e2) {
-			AlertDisplay.alertDisplay(3, "방이름 가져오기", "방이름을 가져올 수 없습니다.", "방이름을 가져오지 못했습니다.");
+			AlertDisplay.alertDisplay(3, "방이름 가져오기", "방이름을 가져올 수 없습니다."
+					, "방이름을 가져오지 못했습니다.");
 		} // end of try catch
 
 	}// end of handlerTableViewSelectEvent
 
 	// 테이블 뷰를 더블 클릭할 시, 게임방 창을 열어주는 함수
 	private void handlerTableViewEnterGameRoomAction(MouseEvent e4) {
-
 		try {
-
-			if (e4.getClickCount() != 2) {
-				return;
-			}
+			if (e4.getClickCount() != 2) { return; }
 			Parent gameRoomRoot = FXMLLoader.load(getClass().getResource("/View/GameRoomForManager.fxml"));
 			Stage stage = new Stage(StageStyle.UTILITY);
 			stage.initModality(Modality.WINDOW_MODAL);
@@ -766,20 +769,17 @@ public class ManagerMainTabController implements Initializable {
 			Button btnSend = (Button) gameRoomRoot.lookup("#btnSend");
 			Button btnExit = (Button) gameRoomRoot.lookup("#btnExit");
 
+			canvas.setDisable(true); txtTextField.setDisable(true); btnSend.setDisable(true);
+
 			word.setText("보기모드");
 
-			btnExit.setOnAction(e2 -> {
-				stage.close();
-			});
+			btnExit.setOnAction(e2 -> { stage.close(); });
 
 			Scene scene = new Scene(gameRoomRoot);
-			stage.setScene(scene);
-			stage.show();
+			stage.setScene(scene); stage.show();
 		} catch (IOException e33) {
-
 			e33.printStackTrace();
 		}
-
 	}// end of handlerPieChartAction
 
 	/*
@@ -887,7 +887,6 @@ public class ManagerMainTabController implements Initializable {
 	private ArrayList<String> handlerGetUserTimeSplit() {
 		ArrayList<String> list = null;
 		ManagerManagmentDAO mmDAO = new ManagerManagmentDAO();
-
 		try {
 			list = mmDAO.getCurrentTime(userId);
 			if (list == null) {

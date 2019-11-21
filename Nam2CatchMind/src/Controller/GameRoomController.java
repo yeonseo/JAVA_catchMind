@@ -134,7 +134,8 @@ public class GameRoomController implements Initializable {
 			txtTextField.requestFocus();
 
 		});
-
+		
+		
 		btnExit.setOnAction(e -> {
 			
 			Parent gameRoomRoot = null;
@@ -183,6 +184,7 @@ public class GameRoomController implements Initializable {
 		txtTextArea.setEditable(false);
 		canvas.setDisable(true);
 		arPt.removeAll(arPt);
+		handlerCanvasResetAction();
 		btnStrColorBlack.setDisable(true);
 		btnStrColorBlue.setDisable(true);
 		btnStrColorRed.setDisable(true);
@@ -444,9 +446,9 @@ public class GameRoomController implements Initializable {
 			// 디비에 등록 확인하기
 			int Gamer1PSencePlus = gdao.getGamer1SencePlus(GamerLoginController.UserId);
 			if (Gamer1PSencePlus != 0) {
-				AlertDisplay.alertDisplay(5, "Win 등록", "Win 등록성공!", "Win 등록했습니다!");
+				System.out.println("Win 등록했습니다!");
 			} else {
-				AlertDisplay.alertDisplay(1, "Win 실패", "Win 등록실패!", "Win 실패했습니다!");
+				System.out.println("Win 실패했습니다!");
 			} // end of 디비에 등록 확인하기
 		}
 
@@ -457,9 +459,9 @@ public class GameRoomController implements Initializable {
 			// 디비에 등록 확인하기
 			int Gamer2PWinPlus = gdao.getGamer2WinPlus(GamerLoginController.UserId);
 			if (Gamer2PWinPlus != 0) {
-				AlertDisplay.alertDisplay(5, "Win 등록", "Win 등록성공!", "Win 등록했습니다!");
+				System.out.println("2 Win 등록했습니다!");
 			} else {
-				AlertDisplay.alertDisplay(1, "Win 실패", "Win 등록실패!", "Win 실패했습니다!");
+				System.out.println("2 Win 실패했습니다!");
 			} // end of 디비에 등록 확인하기
 		}
 
@@ -469,9 +471,9 @@ public class GameRoomController implements Initializable {
 		// 디비에 등록 확인하기
 		int Gamer1Gamer2PlayPlus = gdao.getGamer1andGamer2PlayPlus(GamerLoginController.UserId);
 		if (Gamer1Gamer2PlayPlus != 0) {
-			AlertDisplay.alertDisplay(5, "Play 등록", "Play 등록성공!", "Play 등록했습니다!");
+			System.out.println("Play 등록했습니다!");
 		} else {
-			AlertDisplay.alertDisplay(1, "Play 실패", "Play 등록실패!", "Play 실패했습니다!");
+			System.out.println("Play 실패했습니다!");
 		} // end of 디비에 등록 확인하기
 
 	}
@@ -635,50 +637,22 @@ public class GameRoomController implements Initializable {
 	}
 
 	/* 캔버스 하단의 버튼 3개를 누를 시 펜 색깔이 바뀜 */
-	public void handlerBtnColorRedAction(MouseEvent event) {
+	public void handlerBtnColorRedAction(ActionEvent event) {
 		color = 1;
 	}
 
-	public void handlerBtnColorBlueAction(MouseEvent event) {
+	public void handlerBtnColorBlueAction(ActionEvent event) {
 		color = 2;
 	}
 
-	public void handlerBtnColorBlackAction(MouseEvent event) {
+	public void handlerBtnColorBlackAction(ActionEvent event) {
 		color = 3;
 	}
 
 	public void handlerCanvasResetAction() {
-		drowData = null;
+		//안돼ㅠㅠㅠ
+		arPt.clear();
 	}
 }
 
-/*
- * 그림그리기에 사용되는 클래스들
- * 
- * DrawCanvas (실제캔버스에 그림을 그리기 위한 라인이 만들어지는 곳) arPt : 마우스커서의 좌표 리스트 paint : 내장되어
- * 있는 함수들을 모아서 함수화 한 것 for문에서 true값인 좌표들을 선별해서 그려지도록 함
- * 
- * DrowInfoVO : 그리는 정보에 대한 값에 대한 클래스 x, y, 그린행위에 대해서 boolean 값, color : int 값으로
- * 저장됨 getDBColor() : case문, 색깔을 리턴해줌
- * 
- */
-class DrawCanvas extends Canvas {
-	ArrayList<DrowInfoVO> arPt;
 
-	DrawCanvas(ArrayList<DrowInfoVO> arPt) {
-		this.arPt = arPt;
-	}
-
-	public void paint(GraphicsContext g) {
-		g.setLineWidth(2.0);
-
-		for (int i = 0; i < arPt.size() - 1; i++) {
-			if (arPt.get(i).isDraw()) {
-				int color = arPt.get(i).getDBColor();
-				Color penColor = arPt.get(i).getColor(color);
-				g.setStroke(penColor);
-				g.strokeLine(arPt.get(i).getX(), arPt.get(i).getY(), arPt.get(i + 1).getX(), arPt.get(i + 1).getY());
-			}
-		}
-	}
-}
